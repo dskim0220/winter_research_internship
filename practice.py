@@ -1,8 +1,13 @@
-import pandas as pd
+import langchain
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-# 간단한 데이터프레임 만들기
-data = {'이름': ['A', 'B', 'C'], '램 용량': ['16GB', '32GB', '256GB']}
-df = pd.DataFrame(data)
+os.environ["GOOGLE_API_KEY"] = "AIzaSyB7g1C9eS9TGR3KcKCEI6aZkGjOZfxKYmA"
 
-print("--- 아나콘다 연동 성공! ---")
-print(df)
+llm = ChatGoogleGenerativeAI(
+    model="gemini-1.0-pro",
+    temperature=0.0
+)
+
+response = llm.invoke("Say hello in Korean.")
+print(response.content)
