@@ -119,3 +119,4 @@ if __name__ == '__main__':
     expert = TerminologyInterpreter('gemini-2.5-flash')
     answer = expert.forward(problem, comment_pool)
     print(answer)
+    ##temperate

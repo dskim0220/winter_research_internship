@@ -9,7 +9,7 @@ from langchain_core.callbacks import BaseCallbackHandler
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 if"GOOGLE_API_KEY"not in os.environ:
-    os.environ["GOOGLE_API_KEY"] = "Your Google API Key Here"
+    os.environ["GOOGLE_API_KEY"] = "your_google_api_key_here"
 
 # 1. 전역 컨텍스트 변수 (바구니)
 gemini_callback_var: ContextVar[Optional[BaseCallbackHandler]] = ContextVar(

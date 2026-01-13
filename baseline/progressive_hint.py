@@ -12,7 +12,7 @@ if root_path not in sys.path:
 
 from custom_callback import get_custom_callback, get_llm
 
-def solve(problem_data, model_name='gemini-2.5-flash'):
+def solve(problem_data, model_name='gemini-1.5-flash'):
     problem_description = problem_data['description']
     code_example = problem_data['code_example']
 
