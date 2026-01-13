@@ -1,5 +1,6 @@
-from langchain import PromptTemplate, OpenAI, LLMChain
-from langchain.chat_models import ChatOpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_classic.chains.llm import LLMChain
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from experts.base_expert import BaseExpert
 

@@ -4,7 +4,8 @@ import os
 import re
 from tqdm import tqdm
 from pathlib import Path
-from langchain.callbacks import get_openai_callback
+from langchain_core.callbacks import BaseCallbackHandler
+from custom_callback import get_custom_callback
 from test_generated_code import test_generated_code, read_test_samples
 from utils import extract_code_from_string, read_problem
 from result import Result
@@ -33,7 +34,7 @@ def main():
     parser.add_argument('--algorithm', type=str, help='Algorithm name')
     parser.add_argument('--enable_reflection', action='store_true', help='Enable reflection option')
     parser.add_argument('--log_dir', type=str, default='log', help='The directory of log')
-    parser.add_argument('--model', type=str, default='gpt-3.5-turbo', help='Base large language model')
+    parser.add_argument('--model', type=str, default='gemini-2.5-flash', help='Base large language model')
     parser.add_argument('--max_collaborate_nums', type=int, default=3, help='Number of max collaborations')
     parser.add_argument('--max_trials', type=int, default=3, help='Maximum number of forward-backward trials')
     args = parser.parse_args()
@@ -61,7 +62,7 @@ def main():
     current_num = 0
     for problem in matched_problems:
         problem_data = read_problem(args.dataset, problem)
-        with get_openai_callback() as cb:
+        with get_custom_callback() as cb:
             if args.algorithm == 'chain_of_experts' or args.algorithm == 'coe':
                 answer = chain_of_experts(
                     problem_data, 

@@ -16,7 +16,7 @@ pip install -r requirements.txt
 Firstly, set the environment variable `OPENAI_API_KEY`
 
 ```bash
-export OPENAI_API_KEY=[Your API key here]
+export OPENAI_API_KEY=[AIzaSyB7g1C9eS9TGR3KcKCEI6aZkGjOZfxKYmA]
 ```
 
 Run the experimental script

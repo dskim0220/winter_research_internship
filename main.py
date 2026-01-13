@@ -1,3 +1,4 @@
+import sys
 import os
 import json
 import numpy as np
@@ -91,4 +92,4 @@ def chain_of_experts(problem,
 if __name__ == '__main__':
     from utils import read_problem
     problem = read_problem('LPWP', 'prob_250')
-    chain_of_experts(problem, model_name='gpt-3.5-turbo-1106', enable_reflection=False)
+    chain_of_experts(problem, model_name='gemini-2.5-flash', enable_reflection=False)
