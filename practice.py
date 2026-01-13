@@ -33,3 +33,6 @@ if __name__ == "__main__":
     answer = ask_gemini_flash(prompt, system_instruction)
     
     print(answer)
+
+
+    
