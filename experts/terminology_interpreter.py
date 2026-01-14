@@ -16,40 +16,39 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class TerminologyInterpreter(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are a terminology interpreter who provides additional domain-specific knowledge to enhance problem understanding and formulation.'
-    FORWARD_TASK = '''As a domain knowledge terminology interpreter, your role is to provide additional information and insights related to the problem domain. 
-Here are some relevant background knowledge about this problem: {knowledge}. 
+    ROLE_DESCRIPTION = 'You are a Domain Knowledge Expert. Your only goal is to provide concise, technical interpretations of complex terms to help solve optimization problems.'
+    FORWARD_TASK = '''[System] Output ONLY a valid JSON list. Do not include markdown code blocks (```json), explanations, or any extra text. 
+    
+    [Background Knowledge]: {knowledge}. 
 
-You can contribute by sharing your expertise, explaining relevant concepts, and offering suggestions to improve the problem understanding and formulation. 
-Please provide your input based on the given problem description: 
-{problem_description}
+    [Problem Description]: {problem_description}
 
-Your output format should be a JSON like this (choose at most 3 hardest terminology):
-[
-  {{
-    "terminology": "...",
-    "interpretation": "..."
-  }}
-]
+    [Task]
+    Identify and interpret at most 3 hardest terminologies from the problem. Keep interpretations under 20 words.
+
+    [Required Output Format]
+    [
+      {{
+        "terminology": "...",
+        "interpretation": "..."
+      }}
+    ]
 '''
 
-    BACKWARD_TASK = '''When you are solving a problem, you get a feedback from the external environment. You need to judge whether this is a problem caused by you or by other experts (other experts have given some results before you). If it is your problem, you need to give Come up with solutions and refined code.
+    BACKWARD_TASK = '''[System] You are an Error Analyist. Analyze the feedback and output ONLY a JSON structure.
 
-The original problem is as follow:
-{problem_description}
+    [Feedback]
+    {feedback}
 
-The feedback is as follow:
-{feedback}
+    [Previous Answer]
+    {previous_answer}
 
-The answer you give previously is as follow:
-{previous_answer}
-
-The output format is a JSON structure followed by refined code:
-{{
-    'is_caused_by_you': false,
-    'reason': 'leave empty string if the problem is not caused by you',
-    'refined_result': 'Your refined result'
-}}
+    [Required Output Format]
+    {{
+        "is_caused_by_you": false,
+        "reason": "short reason or empty if false",
+        "refined_result": "updated interpretation or same if no change"
+    }}
 '''
 
     def __init__(self, model):
@@ -93,6 +92,7 @@ The output format is a JSON structure followed by refined code:
 
         try:
             clean_json = extract_code_from_string(output)
+            clean_json = clean_json.replace("```json", "").replace("```", "").strip()
             parsed_output = json.loads(clean_json)
             #output = json.loads(output)
 

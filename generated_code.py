@@ -1,4 +1,5 @@
-from pulp import LpProblem, LpMaximize, LpVariable, lpSum, Gurobi
+import numpy as np
+from scipy.optimize import linprog
 
 def prob_1(color_printers, bw_printers):
     """
@@ -9,30 +10,32 @@ def prob_1(color_printers, bw_printers):
     Returns:
         obj: an integer representing the optimal objective value (profit)
     """
-    # Create a new Gurobi model
-    model = Gurobi.Model("printer_production")
+    # Coefficients of the objective function to minimize (negative because linprog minimizes by default)
+    c = [-200, -70]  # Negative coefficients to maximize profit
 
-    # Define decision variables
-    x = model.addVar(lb=0, ub=color_printers, name='color_printers')  # Number of color printers
-    y = model.addVar(lb=0, ub=bw_printers, name='bw_printers')       # Number of black and white printers
+    # Coefficients matrix for the inequality constraints
+    A = [
+        [1, 1],  # x + y <= 35
+        [1, 0],  # x <= 20
+        [0, 1],  # y <= 30
+        [-1, 0], # x >= 0
+        [0, -1]  # y >= 0
+    ]
 
-    # Define the objective function
-    model.setObjective(200 * x + 70 * y, sense=LpMaximize)
+    # Right-hand side values for the inequality constraints
+    b = [35, 20, 30, 0, 0]
 
-    # Add constraints
-    model.addConstr(x + y <= 35, name='machine_capacity')
-    model.addConstr(x <= 20, name='color_printer_capacity')
-    model.addConstr(y <= 30, name='bw_printer_capacity')
+    # Bounds for x and y (both must be non-negative)
+    bounds = [(0, None), (0, None)]
 
-    # Solve the model
-    model.solve()
+    # Solve the linear programming problem
+    res = linprog(c, A_ub=A, b_ub=b, bounds=bounds, method='highs')
 
-    # Retrieve the optimal solution
-    obj_value = model.objective.getValue()
-    color_printers_optimal = x.varValue
-    bw_printers_optimal = y.varValue
+    # Return the optimal objective value (profit)
+    return -res.fun  # Negate again to get the actual profit
 
-    return int(obj_value)
-
-# Example usage
-print(prob_1(20, 30))
+# Example usage:
+color_printers = 15
+bw_printers = 20
+optimal_profit = prob_1(color_printers, bw_printers)
+print(f"Optimal Profit: ${optimal_profit:.2f}")

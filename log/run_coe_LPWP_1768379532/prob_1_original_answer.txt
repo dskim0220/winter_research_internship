@@ -1,0 +1,44 @@
+Based on the problem description and the insights provided by my colleagues, we need to formulate the linear programming problem to maximize the profit. The constraints and variables are as follows:
+
+- Variables: \( x \) (number of color printers) and \( y \) (number of black and white printers).
+- Constraints:
+  - \( x \leq 20 \) (color printer team constraint)
+  - \( y \leq 30 \) (black and white printer team constraint)
+  - \( x + y \leq 35 \) (paper tray installing machine constraint)
+  - \( x \geq 0 \)
+  - \( y \geq 0 \)
+- Objective: Maximize \( 200x + 70y \)
+
+Here is the final code implementing the above logic:
+
+```python
+def prob_1(color_printers, bw_printers):
+    """ 
+    Args:
+        color_printers: an integer representing the number of color printers
+        bw_printers: an integer representing the number of black and white printers
+    
+    Returns:
+        obj: an integer representing the optimal objective value (profit)
+    """
+    from scipy.optimize import linprog
+
+    # Coefficients for the objective function (negated because linprog minimizes)
+    c = [-200, -70]
+
+    # Coefficients for the inequality constraints
+    A = [[1, 1], [1, 0], [0, 1]]
+    b = [35, 20, 30]
+
+    # Bounds for the variables
+    x_bounds = (0, None)
+    y_bounds = (0, None)
+
+    # Solve the linear programming problem
+    res = linprog(c, A_ub=A, b_ub=b, bounds=[x_bounds, y_bounds], method='highs')
+
+    # Return the optimal objective value (profit)
+    return -res.fun
+```
+
+This code uses the `linprog` function from the `scipy.optimize` module to solve the linear programming problem. The negative sign is used because `linprog` minimizes the objective function, so we negate it to get the maximum profit.

@@ -1,0 +1,54 @@
+Based on the problem description provided, we need to formulate a linear programming problem to maximize the profit from producing color and black-and-white printers. Here’s the final code:
+
+```python
+from scipy.optimize import linprog
+
+# Coefficients for the objective function (negative because linprog minimizes)
+c = [-200, -70]
+
+# Coefficients for the inequality constraints
+A = [
+    [1, 1],  # color printers + black and white printers <= 35
+    [1, -1],  # color printers - black and white printers <= 0
+    [1, 0],   # color printers <= 20
+    [0, 1]    # black and white printers <= 30
+]
+
+# Right-hand side values for the inequality constraints
+b = [35, 0, 20, 30]
+
+# Bounds for the variables (non-negative)
+x0_bounds = (0, None)
+x1_bounds = (0, None)
+
+# Solve the linear programming problem
+res = linprog(c, A_ub=A, b_ub=b, bounds=[x0_bounds, x1_bounds], method='highs')
+
+# The optimal solution
+optimal_color_printers = res.x[0]
+optimal_bw_printers = res.x[1]
+optimal_profit = -res.fun  # Convert back to positive profit
+
+# Return the optimal profit
+def prob_1(color_printers, bw_printers):
+    obj = optimal_profit
+    return obj
+
+# Final code
+prob_1(optimal_color_printers, optimal_bw_printers)
+```
+
+### Explanation:
+- **Objective Function**: We aim to maximize profit, which is represented by the coefficients `[-200, -70]` in the objective function. Since `linprog` minimizes the objective function, we negate the coefficients.
+  
+- **Constraints**:
+  - `color_printers + bw_printers <= 35`: The total number of printers produced cannot exceed 35.
+  - `color_printers - bw_printers <= 0`: The number of color printers must not exceed the number of black and white printers.
+  - `color_printers <= 20`: The color printer team can produce at most 20 color printers per day.
+  - `bw_printers <= 30`: The black and white printer team can produce at most 30 black and white printers per day.
+
+- **Bounds**: Both `color_printers` and `bw_printers` are non-negative.
+
+- **Solution**: The `linprog` function returns the optimal values for `color_printers` and `bw_printers`, and the corresponding maximum profit.
+
+This code uses the `scipy.optimize.linprog` function to solve the linear programming problem and returns the maximum profit.

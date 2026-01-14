@@ -1,0 +1,8 @@
+===============test sample 0===============
+Runtime Error
+No module named 'scipy'
+
+
+
+0/1 passed
+is correct: False
