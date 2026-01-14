@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 # 최신 랭체인 코어에서 가져옵니다.
 from langchain_core.callbacks import BaseCallbackHandler
-from langchain_google_genai import ChatGoogleGenerativeAI
+#from langchain_google_genai import ChatGoogleGenerativeAI
 
 if"GOOGLE_API_KEY"not in os.environ:
     os.environ["GOOGLE_API_KEY"] = "your_google_api_key_here"

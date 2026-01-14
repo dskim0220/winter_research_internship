@@ -2,13 +2,13 @@ import sys
 import os
 from langchain_core.prompts import PromptTemplate
 from langchain_classic.chains.llm import LLMChain
-from langchain_google_genai import ChatGoogleGenerativeAI
+#from langchain_google_genai import ChatGoogleGenerativeAI
 
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if root_path not in sys.path:
     sys.path.append(root_path)
 
-from custom_callback import get_custom_callback, get_llm
+from custom_callback_qwen import get_custom_callback, get_llm
 
 class BaseExpert(object):
 
@@ -17,7 +17,7 @@ class BaseExpert(object):
         self.description = description
         self.model = model
 
-        self.llm = get_llm(model_name=self.model,temperature=0)
+        self.llm = get_llm(model_name=self.model,temperature=0.1)
         self.forward_prompt_template = self.ROLE_DESCRIPTION + '\n' + self.FORWARD_TASK
         self.forward_chain = LLMChain(
             llm=self.llm,

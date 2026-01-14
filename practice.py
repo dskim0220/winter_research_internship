@@ -1,5 +1,6 @@
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI
+import torch
+
 from langchain_core.messages import HumanMessage, SystemMessage
 
 def ask_gemini_flash(question: str, system_instruction: str = ""):

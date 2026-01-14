@@ -92,4 +92,4 @@ def chain_of_experts(problem,
 if __name__ == '__main__':
     from utils import read_problem
     problem = read_problem('LPWP', 'prob_250')
-    chain_of_experts(problem, model_name='gemini-2.5-flash', enable_reflection=False)
+    chain_of_experts(problem, model_name='Qwen/Qwen2.5-3B-Instruct', enable_reflection=False)

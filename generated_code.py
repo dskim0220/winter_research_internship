@@ -1,71 +1,38 @@
-import gurobipy as gp
-from gurobipy import GRB
+from pulp import LpProblem, LpMaximize, LpVariable, lpSum, Gurobi
 
-def prob_0(DogCapability,TruckCapability,DogCost,TruckCost,MaxBudget):
+def prob_1(color_printers, bw_printers):
     """
-    Formulates and solves a Mixed-Integer Program (MIP) to maximize the number of fish
-    transported, subject to budget and trip count constraints, using Gurobi.
-
     Args:
-        DogCapability: an integer, indicates the amount of fish which sled dogs can take per trip
-        TruckCapability: an integer, indicates the amount of fish which trucks can take per trip
-        DogCost: an integer, indicates the cost per trip for a sled dog
-        TruckCost: an integer, indicates the cost per trip for a truck
-        MaxBudget: an integer, denotes the upper limit of the budget
-
+        color_printers: an integer representing the number of color printers
+        bw_printers: an integer representing the number of black and white printers
+    
     Returns:
-        FishTransported: an integer, denotes the amount of fish transported after calculation.
-                         Returns 0 if no feasible solution exists.
+        obj: an integer representing the optimal objective value (profit)
     """
-    FishTransported = 0
+    # Create a new Gurobi model
+    model = Gurobi.Model("printer_production")
 
-    try:
-        # Create a new model
-        model = gp.Model("FisheryTransportation")
+    # Define decision variables
+    x = model.addVar(lb=0, ub=color_printers, name='color_printers')  # Number of color printers
+    y = model.addVar(lb=0, ub=bw_printers, name='bw_printers')       # Number of black and white printers
 
-        # --- Decision Variables ---
-        # Let x_s be the number of trips made by sled dogs
-        # Let x_t be the number of trips made by trucks
-        # Both variables must be non-negative integers.
-        x_s = model.addVar(vtype=GRB.INTEGER, name="num_sled_dog_trips", lb=0)
-        x_t = model.addVar(vtype=GRB.INTEGER, name="num_truck_trips", lb=0)
+    # Define the objective function
+    model.setObjective(200 * x + 70 * y, sense=LpMaximize)
 
-        # --- Objective Function ---
-        # Maximize the total number of fish transported:
-        # Maximize DogCapability * x_s + TruckCapability * x_t
-        model.setObjective(DogCapability * x_s + TruckCapability * x_t, GRB.MAXIMIZE)
+    # Add constraints
+    model.addConstr(x + y <= 35, name='machine_capacity')
+    model.addConstr(x <= 20, name='color_printer_capacity')
+    model.addConstr(y <= 30, name='bw_printer_capacity')
 
-        # --- Constraints ---
-        # 1. Budget Constraint: The total cost of all trips must not exceed the maximum allowed budget.
-        #    DogCost * x_s + TruckCost * x_t <= MaxBudget
-        model.addConstr(DogCost * x_s + TruckCost * x_t <= MaxBudget, "Budget_Constraint")
+    # Solve the model
+    model.solve()
 
-        # 2. Trip Count Relationship Constraint: The number of sled dog trips must be
-        #    strictly less than the number of truck trips.
-        #    x_s <= x_t - 1
-        model.addConstr(x_s <= x_t - 1, "Trip_Count_Relationship_Constraint")
+    # Retrieve the optimal solution
+    obj_value = model.objective.getValue()
+    color_printers_optimal = x.varValue
+    bw_printers_optimal = y.varValue
 
-        # --- Optimize the model ---
-        model.optimize()
+    return int(obj_value)
 
-        # --- Extract Results ---
-        if model.status == GRB.OPTIMAL:
-            # The objective value is the total fish transported.
-            # It's cast to int as per the return type specification.
-            FishTransported = int(model.objVal)
-        elif model.status == GRB.INFEASIBLE:
-            # If the model is infeasible, no fish can be transported under the given constraints.
-            FishTransported = 0
-        else:
-            # Handle other statuses (e.g., UNBOUNDED, INTERRUPTED) by returning 0,
-            # as no optimal feasible solution was found.
-            FishTransported = 0
-
-    except gp.GurobiError as e:
-        # Catch Gurobi-specific errors and return 0.
-        FishTransported = 0
-    except Exception as e:
-        # Catch any other unexpected errors and return 0.
-        FishTransported = 0
-
-    return FishTransported
+# Example usage
+print(prob_1(20, 30))

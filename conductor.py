@@ -1,8 +1,10 @@
 import random
-
+import torch
 from langchain_core.prompts import PromptTemplate
 from langchain_classic.chains.llm import LLMChain
-from langchain_google_genai import ChatGoogleGenerativeAI
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from langchain_huggingface import HuggingFacePipeline, ChatHuggingFace
+from langchain_core.callbacks import BaseCallbackHandler
 
 from experts.base_expert import BaseExpert
 
