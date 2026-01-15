@@ -1,0 +1,8 @@
+===============test sample 0===============
+Runtime Error
+No module named 'gurobipy'
+
+
+
+0/1 passed
+is correct: False

@@ -20,7 +20,7 @@ def solve(problem_data, model_name="Qwen/Qwen2.5-3B-Instruct"):
     problem_description = problem_data['description']
     code_example = problem_data['code_example']
 
-    MAX_TRIALS = 5
+    MAX_TRIALS = 1
     history_answer = []
     for i in range(MAX_TRIALS):
         prompt_template = """You are a Python programmer in the field of operations research and optimization. Your proficiency in utilizing third-party libraries such as Gurobi is essential. In addition to your expertise in Gurobi, it would be great if you could also provide some background in related libraries or tools, like NumPy, SciPy, or PuLP.

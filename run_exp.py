@@ -1,3 +1,4 @@
+# run_exp.py
 import argparse
 import time
 import os
@@ -38,14 +39,14 @@ def main():
     parser.add_argument('--enable_reflection', action='store_true', help='Enable reflection option')
     parser.add_argument('--log_dir', type=str, default='log', help='The directory of log')
     parser.add_argument('--model', type=str, default="Qwen/Qwen2.5-3B-Instruct", help='Base large language model')
-    parser.add_argument('--max_collaborate_nums', type=int, default=1, help='Number of max collaborations')
+    parser.add_argument('--max_collaborate_nums', type=int, default=3, help='Number of max collaborations')
     parser.add_argument('--max_trials', type=int, default=1, help='Maximum number of forward-backward trials')
     args = parser.parse_args()
     args.algorithm = args.algorithm.lower()
 
     matched_problems = []
     for p in os.listdir(os.path.join('dataset', args.dataset)):
-        if re.match(args.problem, p):
+        if p == args.problem:
             matched_problems.append(p)
     total_num = len(matched_problems)
     if total_num == 0:
@@ -111,6 +112,7 @@ def main():
         pbar.update()
         current_num += 1
         pbar.set_description(f'Accuracy: {correct_num / current_num * 100:.2f}% | Compile error: {ce_num / current_num * 100:.2f}% | Runtime error: {re_num / current_num * 100:.2f}%')
+        break
 
     print(f'Passed: {correct_num}/{total_num}')
     print(f'Accuracy: {correct_num / total_num * 100:.2f}%')

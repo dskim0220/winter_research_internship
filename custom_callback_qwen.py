@@ -12,6 +12,8 @@ from langchain_huggingface import HuggingFacePipeline, ChatHuggingFace
 # [공통] 랭체인 코어 임포트
 from langchain_core.callbacks import BaseCallbackHandler
 
+_shared_chat_model = None
+
 # 1. 전역 컨텍스트 변수 (이름만 qwen으로 변경, 기능은 동일)
 qwen_callback_var: ContextVar[Optional[BaseCallbackHandler]] = ContextVar(
     "qwen_callback", default=None
@@ -113,13 +115,19 @@ def get_custom_callback(tokenizer) -> Generator[CustomCallbackHandler, None, Non
 # 여기서는 예시를 위해 함수 내부에 둡니다.
 
 def get_llm(model_name, temperature):
+    global _shared_chat_model
+
+    if _shared_chat_model is not None:
+        return _shared_chat_model
     
     # 1) 토크나이저 및 모델 로드 (Transformers)
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=True)
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype="auto",
-        device_map="auto" # GPU 자동 할당
+        torch_dtype=torch.float16,
+        device_map="auto", # GPU 자동 할당
+        low_cpu_mem_usage=True,
+        local_files_only=True
     )
 
     # 2) 파이프라인 생성 
@@ -130,7 +138,7 @@ def get_llm(model_name, temperature):
         max_new_tokens=1024, # 출력 최대 길이
         temperature=temperature,
         return_full_text = False,
-        device_map="auto",
+        #device_map="auto",
         trust_remote_code=True
         #top_p=0.9,
         # model_kwargs는 파이프라인 생성 시 전달
@@ -141,10 +149,10 @@ def get_llm(model_name, temperature):
 
     # 4) Chat Model 래퍼 (LLM -> Chat Model)
     # Qwen은 채팅 모델이므로 ChatHuggingFace로 감싸주어야 시스템/사용자 프롬프트가 정상 동작합니다.
-    chat_model = ChatHuggingFace(
+    _shared_chat_model = ChatHuggingFace(
         llm=llm,
         tokenizer=tokenizer,
         callbacks=[ProxyCallbackHandler()] # 여기에 프록시 핸들러 등록
     )
 
-    return chat_model
+    return _shared_chat_model

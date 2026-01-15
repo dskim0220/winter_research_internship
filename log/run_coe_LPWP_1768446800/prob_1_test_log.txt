@@ -1,0 +1,8 @@
+===============test sample 0===============
+Runtime Error
+prob_1() got an unexpected keyword argument 'color_printers'
+
+
+
+0/1 passed
+is correct: False

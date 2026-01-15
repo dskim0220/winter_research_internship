@@ -1,0 +1,45 @@
+Based on the provided text description and the insights from my colleagues, we need to formulate and solve a linear programming problem to maximize the company's profit. Here's the final code:
+
+```python
+from scipy.optimize import linprog
+
+# Coefficients for the objective function (we need to minimize the negative of the objective function)
+c = [-200, -70]
+
+# Inequality constraints matrix
+A = [
+    [1, 1],  # x + y <= 35
+    [1, 0],  # x <= 20
+    [0, 1],  # y <= 30
+    [-1, 0], # x >= 0
+    [0, -1]  # y >= 0
+]
+
+# Inequality constraints vector
+b = [35, 20, 30, 0, 0]
+
+# Bounds for variables (x, y >= 0)
+x_bounds = (0, None)
+y_bounds = (0, None)
+
+# Solve the linear programming problem
+result = linprog(c, A_ub=A, b_ub=b, bounds=[x_bounds, y_bounds], method='highs')
+
+# Since linprog returns the negative of the optimal objective value, we negate it to get the actual profit
+optimal_profit = -result.fun
+
+def prob_1(color_printers, bw_printers):
+    """Args:
+        color_printers: an integer representing the number of color printers
+        bw_printers: an integer representing the number of black and white printers
+    
+    Returns:
+        obj: an integer representing the optimal objective value (profit)
+    """
+    return int(optimal_profit)
+
+# Example usage
+print(prob_1(10, 20))  # Example input, replace with actual values if needed
+```
+
+This code uses the `linprog` function from the `scipy.optimize` module to solve the linear programming problem. The objective function is to maximize the profit, which is achieved by minimizing the negative of the profit. The constraints are set according to the problem description, and the solution provides the optimal number of color and black and white printers to produce to maximize the company's profit.

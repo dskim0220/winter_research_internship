@@ -63,12 +63,14 @@ The output format is a JSON structure followed by refined code:
     def forward(self, problem, comment_pool):
         self.problem = problem
         comments_text = comment_pool.get_current_comment_text()
-        print('Input')
+        
+        '''print('Input')
         print(self.FORWARD_TASK.format(
             problem_description=problem['description'], 
             comments_text=comments_text
         ))
-        print()
+        print()'''
+
         output = self.forward_chain.predict(
             problem_description=problem['description'], 
             comments_text=comments_text

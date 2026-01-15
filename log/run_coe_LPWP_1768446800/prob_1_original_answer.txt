@@ -1,0 +1,22 @@
+Based on the provided text description and the insights from my colleagues, we need to formulate an optimization problem to maximize the profit for the office supply company. The constraints and the objective function have been correctly extracted by the Parameter Extractor. Here is the final code:
+
+```python
+def prob_1(C, B):
+    """Args:
+        C: an integer representing the number of color printers
+        B: an integer representing the number of black and white printers
+    
+    Returns:
+        obj: an integer representing the optimal objective value (profit)
+    """
+    # Constraints
+    if C + B > 35 or C > 20 or B > 30 or C < 0 or B < 0:
+        return -1  # Return -1 if any constraint is violated
+
+    # Objective function
+    obj = 200 * C + 70 * B
+
+    return obj
+```
+
+This function takes the number of color printers (`C`) and black and white printers (`B`) as inputs and returns the maximum profit. It checks the constraints first to ensure they are satisfied before calculating the profit. If any constraint is violated, it returns `-1` to indicate an invalid solution.

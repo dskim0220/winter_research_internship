@@ -1,0 +1,8 @@
+===============test sample 0===============
+Runtime Error
+'numpy.int64' object has no attribute 'x'
+
+
+
+0/1 passed
+is correct: False

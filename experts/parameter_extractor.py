@@ -23,7 +23,18 @@ Please review the problem description and provide the extracted variables along 
 And the comments from other experts are as follow:
 {comments_text}
 
-Please note that the information you extract is for the purpose of modeling, which means your variables, constraints, and objectives need to meet the requirements of a solvable LP or MIP model. Within the constraints, the comparison operators must be equal to, greater than or equal to, or less than or equal to (> or < are not allowed to appear and should be replaced to be \geq or \leq).
+Please note that the information you extract is for the purpose of modeling, which means your variables, constraints, and objectives need to meet the requirements of a solvable LP or MIP model.
+
+IMPORTANT OUTPUT RULES:
+1) Return ONLY a valid JSON object. No extra text or explanations.
+2) Do NOT use LaTeX symbols (e.g., no \leq, \geq, \text).
+3) Use ONLY ASCII operators: <=, >=, =.
+4) Your output MUST follow this format:
+{{
+    "VARIABLES": "List of variables",
+    "CONSTRAINTS": "List of constraints using <=, >=, =",
+    "OBJECTIVE": "Objective function"
+}}
 '''
     BACKWARD_TASK = '''When you are solving a problem, you get a feedback from the external environment. You need to judge whether this is a problem caused by you or by other experts (other experts have given some results before you). If it is your problem, you need to give Come up with solutions and refined code.
 

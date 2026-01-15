@@ -1,3 +1,4 @@
+# main.py
 import sys
 import os
 import json
@@ -54,20 +55,9 @@ def chain_of_experts(problem,
         for _ in range(max_collaborate_nums):
             next_expert = conductor.forward(problem, comment_pool, max_collaborate_nums)
             print(f'Choose next expert: {next_expert.name}')
-            # comment_text = next_expert.forward(problem, comment_pool)
-            # print(f'Given comment:\n{comment_text}')
-            # comment_pool.add_comment(Comment(next_expert, comment_text))
             comment_text = next_expert.forward(problem, comment_pool)
-            comment_text = comment_text.replace("```json", "").replace("```", "").strip()
-            ##
-            try:
-                json.loads(comment_text)
-            except Exception:
-                print(f"[WARN] Invalid JSON from {next_expert.name}, skipping")
-                continue
+            print(f'Given comment:\n{comment_text}')
             comment_pool.add_comment(Comment(next_expert, comment_text))
-            # 0114_1614 수정
-
             expert_stack.append(next_expert)
         answer = reducer.forward(problem, comment_pool)
 
