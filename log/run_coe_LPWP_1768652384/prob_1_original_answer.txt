@@ -1,3 +1,6 @@
+Based on the insights from my colleagues, particularly the Parameter Extractor and the Modeling Knowledge Supplement Expert, here is the final code to solve the problem:
+
+```python
 import numpy as np
 from scipy.optimize import linprog
 
@@ -39,3 +42,6 @@ color_printers = 10
 bw_printers = 15
 optimal_profit = prob_1(color_printers, bw_printers)
 print(f"Optimal Profit: ${optimal_profit:.2f}")
+```
+
+This code defines the problem as a linear programming task using the `scipy.optimize.linprog` function. It sets up the objective function to maximize profit, defines the constraints based on the given limits, and solves the problem to find the optimal number of color and black-and-white printers to produce to maximize the company's profit.
