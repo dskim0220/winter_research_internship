@@ -5,6 +5,7 @@ from experts.LaTeX_maker import LaTeXMaker
 from experts.code_generator import CodeGenerator
 from custom_callback_qwen import get_llm, get_custom_callback
 
+#결과 파일로 저장
 def save_output(content, filename, extension):
     file_path = f"output/{filename}.{extension}"
 
@@ -22,6 +23,7 @@ def save_output(content, filename, extension):
     print(f"[*] {file_path} 저장 완료")
     return file_path
 
+#엔드투엔드 실행함수
 def e2e(problem,model):
     natural_maker = NaturalMaker(model=model)
     natural_json = natural_maker.forward(problem=problem)
