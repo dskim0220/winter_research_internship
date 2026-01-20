@@ -16,33 +16,31 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class NaturalMaker(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are an expert that identifies and extracts relevant variables from the problem statement.'
-    FORWARD_TASK = '''As a parameter extraction expert, your role is to identify and extract the relevant variables, constrans, objective from the problem statement. 
-Your expertise in the problem domain will help in accurately identifying and describing these variables. 
-Please review the problem description and provide the extracted variables along with their definitions: 
+    ROLE_DESCRIPTION = 'You are an expert in mathematical problem formulation. Your role is to translate natural language problems into structured optimization data.'
+    FORWARD_TASK = '''Analyze the problem and extract the type, Sets, Variables, Parameters, Objective, and Constraints from the problem statement for mathematical modeling.
+Problem Description:
 {problem_description}
-
-And the comments from other experts are as follow:
-{comments_text}
-
-Please note that the information you extract is for the purpose of modeling, which means your variables, constraints, and objectives need to meet the requirements of a solvable LP or MIP model.
 
 IMPORTANT OUTPUT RULES:
 1) Return ONLY a valid JSON object. No extra text or explanations.
-2) Do NOT use LaTeX symbols (e.g., no \leq, \geq, \text).
-3) Use ONLY ASCII operators: <=, >=, =.
-4) Your output MUST follow this format:
+2) Do NOT use LaTeX. Use ASCII operators (<=, >=, =).
+3) Be specific about indices and sets (e.g.,"Set I: Factories, Set J: Customers").
+
+JSON Format:
 {{
-    "VARIABLES": "List of variables",
-    "CONSTRAINTS": "List of constraints using <=, >=, =",
-    "OBJECTIVE": "Objective function"
+    "PROBLEM_TYPE":"LP/MIP/NLP/etc"
+    "SETS": "Index sets for the problem",
+    "PARAMETERS": "Given fixed values and data with their units",
+    "VARIABLES": "Decision variables to be determined",
+    "OBJECTIVE": "The optimization goal function",
+    "CONSTRAINTS": "List of functional constraints"
 }}
 '''
 
     def __init__(self, model):
         super().__init__(
             name='natural_maker',
-            description='',#자연어 JSON 제작
+            description='Decomposes natural language problems into 6-part structured modeling data',#자연어 JSON 제작
             model=model   
         )
         self.llm = get_llm(model_name=self.model,temperature=0.1)

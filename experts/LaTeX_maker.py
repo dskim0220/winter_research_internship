@@ -16,33 +16,35 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class LaTeXMaker(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are an expert that identifies and extracts relevant variables from the problem statement.'
-    FORWARD_TASK = '''As a parameter extraction expert, your role is to identify and extract the relevant variables, constrans, objective from the problem statement. 
-Your expertise in the problem domain will help in accurately identifying and describing these variables. 
-Please review the problem description and provide the extracted variables along with their definitions: 
-{problem_description}
+    ROLE_DESCRIPTION = 'You are a mathematical modeling expert. Your role is to convert structured natural language modeling elements into formal LaTeX expressions.'
+    
+    # f를 붙이지 마세요. LangChain이 알아서 {natural_json}을 찾습니다.
+    FORWARD_TASK = '''Convert the following structured data into a formal LaTeX.
 
-And the comments from other experts are as follow:
-{comments_text}
+Input Data (Natural JSON): 
+{natural_json}
 
-Please note that the information you extract is for the purpose of modeling, which means your variables, constraints, and objectives need to meet the requirements of a solvable LP or MIP model.
+OUTPUT RULES:
+1) Return ONLY a valid JSON object.
+2) Do NOT use \( or \) or $ delimiters. Just the LaTeX commands.
+3) Use double backslashes (\\\\) for all commands (e.g., \\\\sum, \\\\forall).
+4) For multiple constraints, combine them into a single string separated by newline (\\\\n).
+5) Use proper indices like x_{{i}} instead of x[I].
 
-IMPORTANT OUTPUT RULES:
-1) Return ONLY a valid JSON object. No extra text or explanations.
-2) Do NOT use LaTeX symbols (e.g., no \leq, \geq, \text).
-3) Use ONLY ASCII operators: <=, >=, =.
-4) Your output MUST follow this format:
+JSON Format (Strictly follow this structure):
 {{
-    "VARIABLES": "List of variables",
-    "CONSTRAINTS": "List of constraints using <=, >=, =",
-    "OBJECTIVE": "Objective function"
-}}
-'''
+    "PROBLEM_TYPE": "State the type (e.g., LP, MIP, QP)",
+    "SETS_LATEX": "Example: I = \\{{\\\\text{{{{color}}}}, \\\\text{{{{bw}}}} \\}}, J = \\{{1, 2, 3\\}}",
+    "PARAMETERS_LATEX": "Example: P_{{{{i}}}}: \\\\text{{{{profit}}}}, R_{{{{i}}}}: \\\\text{{{{limit}}}}",
+    "VARIABLES_LATEX": "Example: x_{{{{i}}}} \\\\geq 0, \\\\forall i \\\\in I",
+    "OBJECTIVE_LATEX": "Example: \\\\max \\\\sum_{{{{i \\\\in I}}}} P_{{{{i}}}} x_{{{{i}}}}",
+    "CONSTRAINTS_LATEX": "Example: x_{{{{i}}}} \\\\leq R_{{{{i}}}}, \\\\forall i \\\\in I; \\\\sum_{{{{i \\\\in I}}}} x_{{{{i}}}} \\\\leq 35"
+}}'''
 
     def __init__(self, model):
         super().__init__(
-            name='natural_maker',
-            description='',#LaTeX json 제작
+            name='LaTeX_maker',
+            description='Converts structured modeling elements into formal LaTeX mathematical formulations',#LaTeX json 제작
             model=model   
         )
         self.llm = get_llm(model_name=self.model,temperature=0.1)

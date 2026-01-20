@@ -1,0 +1,8 @@
+{
+    "PROBLEM_TYPE": "LP",
+    "SETS_LATEX": "I = \\{\\text{color}, \\text{bw}\\}",
+    "PARAMETERS_LATEX": "P_i = \\{\\text{color}: 200, \\text{bw}: 70\\}, M = 35",
+    "VARIABLES_LATEX": "x_i \\geq 0, \\forall i \\in I",
+    "OBJECTIVE_LATEX": "\\max 200 x_{\\text{color}} + 70 x_{\\text{bw}}",
+    "CONSTRAINTS_LATEX": "x_{\\text{color}} \\leq 20, x_{\\text{bw}} \\leq 30, x_{\\text{color}} + x_{\\text{bw}} \\leq 35"
+}

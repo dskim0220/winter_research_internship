@@ -16,33 +16,40 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class CodeGenerator(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are an expert that identifies and extracts relevant variables from the problem statement.'
-    FORWARD_TASK = '''As a parameter extraction expert, your role is to identify and extract the relevant variables, constrans, objective from the problem statement. 
-Your expertise in the problem domain will help in accurately identifying and describing these variables. 
-Please review the problem description and provide the extracted variables along with their definitions: 
-{problem_description}
+    ROLE_DESCRIPTION = 'You are an expert Python programmer specializing in Operations Research. You excel at implementing formal LaTeX mathematical models into executable Python code using optimization libraries like Gurobi, PuLP, or Pyomo.'
+    FORWARD_TASK = '''Implement the following LaTeX mathematical model into a complete, runnable Python script.
 
-And the comments from other experts are as follow:
-{comments_text}
+Input Mathematical Model(LaTeX JSON) 
+{LaTeX_json}
 
-Please note that the information you extract is for the purpose of modeling, which means your variables, constraints, and objectives need to meet the requirements of a solvable LP or MIP model.
+[Image of a mapping from LaTeX mathematical summation to Python Gurobi quicksum code]
 
-IMPORTANT OUTPUT RULES:
-1) Return ONLY a valid JSON object. No extra text or explanations.
-2) Do NOT use LaTeX symbols (e.g., no \leq, \geq, \text).
-3) Use ONLY ASCII operators: <=, >=, =.
-4) Your output MUST follow this format:
-{{
-    "VARIABLES": "List of variables",
-    "CONSTRAINTS": "List of constraints using <=, >=, =",
-    "OBJECTIVE": "Objective function"
-}}
-'''
+IMPLEMENTATION RULES:
+1) Provide ONLY the Python code block. No extra text.
+2) Data Mapping: SETS to lists, PARAMETERS to dicts.
+3) Modeling Logic: Use gp.quicksum() and m.addConstrs() correctly.
+4) Robustness: Include sample data and print variable results.
+5) Variable Types: Distinguish between CONTINUOUS, INTEGER, and BINARY based on the context.
+6) Exact Mapping: Every LaTeX constraint must have a corresponding addConstr/addConstrs line.
+7) Gurobi Standards: Use GRB.MAXIMIZE and check m.status == GRB.OPTIMAL.
+
+OUTPUT FORMAT:
+```python
+import gurobipy as gp
+from gurobipy import GRB
+
+# 1. Data and Sets
+# 2. Model Initialization
+# 3. Variables
+# 4. Objective
+# 5. Constraints
+# 6. Optimization and Output
+```'''
 
     def __init__(self, model):
         super().__init__(
-            name='natural_maker',
-            description='',#LaTeX json 제작
+            name='code_generator',
+            description='Converts LaTeX JSON to executable Python code',#LaTeX json 제작
             model=model   
         )
         self.llm = get_llm(model_name=self.model,temperature=0.1)

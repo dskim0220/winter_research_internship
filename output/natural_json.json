@@ -1,0 +1,8 @@
+{
+    "PROBLEM_TYPE": "LP",
+    "SETS": "Set I: Printer Types (I = {color, bw})",
+    "PARAMETERS": "Parameter P[I] = {color: 200, bw: 70}, Parameter M = 35",
+    "VARIABLES": "Variable x[I] >= 0, I = {color, bw}",
+    "OBJECTIVE": "Maximize 200*x[color] + 70*x[bw]",
+    "CONSTRAINTS": "x[color] <= 20, x[bw] <= 30, x[color] + x[bw] <= 35"
+}
