@@ -32,3 +32,9 @@ def read_problem(dataset, problem_name):
         'description': description,
         'code_example': code_example
     }
+
+def read_problem2(dataset, problem_name):
+    base_dir = 'dataset'
+    with open(os.path.join(base_dir, dataset, problem_name, 'description.txt'), 'r', encoding='utf8') as f:
+        description = f.read()
+    return description

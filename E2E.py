@@ -45,9 +45,9 @@ def e2e(problem,model):
 
 
 if __name__ == '__main__':
-    from utils import read_problem
+    from utils import read_problem2
     # 풀 문제 설정
-    problem = read_problem(data_set, problem_name)
+    problem = read_problem2(data_set, problem_name)
     e2e(problem, model ='Qwen/Qwen2.5-3B-Instruct')
 
 

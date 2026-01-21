@@ -49,8 +49,8 @@ JSON Format:
     def forward(self,problem):
         comments_text=""
         message = self.forward_prompt_template.format(
-            problem_description = problem['description'],
-            code_example = problem['code_example'],
+            problem_description = problem,
+            ##code_example = problem['code_example'],
             comments_text= comments_text
         )
         raw_output = self.llm.invoke(message).content
