@@ -1,0 +1,61 @@
+{
+    "PROBLEM_TYPE": "MIP",
+    "SETS": {
+        "Suppliers": "A, B, C"
+    },
+    "PARAMETERS": {
+        "cost_A": 120,
+        "cost_B": 110,
+        "cost_C": 100,
+        "tables_per_order_A": 20,
+        "tables_per_order_B": 15,
+        "tables_per_order_C": 15,
+        "min_tables": 150,
+        "max_tables": 600,
+        "orders_A_to_B": 30
+    },
+    "VARIABLES": [
+        {
+            "name": "orders_A",
+            "type": "Integer",
+            "unit": "count"
+        },
+        {
+            "name": "orders_B",
+            "type": "Integer",
+            "unit": "count"
+        },
+        {
+            "name": "orders_C",
+            "type": "Integer",
+            "unit": "count"
+        }
+    ],
+    "OBJECTIVE": "Minimize cost",
+    "CONSTRAINTS": [
+        {
+            "name": "total_tables_constraint",
+            "constraint_type": ">=",
+            "expression": "orders_A * tables_per_order_A + orders_B * tables_per_order_B + orders_C * tables_per_order_C",
+            "right_hand_side": "min_tables"
+        },
+        {
+            "name": "total_tables_constraint_upper_bound",
+            "constraint_type": "<=",
+            "expression": "orders_A * tables_per_order_A + orders_B * tables_per_order_B + orders_C * tables_per_order_C",
+            "right_hand_side": "max_tables"
+        },
+        {
+            "name": "orders_A_to_B_constraint",
+            "constraint_type": ">=",
+            "expression": "orders_B",
+            "right_hand_side": "orders_A_to_B"
+        },
+        {
+            "name": "orders_B_to_C_constraint",
+            "constraint_type": "if_then",
+            "expression": "orders_B > 0 -> orders_C > 0",
+            "right_hand_side": "0"
+        }
+    ]
+}

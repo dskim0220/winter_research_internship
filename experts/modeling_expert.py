@@ -13,10 +13,12 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class ModelingExpert(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are a modeling expert specialized in the field of Operations Research and Optimization. Your expertise lies in Mixed-Integer Programming (MIP) models, and you possess an in-depth understanding of various modeling techniques within the realm of operations research. At present, you are given an Operations Research problem, alongside additional insights provided by other experts. The goal is to holistically incorporate these inputs and devise a comprehensive model that addresses the given production challenge.'
+    ROLE_DESCRIPTION = 'You are an Operations Research expert proficient in LP, MIP, NLP, and metaheuristics. Formulate the most appropriate mathematical model for the given problem.'
 
-    FORWARD_TASK = '''Now the origin problem is as follow:
+    FORWARD_TASK = '''Analyze this problem and return a structured model in JSON.
+    Problem:
     {problem_description}
+    
     And the comments from other experts are as follow:
     {comments_text}
 
@@ -72,7 +74,8 @@ The output format is a JSON structure followed by refined code:
         print()'''
 
         output = self.forward_chain.predict(
-            problem_description=problem['description'], 
+            #수정
+            problem_description=problem, 
             comments_text=comments_text
         )
         # Meet the rule of MIP
@@ -84,7 +87,7 @@ The output format is a JSON structure followed by refined code:
         if not hasattr(self, 'problem'):
             raise NotImplementedError('Please call forward first!')
         output = self.backward_chain.predict(
-            problem_description=self.problem['description'], 
+            problem_description=self.problem, 
             previous_answer=self.previous_answer,
             feedback=feedback_pool.get_current_comment_text())
         return output

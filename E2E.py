@@ -6,8 +6,8 @@ from experts.code_generator import CodeGenerator
 from custom_callback_qwen import get_llm, get_custom_callback
 
 #설정부분
-data_set='LPWP'
-problem_name='prob_1'
+data_set='newset'
+problem_name='IndustryOR_21'
 
 #결과 파일로 저장
 def save_output(content, filename, extension):
@@ -35,7 +35,7 @@ def e2e(problem,model):
 
     LaTeX_maker = LaTeXMaker(model=model)
     LaTeX_json = LaTeX_maker.forward(natural_json=natural_json)
-    LaTeX_file = save_output(LaTeX_json,problem_name+'LaTeX',"json")
+    LaTeX_file = save_output(LaTeX_json,problem_name+'_LaTeX',"json")
 
     code_generator = CodeGenerator(model=model)
     code = code_generator.forward(LaTeX_json=LaTeX_json)

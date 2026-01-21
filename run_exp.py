@@ -11,7 +11,7 @@ from transformers import AutoTokenizer
 from langchain_core.callbacks import BaseCallbackHandler
 from custom_callback_qwen import get_custom_callback
 from test_generated_code import test_generated_code, read_test_samples
-from utils import extract_code_from_string, read_problem
+from utils import extract_code_from_string, read_problem, read_problem2
 from result import Result
 import baseline.standard as standard
 import baseline.chain_of_thought as cot
@@ -70,7 +70,8 @@ def main():
     print("Tokenizer loaded.")
 
     for problem in matched_problems:
-        problem_data = read_problem(args.dataset, problem)
+        #수정
+        problem_data = read_problem2(args.dataset, problem)
         with get_custom_callback(tokenizer) as cb:
             if args.algorithm == 'chain_of_experts' or args.algorithm == 'coe':
                 answer = chain_of_experts(

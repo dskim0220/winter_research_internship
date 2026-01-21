@@ -1,3 +1,4 @@
+```python
 import pulp
 
 def optimize_table_order():
@@ -36,3 +37,4 @@ def optimize_table_order():
 
 # Run the optimization
 optimize_table_order()
+```

@@ -79,12 +79,12 @@ The output format is a JSON structure followed by refined code:
         comments_text = comment_pool.get_current_comment_text()
         print('Input')
         print(self.FORWARD_TASK.format(
-            problem_description=problem['description'], 
+            problem_description=problem, 
             comments_text=comments_text
         ))
         print()
         output = self.forward_chain.predict(
-            problem_description=problem['description'], 
+            problem_description=problem, 
             comments_text=comments_text
         )
         self.previous_answer = output
@@ -94,7 +94,7 @@ The output format is a JSON structure followed by refined code:
         if not hasattr(self, 'problem'):
             raise NotImplementedError('Please call forward first!')
         output = self.backward_chain.predict(
-            problem_description=self.problem['description'], 
+            problem_description=self.problem, 
             previous_answer=self.previous_answer,
             feedback=feedback_pool.get_current_comment_text())
         return output

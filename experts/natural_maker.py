@@ -24,14 +24,16 @@ Problem Description:
 IMPORTANT OUTPUT RULES:
 1) Return ONLY a valid JSON object. No extra text or explanations.
 2) Do NOT use LaTeX. Use ASCII operators (<=, >=, =).
-3) Be specific about indices and sets (e.g.,"Set I: Factories, Set J: Customers").
+3) Decision Unit Accuracy: Determine if variables are Binary (Yes/No), Integer (Counts), or Continuous (Amounts). If the problem says "number of orders must be an integer", use Integer.
+4) Conditional Logic: Explicitly capture "If-Then" or "Only if" relationships in the CONSTRAINTS. (e.g., "If A is ordered, B must be at least 30").
+5) Indexing: Be specific about indices and sets (e.g., "Set I: Suppliers").
 
 JSON Format:
 {{
-    "PROBLEM_TYPE":"LP/MIP/NLP/etc"
+    "PROBLEM_TYPE": "LP/MIP/NLP/etc",
     "SETS": "Index sets for the problem",
     "PARAMETERS": "Given fixed values and data with their units",
-    "VARIABLES": "Decision variables to be determined",
+    "VARIABLES": "List variables to be determined with (Type, Unit). Example: orders_A (Integer, count)",
     "OBJECTIVE": "The optimization goal function",
     "CONSTRAINTS": "List of functional constraints"
 }}

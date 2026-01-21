@@ -19,8 +19,7 @@ class ModelingKnowledgeSupplementExpert(BaseExpert):
 Now the origin problem is as follow:
 {problem_description}
 Let's analyse the problem step by step, and then give your Python code.
-Here is a starter code:
-{code_example}
+
 And the comments from other experts are as follow:
 {comments_text}
 
@@ -68,12 +67,12 @@ The output format is a JSON structure followed by refined code:
         print('-' * 30)
         print('Input of programming expert:')
         print(self.forward_prompt_template.format(
-            problem_description=problem['description'], 
-            code_example=problem['code_example'],
+            problem_description=problem, 
+            #code_example=problem['code_example'],
             comments_text=comments_text))
         output = self.forward_chain.predict(
-            problem_description=problem['description'], 
-            code_example=problem['code_example'],
+            problem_description=problem, 
+            #code_example=problem['code_example'],
             comments_text=comments_text
         )
         print()
@@ -87,7 +86,7 @@ The output format is a JSON structure followed by refined code:
         if not hasattr(self, 'problem'):
             raise NotImplementedError('Please call forward first!')
         output = self.backward_chain.predict(
-            problem_description=self.problem['description'], 
+            problem_description=self.problem, 
             previous_code=self.previous_code,
             feedback=feedback_pool.get_current_comment_text())
         return output

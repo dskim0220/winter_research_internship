@@ -1,0 +1,8 @@
+{
+    "PROBLEM_TYPE": "MIP",
+    "SETS_LATEX": "A = \\{\\text{{A}}, \\text{{B}}, \\text{{C}}\\}",
+    "PARAMETERS_LATEX": "c_{{A}} = 120, c_{{B}} = 110, c_{{C}} = 100, t_{{A}} = 20, t_{{B}} = 15, t_{{C}} = 15, m = 150, M = 600, o_{{A \\rightarrow B}} = 30",
+    "VARIABLES_LATEX": "x_{{A}} \\geq 0, x_{{B}} \\geq 0, x_{{C}} \\geq 0, \\forall A \\in A",
+    "OBJECTIVE_LATEX": "\\min \\sum_{{A \\in A}} c_{{A}} x_{{A}}",
+    "CONSTRAINTS_LATEX": "x_{{A}} + x_{{B}} t_{{B}} + x_{{C}} t_{{C}} \\geq m, x_{{A}} + x_{{B}} t_{{B}} + x_{{C}} t_{{C}} \\leq M, x_{{B}} \\geq o_{{A \\rightarrow B}}, \\text{{if }} x_{{B}} > 0 \\text{{ then }} x_{{C}} > 0"
+}

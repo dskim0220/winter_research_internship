@@ -18,7 +18,6 @@ class LaTeXMaker(BaseExpert):
 
     ROLE_DESCRIPTION = 'You are a mathematical modeling expert. Your role is to convert structured natural language modeling elements into formal LaTeX expressions.'
     
-    # f를 붙이지 마세요. LangChain이 알아서 {natural_json}을 찾습니다.
     FORWARD_TASK = '''Convert the following structured data into a formal LaTeX.
 
 Input Data (Natural JSON): 

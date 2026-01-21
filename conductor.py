@@ -47,7 +47,8 @@ You should output the name of expert directly. The next expert is:'''
         commented_experts = str(commented_experts_name)     
         remaining_experts = str(list(set(all_experts_name) - set(commented_experts_name)))
         answer = self.forward_chain.predict(
-            problem_description=problem['description'], 
+            #수정
+            problem_description=problem, 
             experts_info=experts_info,
             commented_experts=commented_experts,
             remaining_experts=remaining_experts,
