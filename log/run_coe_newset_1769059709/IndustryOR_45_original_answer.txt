@@ -1,3 +1,6 @@
+Based on the detailed comments and explanations provided by my colleagues, here is the final Python code using the `pulp` library to solve the problem:
+
+```python
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpInteger
 
 # Define the problem
@@ -70,3 +73,6 @@ for i in range(1, 7):
             total_cost += wages[i] * 1
 
 print("Total Cost:", total_cost)
+```
+
+This code defines the problem, sets up the binary variables, and includes all the necessary constraints and the objective function to minimize the total wage. The solution will provide the optimal schedule for the students that meets all the specified requirements and minimizes the total cost.

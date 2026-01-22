@@ -1,0 +1,51 @@
+Based on the detailed comments from my colleagues, here is the final Python code to solve the problem using PuLP library:
+
+```python
+import pulp
+
+# Define the problem as an LP problem
+problem = pulp.LpProblem("Factory_Profit_Maximization", pulp.LpMaximize)
+
+# Define decision variables
+x_I_A1 = pulp.LpVariable('x_I_A1', lowBound=0, cat='Continuous')
+x_II_A1 = pulp.LpVariable('x_II_A1', lowBound=0, cat='Continuous')
+x_III_A1 = pulp.LpVariable('x_III_A1', lowBound=0, cat='Continuous')
+
+x_I_A2 = pulp.LpVariable('x_I_A2', lowBound=0, cat='Continuous')
+x_II_A2 = pulp.LpVariable('x_II_A2', lowBound=0, cat='Continuous')
+x_III_A2 = pulp.LpVariable('x_III_A2', lowBound=0, cat='Continuous')
+
+y_A1 = pulp.LpVariable('y_A1', lowBound=0, cat='Binary')
+y_A2 = pulp.LpVariable('y_A2', lowBound=0, cat='Binary')
+y_B1 = pulp.LpVariable('y_B1', lowBound=0, cat='Binary')
+y_B2 = pulp.LpVariable('y_B2', lowBound=0, cat='Binary')
+
+# Objective function: Maximize profit
+problem += pulp.lpSum([
+    (1.25 - 0.25) * x_I_A1 + (2.00 - 0.35) * x_II_A1 + (2.80 - 0.50) * x_III_A1,
+    (1.25 - 0.25) * x_I_A2 + (2.00 - 0.35) * x_II_A2 + (2.80 - 0.50) * x_III_A2
+]) == pulp.lpSum([321 * y_A1, 250 * y_A2, 783 * y_B1, 200 * y_B2])
+
+# Constraints
+problem += x_I_A1 <= 10 * y_A1
+problem += x_II_A1 <= 9 * y_A2
+problem += x_III_A1 <= 12 * y_B1
+problem += x_III_A1 <= 11 * y_B2
+problem += x_I_A2 <= 7 * y_A1
+problem += x_III_A2 <= 12 * y_A2
+problem += x_III_A2 <= 11 * y_B2
+problem += x_III_A2 <= 12 * y_B1
+problem += x_III_A2 <= 11 * y_B2
+
+# Solve the problem
+status = problem.solve()
+
+# Print results
+print(f"Status: {pulp.LpStatus[status]}")
+print(f"Total Profit: {pulp.value(problem.objective)}")
+print(f"x_I_A1: {pulp.value(x_I_A1)}, x_II_A1: {pulp.value(x_II_A1)}, x_III_A1: {pulp.value(x_III_A1)}")
+print(f"x_I_A2: {pulp.value(x_I_A2)}, x_II_A2: {pulp.value(x_II_A2)}, x_III_A2: {pulp.value(x_III_A2)}")
+print(f"y_A1: {pulp.value(y_A1)}, y_A2: {pulp.value(y_A2)}, y_B1: {pulp.value(y_B1)}, y_B2: {pulp.value(y_B2)}")
+```
+
+This code sets up the linear programming model to maximize the profit while ensuring that the constraints on the use of equipment and the production of each product are met. The solution will provide the optimal production plan and the maximum profit achievable under the given conditions.

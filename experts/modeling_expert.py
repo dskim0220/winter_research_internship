@@ -13,29 +13,23 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class ModelingExpert(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are an Operations Research expert proficient in LP, MIP, NLP, and metaheuristics. Formulate the most appropriate mathematical model for the given problem.'
+    ROLE_DESCRIPTION = 'You are a modeling expert specialized in the field of Operations Research and Optimization. Your expertise lies in Mixed-Integer Programming (MIP) models, and you possess an in-depth understanding of various modeling techniques within the realm of operations research. At present, you are given an Operations Research problem, alongside additional insights provided by other experts. The goal is to holistically incorporate these inputs and devise a comprehensive model that addresses the given production challenge.'
 
-    FORWARD_TASK = '''Analyze this problem and return a structured model in JSON.
-    Problem:
-    {problem_description}
-    
-    And the comments from other experts are as follow:
-    {comments_text}
+    FORWARD_TASK = '''Now the origin problem is as follow:
+{problem_description}
+And the comments from other experts are as follow:
+{comments_text}
 
-    Give a solvable LP/MIP model of this problem.
+Give your MIP model of this problem. Additionally, please note that your model needs to be a solvable linear programming model or a mixed-integer programming model. This also means that the expressions of the constraint conditions can only be equal to, greater than or equal to, or less than or equal to (> or < are not allowed to appear and should be replaced to be \geq or \leq).
 
-    IMPORTANT OUTPUT RULES (must follow):
-    1) Return ONLY a valid JSON object (no markdown fences, no extra text).
-    2) Do NOT use any backslashes in the output (no LaTeX such as \\leq, \\geq, \\( \\), etc.).
-    3) For inequalities, use only ASCII operators: <=, >=, = . Do NOT use < or >.
-    4) Use plain text math in strings, e.g., "x + y <= 35", "x >= 0".
-
-    Your output JSON format:
-    {{
+Your output format should be a JSON like this:
+{{
     "VARIABLES": "A mathematical description about variables",
     "CONSTRAINS": "A mathematical description about constrains",
     "OBJECTIVE": "A mathematical description about objective"
-    }}'''
+}}
+'''
+
     BACKWARD_TASK = '''When you are solving a problem, you get a feedback from the external environment. You need to judge whether this is a problem caused by you or by other experts (other experts have given some results before you). If it is your problem, you need to give Come up with solutions and refined code.
 
 The original problem is as follow:

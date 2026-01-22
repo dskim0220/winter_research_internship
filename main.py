@@ -35,7 +35,7 @@ def chain_of_experts(problem,
         code: code of problem
     """
     all_experts = [
-        TerminologyInterpreter(model_name),
+        #TerminologyInterpreter(model_name),
         ParameterExtractor(model_name),
         ModelingExpert(model_name),
         ProgrammingExampleProvider(model_name),

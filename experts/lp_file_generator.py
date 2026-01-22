@@ -70,7 +70,7 @@ The output format is a JSON structure followed by refined code:
         self.problem = problem
         comments_text = comment_pool.get_current_comment_text()
         output = self.forward_chain.predict(
-            problem_description=problem['description'], 
+            problem_description=problem, 
             comments_text=comments_text
         )
         self.previous_model = output
@@ -80,7 +80,7 @@ The output format is a JSON structure followed by refined code:
         if not hasattr(self, 'problem'):
             raise NotImplementedError('Please call forward first!')
         output = self.backward_chain.predict(
-            problem_description=self.problem['description'], 
+            problem_description=self.problem, 
             previous_answer=self.previous_answer,
             feedback=feedback_pool.get_current_comment_text())
         return output

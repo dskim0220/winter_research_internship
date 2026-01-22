@@ -1,0 +1,40 @@
+Based on the detailed problem description and the contributions from my colleagues, here is the final Python code using the PuLP library to solve the problem:
+
+```python
+from pulp import *
+
+# Initialize the problem
+prob = LpProblem("Tech_Company_Software_Planning", LpMaximize)
+
+# Decision variables
+x_APPX = LpVariable('x_APPX', lowBound=1, cat='Continuous')
+x_APPY = LpVariable('x_APPY', lowBound=1, cat='Continuous')
+x_APPZ = LpVariable('x_APPZ', lowBound=1, cat='Continuous')
+x_APPW = LpVariable('x_APPW', lowBound=1, cat='Continuous')
+x_APPV = LpVariable('x_APPV', lowBound=1, cat='Continuous')
+
+# Objective function
+prob += 40000*x_APPX + 40000*x_APPY + 60000*x_APPZ + 25000*x_APPW + 55000*x_APPV
+
+# Constraints
+prob += x_APPX + x_APPY + x_APPZ + x_APPW + x_APPV <= 30, "Total_Teams_Constraint"
+prob += 2*x_APPY >= x_APPX, "AppX_to_AppY_Ratio_Constraint"
+prob += 20000*x_APPX + 30000*x_APPY + 40000*x_APPZ + 25000*x_APPW + 35000*x_APPV <= 2500000, "Marketing_Budget_Constraint"
+prob += x_APPX >= 1, "Min_Teams_APPX"
+prob += x_APPY >= 1, "Min_Teams_APPY"
+prob += x_APPZ >= 1, "Min_Teams_APPZ"
+prob += x_APPW >= 1, "Min_Teams_APPW"
+prob += x_APPV >= 1, "Min_Teams_APPV"
+
+# Solve the problem
+status = prob.solve()
+print(f"Status: {LpStatus[status]}")
+
+# Print the results
+for v in prob.variables():
+    print(f"{v.name}: {v.varValue}")
+
+print(f"Optimal Objective Value: {value(prob.objective)}")
+```
+
+This code sets up and solves the mixed-integer programming problem with the constraints and objective function defined earlier. It will output the optimal number of development teams allocated to each product and the maximum average net profit per team.
