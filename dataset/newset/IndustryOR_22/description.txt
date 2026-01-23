@@ -23,4 +23,10 @@ Minimum Batch & 20 & 20 & 16
 \end{array}
 $$
 
+Product $A_{1}$ can be produced at most 22 days.
+
+The total production of $A_{1}, A_{2}, A_{3}$ does not exceed 1,210 tons.
+
+If the company decides to produce $A_{1}$, then it must activate production the production lines at least 57 minutes to produce $A_{1}$.
+
 Please formulate an operations research model to determine a production plan that maximizes total revenue while accommodating fixed activation costs and minimum production batch constraints.

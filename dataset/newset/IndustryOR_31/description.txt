@@ -10,3 +10,11 @@ Table 1-18
 | B3          | 7         |            |             |                       |                                           |
 | Raw Material Cost (Yuan/Piece) | 0.25      | 0.35       | 0.50       |                        |                                           |
 | Unit Price (Yuan/Piece)        | 1.25      | 2.00       | 2.80       |                        |                                           |
+
+The total production of Product I can not exceed 1,200. 
+
+Also, the total production of Product I and III can not exceed 1,510.
+
+Additionally, the total production of Product II can not exceed 800.
+
+Lastly, the total production of Product I, II, and III can not exceed 1,509.
