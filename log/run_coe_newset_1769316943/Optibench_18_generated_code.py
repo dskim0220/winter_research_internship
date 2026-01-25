@@ -1,0 +1,42 @@
+import pulp
+
+# Create a LP problem
+prob = pulp.LpProblem("Manufacturing_Planner", pulp.LpMinimize)
+
+# Decision variables
+x1 = pulp.LpVariable('x1', lowBound=0, cat='Integer')  # Hours production line 1 is operational
+x2 = pulp.LpVariable('x2', lowBound=0, cat='Integer')  # Hours production line 2 is operational
+x3 = pulp.LpVariable('x3', lowBound=0, cat='Integer')  # Hours production line 3 is operational
+x4 = pulp.LpVariable('x4', lowBound=0, cat='Integer')  # Hours production line 4 is operational
+
+# Objective function
+prob += x1 + x2 + x3 + x4, "Total_Hours"
+
+# Constraints
+prob += 10*x1 + 8*x2 + 6*x3 + 5*x4 >= 1000, "Smartphones_Constraint"
+prob += 5*x1 + 6*x2 + 7*x3 + 8*x4 >= 800, "Tablets_Constraint"
+prob += 3*x1 + 4*x2 + 5*x3 + 6*x4 >= 600, "Laptops_Constraint"
+prob += x1 + x2 + x3 + x4 <= 50, "Total_Workers_Constraint"
+prob += x1 <= 20, "Line1_Workers_Constraint"
+prob += x2 <= 20, "Line2_Workers_Constraint"
+prob += x3 <= 20, "Line3_Workers_Constraint"
+prob += x4 <= 20, "Line4_Workers_Constraint"
+prob += x1 + x2 + x3 + x4 >= 20, "AtLeastOneLineFullyStaffed_Constraint"
+prob += x1 + x2 + x4 <= 30, "CombinedWorkersConstraint"
+prob += x3 <= 10, "MaxStaffingConstraintForLine3"
+prob += x1 >= 0, "NonNegativeConstraint"
+prob += x2 >= 0, "NonNegativeConstraint"
+prob += x3 >= 0, "NonNegativeConstraint"
+prob += x4 >= 0, "NonNegativeConstraint"
+
+# Solve the problem
+status = prob.solve()
+
+# Print the results
+print(f"Status: {pulp.LpStatus[status]}")
+print(f"Total Hours: {pulp.value(prob.objective)}")
+
+if pulp.LpStatus[status] == 'Optimal':
+    print(f"Solution: x1 = {pulp.value(x1)}, x2 = {pulp.value(x2)}, x3 = {pulp.value(x3)}, x4 = {pulp.value(x4)}")
+else:
+    print("No optimal solution found.")

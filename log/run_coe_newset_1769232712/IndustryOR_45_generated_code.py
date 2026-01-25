@@ -1,0 +1,59 @@
+import pulp
+
+# Define the problem
+prob = pulp.LpProblem("University_Duty_Planning", pulp.LpMinimize)
+
+# Define the students and their details
+students = {
+    1: {'name': 'Student 1', 'wage': 10.0,'min_hours': 8},
+    2: {'name': 'Student 2', 'wage': 10.0,'min_hours': 8},
+    3: {'name': 'Student 3', 'wage': 9.9,'min_hours': 8},
+    4: {'name': 'Student 4', 'wage': 9.8,'min_hours': 8},
+    5: {'name': 'Student 5', 'wage': 10.8,'min_hours': 7},
+    6: {'name': 'Student 6', 'wage': 11.3,'min_hours': 7}
+}
+
+# Define binary decision variables
+x_ij = pulp.LpVariable.dicts('x', ((i, j) for i in students for j in range(1, 6)), cat='Binary')
+
+# Define continuous variables for hours worked
+y_i = pulp.LpVariable.dicts('y', [i for i in students], lowBound=0)
+
+# Objective function: Minimize total pay
+prob += pulp.lpSum(y_i[i] * students[i]['wage'] for i in students), "Total Pay"
+
+# Constraints
+# Work hours constraint for undergraduates
+for i in students[1:5]:
+    prob += pulp.lpSum(y_i[i] for i in students[1:5]) == students[i]['min_hours'], f"Undergraduate_{i}_hours"
+
+# Work hours constraint for graduate students
+for i in students[5:]:
+    prob += pulp.lpSum(y_i[i] for i in students[5:]) == students[i]['min_hours'], f"Graduate_{i}_hours"
+
+# Maximum shifts constraint
+for i in students:
+    prob += pulp.lpSum(x_ij[(i, j)] for j in range(1, 6)) <= 2, f"Max_Shifts_{i}"
+
+# Daily maximum students constraint
+for j in range(1, 6):
+    prob += pulp.lpSum(x_ij[(i, j)] for i in students) <= 3, f"Daily_Max_Students_{j}"
+
+# Total duty hours constraint
+prob += pulp.lpSum(y_i[i] for i in students) == 70, "Total_Hours"
+
+# Hours worked by students 5 and 6 constraint
+prob += y_i[5] + y_i[6] <= 14, "Hours_Worked_5_and_6"
+
+# Hours worked by student 5 constraint
+prob += y_i[5] <= 2, "Hours_Worked_Student_5"
+
+# Solve the problem
+prob.solve()
+
+# Print the results
+print(f"Status: {pulp.LpStatus[prob.status]}")
+for v in prob.variables():
+    print(f"{v.name}: {v.varValue}")
+
+print(f"Total Pay: {pulp.value(prob.objective)}")

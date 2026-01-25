@@ -1,0 +1,40 @@
+import pulp
+
+# Define the problem
+prob = pulp.LpProblem("ProductionPlan", pulp.LpMaximize)
+
+# Decision variables
+x1d = pulp.LpVariable('x1d', lowBound=0, cat='Continuous')  # Number of days producing A1
+x2d = pulp.LpVariable('x2d', lowBound=0, cat='Continuous')  # Number of days producing A2
+x3d = pulp.LpVariable('x3d', lowBound=0, cat='Continuous')  # Number of days producing A3
+y1 = pulp.LpVariable('y1', lowBound=0, upBound=1, cat='Binary')  # Binary variable for A1 production
+y2 = pulp.LpVariable('y2', lowBound=0, upBound=1, cat='Binary')  # Binary variable for A2 production
+y3 = pulp.LpVariable('y3', lowBound=0, upBound=1, cat='Binary')  # Binary variable for A3 production
+
+# Objective function
+prob += 124 * x1d * y1 + 109 * x2d * y2 + 115 * x3d * y3, "Total Revenue"
+
+# Constraints
+prob += x1d + x2d + x3d <= 121, "ProductionCapacity"  # Total production capacity constraint
+prob += x1d * y1 <= 53, "Demand_A1"  # Demand constraint for A1
+prob += x2d * y2 <= 45, "Demand_A2"  # Demand constraint for A2
+prob += x3d * y3 <= 54, "Demand_A3"  # Demand constraint for A3
+prob += x1d >= 20 * y1, "MinBatch_A1"  # Minimum production batch constraint for A1
+prob += x2d >= 20 * y2, "MinBatch_A2"  # Minimum production batch constraint for A2
+prob += x3d >= 16 * y3, "MinBatch_A3"  # Minimum production batch constraint for A3
+prob += 170000 * y1 <= 500 * x1d, "ActivationCost_A1"  # Activation cost constraint for A1
+prob += x1d >= 57 / 500, "ProductionLine_A1"  # Production line availability constraint for A1
+
+# Solve the problem
+prob.solve()
+
+# Print results
+print(f"Status: {pulp.LpStatus[prob.status]}")
+print(f"Total Revenue: ${pulp.value(prob.objective)}")
+
+print(f"x1d: {pulp.value(x1d)} days")
+print(f"x2d: {pulp.value(x2d)} days")
+print(f"x3d: {pulp.value(x3d)} days")
+print(f"y1: {pulp.value(y1)}")
+print(f"y2: {pulp.value(y2)}")
+print(f"y3: {pulp.value(y3)}")

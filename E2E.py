@@ -7,7 +7,7 @@ from custom_callback_qwen import get_llm, get_custom_callback
 
 #설정부분
 data_set='newset'
-problem_name='IndustryOR_21'
+problem_name='IndustryOR_22'
 
 #결과 파일로 저장
 def save_output(content, filename, extension):

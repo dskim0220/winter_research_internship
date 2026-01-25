@@ -4,37 +4,40 @@ from gurobipy import GRB
 # 1. Data and Sets
 sets_A = ['A', 'B', 'C']
 parameters_c = {'A': 120, 'B': 110, 'C': 100}
-parameters_t = {'A': 20, 'B': 15, 'C': 15}
-parameters_m = 150
-parameters_M = 600
-parameters_o = {'A -> B': 30}
+parameters_m_tables = 150
+parameters_M_tables = 600
+parameters_m_orders_A = 7
+parameters_M_tables_A = 60
+parameters_m_tables_AB = 25
+parameters_m_tables_AC = 25
+parameters_m_tables_BC = 30
 
 # 2. Model Initialization
-m = gp.Model("operation_research_model")
+m = gp.Model("table_production")
 
 # 3. Variables
-x_A = m.addVar(vtype=gp.GRB.CONTINUOUS, name="xA")
-x_B = m.addVar(vtype=gp.GRB.CONTINUOUS, name="xB")
-x_C = m.addVar(vtype=gp.GRB.CONTINUOUS, name="xC")
+variables_orders = {set_: m.addVar(vtype=GRB.CONTINUOUS, name=f"x_{set_}") for set_ in sets_A}
 
 # 4. Objective
-m.setObjective(gp.quicksum(parameters_c[var] * x for var in sets_A), GRB.MINIMIZE)
+m.setObjective(gp.quicksum(parameters_c[set_] * variables_orders[set_] for set_ in sets_A), GRB.MINIMIZE)
 
 # 5. Constraints
-m.addConstr(x_A + parameters_t['B'] * x_B + parameters_t['C'] * x_C >= parameters_m, "Constraint1")
-m.addConstr(x_A + parameters_t['B'] * x_B + parameters_t['C'] * x_C <= parameters_M, "Constraint2")
-m.addConstr(parameters_o['A -> B'] <= x_B, "Constraint3")
-m.addConstr(x_B > 0, "AuxiliaryConstraint")
-m.addConstr(x_C >= parameters_o['A -> B'], "AuxiliaryConstraint2")
+m.addConstr(gp.quicksum(parameters_c[set_] * 20 * variables_orders[set_] for set_ in sets_A) >= parameters_m_tables, "constraint1")
+m.addConstr(gp.quicksum(parameters_c[set_] * 20 * variables_orders[set_] for set_ in sets_A) <= parameters_M_tables, "constraint2")
+m.addConstr(variables_orders['A'] >= parameters_m_orders_A, "constraint3")
+m.addConstr(variables_orders['A'] >= parameters_m_tables_AB - variables_orders['B'], "constraint4")
+m.addConstr(variables_orders['B'] >= parameters_m_tables_AC - variables_orders['A'], "constraint5")
+m.addConstr(variables_orders['C'] >= parameters_m_tables_BC - variables_orders['B'], "constraint6")
+m.addConstr(variables_orders['A'] + variables_orders['B'] >= parameters_m_orders_A, "constraint7")
+m.addConstr(variables_orders['A'] <= parameters_M_tables_A, "constraint8")
 
 # 6. Optimization and Output
 m.optimize()
 
-print(f'Optimal objective value: {m.objVal}')
-for v in m.getVars():
-    print(f'{v.varName} = {v.x}')
-
+print("Optimization finished.")
 if m.status == GRB.OPTIMAL:
-    print("The model is optimal.")
+    print(f"Optimal objective value: {m.objVal}")
+    for var in variables_orders.values():
+        print(f"{var.varName}: {var.x}")
 else:
     print("The model is not optimal.")

@@ -1,0 +1,47 @@
+Based on the detailed analysis and improvements suggested by my colleagues, here is the final optimized Python code using the Gurobi optimizer to solve the given problem:
+
+```python
+# Import necessary libraries
+from gurobipy import Model, GRB
+
+def optimize_production():
+    # Create a new model
+    m = Model("production_optimization")
+    
+    # Decision variables
+    x_I = m.addVar(name="x_I", lb=0, ub=1200)  # Product I: 0 to 1200 units
+    x_II = m.addVar(name="x_II", lb=0, ub=800)  # Product II: 0 to 800 units
+    x_III = m.addVar(name="x_III", lb=0, ub=1510 - 1200)  # Product III: 0 to 310 units
+    
+    # Objective function: Maximize profit
+    m.setObjective(1.25*x_I + 2.00*x_II + 2.80*x_III - 0.25*x_I - 0.35*x_II - 0.50*x_III, GRB.MAXIMIZE)
+    
+    # Constraints
+    m.addConstr(x_I <= 1200, "max_product_I")
+    m.addConstr(x_I + x_III <= 1510, "max_product_I_and_III")
+    m.addConstr(x_II <= 800, "max_product_II")
+    m.addConstr(x_I + x_II + x_III <= 1509, "max_total_production")
+    
+    # Non-negativity constraints
+    m.addConstr(x_I >= 0, "non_negative_product_I")
+    m.addConstr(x_II >= 0, "non_negative_product_II")
+    m.addConstr(x_III >= 0, "non_negative_product_III")
+    
+    # Optimize the model
+    m.optimize()
+    
+    # Check if the solution is optimal
+    if m.status == GRB.OPTIMAL:
+        print('Optimal Solution:')
+        print(f'Product I: {x_I.x}')
+        print(f'Product II: {x_II.x}')
+        print(f'Product III: {x_III.x}')
+        print(f'Maximum Profit: {m.objVal}')
+    else:
+        print('No solution found.')
+
+# Call the function to solve the optimization problem
+optimize_production()
+```
+
+This final code incorporates all the necessary constraints and ensures that the production quantities are non-negative. It also respects the upper bounds for each product as specified in the problem statement. The Gurobi optimizer will solve this model to find the optimal production plan that maximizes the profit.
