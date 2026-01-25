@@ -10,7 +10,7 @@ Additionally, if the restaurant decides to order tables from Supplier B, it must
 
 Also, if the restaurant decides to order tables from Supplier A, the sum of tables supplied from Suppler A and B is at least 25.
 
-If the restaurant decides to order tables from Supplier B, the sum of tables supplied from Supplier A and B is at least 30.
+If the restaurant decides to order tables from Supplier B, the sum of tables supplied from Supplier B and C is at least 30.
 
 The restaurant must order tables at least 7 times from Supplier A or B or C.
 
