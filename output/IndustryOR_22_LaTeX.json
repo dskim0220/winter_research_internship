@@ -1,8 +1,0 @@
-{
-    "PROBLEM_TYPE": "MIP",
-    "SETS_LATEX": "I = \\{A1, A2, A3\\}, J = \\{1, 2,..., 22\\}",
-    "PARAMETERS_LATEX": "P_{{A1}}: \\text{{price}}, P_{{A2}}: \\text{{price}}, P_{{A3}}: \\text{{price}}, R_{{A1}}: \\text{{demand}}, R_{{A2}}: \\text{{demand}}, R_{{A3}}: \\text{{demand}}, C_{{A1}}: \\text{{cost}}, C_{{A2}}: \\text{{cost}}, C_{{A3}}: \\text{{cost}}, Q_{{A1}}: \\text{{quota}}, Q_{{A2}}: \\text{{quota}}, Q_{{A3}}: \\text{{quota}}, A_{{A1}}: \\text{{activation cost}}, A_{{A2}}: \\text{{activation cost}}, A_{{A3}}: \\text{{activation cost}}, B_{{A1}}: \\text{{min batch}}, B_{{A2}}: \\text{{min batch}}, B_{{A3}}: \\text{{min batch}}, T_{{L}}: \\text{{total production limit}}, D_{{A1}}: \\text{{min prod A1}}, D_{{A2}}: \\text{{min prod A2}}, D_{{A3}}: \\text{{min prod A3}}",
-    "VARIABLES_LATEX": "x_{{A1}} \\in \\{0, 1\\}, x_{{A2}} \\in \\{0, 1\\}, x_{{A3}} \\in \\{0, 1\\}",
-    "OBJECTIVE_LATEX": "\\max \\text{{Revenue - FixedCosts}}",
-    "CONSTRAINTS_LATEX": "x_{{A1}} \\leq R_{{A1}}, x_{{A2}} \\leq R_{{A2}}, x_{{A3}} \\leq R_{{A3}}; \\sum_{{A \\in I}} x_{{A}} \\leq 1210; \\sum_{{A \\in I}} A_{{A}} x_{{A}} \\leq 170000; x_{{A1}} \\geq B_{{A1}}, x_{{A2}} \\geq B_{{A2}}, x_{{A3}} \\geq B_{{A3}}; x_{{A1}} \\geq 57; x_{{A1}} x_{{A1}} R_{{A1}} \\leq 5300; x_{{A2}} x_{{A2}} R_{{A2}} \\leq 4500; x_{{A3}} x_{{A3}} R_{{A3}} \\leq 5400; \\text{{Revenue - FixedCosts}} = \\sum_{{A \\in I}} P_{{A}} x_{{A}} \\times 100 - \\sum_{{A \\in I}} C_{{A}} x_{{A}} \\times 100"
-}

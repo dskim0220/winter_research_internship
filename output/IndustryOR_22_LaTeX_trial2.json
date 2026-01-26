@@ -1,0 +1,8 @@
+{
+    "PROBLEM_TYPE": "MIP",
+    "SETS_LATEX": "I = \\{A1, A2, A3\\}, J = \\{1, 2,..., 22\\}",
+    "PARAMETERS_LATEX": "P_{{A1}}: \\text{{price}}, P_{{A2}}: \\text{{price}}, P_{{A3}}: \\text{{price}}, R_{{A1}}: \\text{{demand}}, R_{{A2}}: \\text{{demand}}, R_{{A3}}: \\text{{demand}}, C_{{A1}}: \\text{{cost}}, C_{{A2}}: \\text{{cost}}, C_{{A3}}: \\text{{cost}}, Q_{{A1}}: \\text{{quota}}, Q_{{A2}}: \\text{{quota}}, Q_{{A3}}: \\text{{quota}}, F_{{A1}}: \\text{{activation cost}}, F_{{A2}}: \\text{{activation cost}}, F_{{A3}}: \\text{{activation cost}}, B_{{A1}}: \\text{{min batch}}, B_{{A2}}: \\text{{min batch}}, B_{{A3}}: \\text{{min batch}}, D_{{A1}}: \\text{{min prod days}}, D_{{A2}}: \\text{{min prod days}}, D_{{A3}}: \\text{{min prod days}}, L_{{A1}}: \\text{{min prod line activation}}, L_{{A2}}: \\text{{min prod line activation}}, L_{{A3}}: \\text{{min prod line activation}}",
+    "VARIABLES_LATEX": "x_{{A1}} \\geq 0, x_{{A2}} \\geq 0, x_{{A3}} \\geq 0, \\forall A1, A2, A3 \\in I",
+    "OBJECTIVE_LATEX": "\\max \\text{{revenue}}",
+    "CONSTRAINTS_LATEX": "x_{{A1}} + x_{{A2}} + x_{{A3}} \\leq 1210, x_{{A1}} \\leq Q_{{A1}} \\times 22, x_{{A2}} \\leq Q_{{A2}} \\times 22, x_{{A3}} \\leq Q_{{A3}} \\times 22, x_{{A1}} \\geq B_{{A1}}, x_{{A2}} \\geq B_{{A2}}, x_{{A3}} \\geq B_{{A3}}, x_{{A1}} \\geq D_{{A1}} \\times 22, x_{{A1}} \\geq \\frac{L_{{A1}}}{60}"
+}

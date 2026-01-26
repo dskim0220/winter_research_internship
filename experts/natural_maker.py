@@ -18,8 +18,15 @@ class NaturalMaker(BaseExpert):
 
     ROLE_DESCRIPTION = 'You are an expert in mathematical problem formulation. Your role is to translate natural language problems into structured optimization data.'
     FORWARD_TASK = '''Analyze the problem and extract the type, Sets, Variables, Parameters, Objective, and Constraints from the problem statement for mathematical modeling.
+
+CRITICAL INSTRUCTION:
+If "feedback from evaluator" is provided, you MUST prioritize addressing all issues, corrections, or suggestions mentioned in the feedback to refine the previous model. Integrate the feedback into the new formulation to ensure higher accuracy.
+
 Problem Description:
 {problem_description}
+
+feedback from evaluator:
+{feedback}
 
 IMPORTANT OUTPUT RULES:
 1) Return ONLY a valid JSON object. No extra text or explanations.
@@ -35,7 +42,7 @@ JSON Format:
     "PARAMETERS": "Given fixed values and data with their units",
     "VARIABLES": "List variables to be determined with (Type, Unit). Example: orders_A (Integer, count)",
     "OBJECTIVE": "The optimization goal function",
-    "CONSTRAINTS": "List of functional constraints"
+    "CONSTRAINTS": "List of functional constraints reflecting the provided feedback"
 }}
 '''
 
@@ -48,11 +55,12 @@ JSON Format:
         self.llm = get_llm(model_name=self.model,temperature=0.1)
 
     
-    def forward(self,problem):
+    def forward(self,problem,feedback):
         comments_text=""
         message = self.forward_prompt_template.format(
             problem_description = problem,
             ##code_example = problem['code_example'],
+            feedback = feedback,
             comments_text= comments_text
         )
         raw_output = self.llm.invoke(message).content

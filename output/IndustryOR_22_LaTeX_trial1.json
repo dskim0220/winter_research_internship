@@ -1,0 +1,8 @@
+{
+    "PROBLEM_TYPE": "MIP",
+    "SETS_LATEX": "I = \\{A1, A2, A3\\}, J = \\{1, 2,..., 22\\}",
+    "PARAMETERS_LATEX": "P_{{i}}: \\text{{price}}, C_{{i}}: \\text{{cost}}, Q_{{i}}: \\text{{quota}}, A_{{i}}: \\text{{activation cost}}, M_{{i}}: \\text{{min batch}}, D_{{i}}: \\text{{min production days}}, T_{{i}}: \\text{{total production limit}}, L_{{i}}: \\text{{min production line activation minutes}}, R: \\text{{revenue}}",
+    "VARIABLES_LATEX": "x_{{i}} \\geq 0, \\forall i \\in I",
+    "OBJECTIVE_LATEX": "\\max R",
+    "CONSTRAINTS_LATEX": "x_{{i}} \\leq P_{{i}}, \\forall i \\in I; \\sum_{{i \\in I}} x_{{i}} \\leq T_{{i}}; x_{{i}} \\geq M_{{i}}, \\forall i \\in I; x_{{i}} \\leq Q_{{i}}, \\forall i \\in I; x_{{i}} \\geq D_{{i}}, \\forall i \\in I; x_{{i}} \\geq 0, \\forall i \\in I; x_{{i}} \\leq A_{{i}} x_{{i}}, \\forall i \\in I; x_{{i}} \\leq R_{{i}}, \\forall i \\in I; \\sum_{{i \\in I}} x_{{i}} \\leq 1210; x_{{i}} \\geq 22 x_{{i}}, \\forall i \\in I; x_{{i}} \\geq 57 x_{{i}}, \\forall i \\in I; x_{{i}} \\leq 500 x_{{i}}, \\forall i \\in I; x_{{i}} \\leq 450 x_{{i}}, \\forall i \\in I; x_{{i}} \\leq 550 x_{{i}}, \\forall i \\in I; x_{{i}} \\geq 20 x_{{i}}, \\forall i \\in I; x_{{i}} \\geq 20 x_{{i}}, \\forall i \\in I; x_{{i}} \\geq 16 x_{{i}}, \\forall i \\in I"
+}

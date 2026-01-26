@@ -1,0 +1,111 @@
+{
+    "PROBLEM_TYPE": "MIP",
+    "SETS": {
+        "PRODUCTS": "A1, A2, A3",
+        "DAYS": "1..22"
+    },
+    "PARAMETERS": {
+        "MAX_DEMAND": {
+            "A1": 5300,
+            "A2": 4500,
+            "A3": 5400
+        },
+        "PRICE": {
+            "A1": 124,
+            "A2": 109,
+            "A3": 115
+        },
+        "COST": {
+            "A1": 73.3,
+            "A2": 52.9,
+            "A3": 65.4
+        },
+        "QUOTA": {
+            "A1": 500,
+            "A2": 450,
+            "A3": 550
+        },
+        "ACTIVATION_COST": {
+            "A1": 170000,
+            "A2": 150000,
+            "A3": 100000
+        },
+        "MIN_BATCH": {
+            "A1": 20,
+            "A2": 20,
+            "A3": 16
+        },
+        "MIN_PROD_DAYS": {
+            "A1": 22
+        },
+        "TOTAL_PRODUCTION_LIMIT": 1210,
+        "MIN_PROD_LINE_ACTIVATION_MINUTES": {
+            "A1": 57
+        }
+    },
+    "VARIABLES": [
+        {
+            "Variable": "prod_A1",
+            "Type": "Continuous",
+            "Unit": "100 kg"
+        },
+        {
+            "Variable": "prod_A2",
+            "Type": "Continuous",
+            "Unit": "100 kg"
+        },
+        {
+            "Variable": "prod_A3",
+            "Type": "Continuous",
+            "Unit": "100 kg"
+        }
+    ],
+    "OBJECTIVE": "Maximize revenue",
+    "CONSTRAINTS": [
+        {
+            "Constraint": "Total_production_limit",
+            "Expression": "prod_A1 + prod_A2 + prod_A3 <= 1210",
+            "Type": "LessEqual"
+        },
+        {
+            "Constraint": "Activation_cost_constraint",
+            "Expression": "prod_A1 * ACTIVATION_COST['A1'] + prod_A2 * ACTIVATION_COST['A2'] + prod_A3 * ACTIVATION_COST['A3'] >= MIN_PROD_LINE_ACTIVATION_MINUTES['A1']",
+            "Type": "GreaterEqual"
+        },
+        {
+            "Constraint": "Demand_constraint",
+            "Expression": "prod_A1 <= MAX_DEMAND['A1']",
+            "Type": "LessEqual"
+        },
+        {
+            "Constraint": "Demand_constraint",
+            "Expression": "prod_A2 <= MAX_DEMAND['A2']",
+            "Type": "LessEqual"
+        },
+        {
+            "Constraint": "Demand_constraint",
+            "Expression": "prod_A3 <= MAX_DEMAND['A3']",
+            "Type": "LessEqual"
+        },
+        {
+            "Constraint": "Price_constraint",
+            "Expression": "prod_A1 * PRICE['A1'] + prod_A2 * PRICE['A2'] + prod_A3 * PRICE['A3'] >= prod_A1 * COST['A1'] + prod_A2 * COST['A2'] + prod_A3 * COST['A3']",
+            "Type": "GreaterEqual"
+        },
+        {
+            "Constraint": "Min_batch_constraint",
+            "Expression": "prod_A1 >= MIN_BATCH['A1']",
+            "Type": "GreaterEqual"
+        },
+        {
+            "Constraint": "Min_batch_constraint",
+            "Expression": "prod_A2 >= MIN_BATCH['A2']",
+            "Type": "GreaterEqual"
+        },
+        {
+            "Constraint": "Min_batch_constraint",
+            "Expression": "prod_A3 >= MIN_BATCH['A3']",
+            "Type": "GreaterEqual"
+        }
+    ]
+}
