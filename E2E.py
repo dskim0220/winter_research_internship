@@ -51,6 +51,7 @@ def e2e_v2(problem,model):
     feedback = None
     best_LaTeX_json = None
     best_score = -1.0
+    current_feedback = None
 
     for i in range(max_trial):
         try:
@@ -79,13 +80,18 @@ def e2e_v2(problem,model):
             model_evaluator = ModelEvaluator(model=model)
             raw_feedback = model_evaluator.forward(problem=problem,LaTeX_json=LaTeX_json)
             #confidence_score = feedback['CONFIDENCE_SCORE']
+            
+            #피드백 가공
             if isinstance(raw_feedback, str):
                 try:
-                    feedback = json.loads(raw_feedback)
-                except:
+                    refined_feedback = model_evaluator._extract_json(raw_feedback)
+                    feedback = json.loads(refined_feedback)
+                except Exception as e:
+                    print(f"JSON 추출 실패: {e}")
                     feedback = {"CONFIDENCE_SCORE":0.0, "OVERALL_FEEDBACK":raw_feedback}
             else:
                 feedback = raw_feedback
+                
             feedback_file = save_output(feedback,f"{problem_name}_feedback_trial{i}","json")
             confidence_score =feedback.get('CONFIDENCE_SCORE',0.0)
 

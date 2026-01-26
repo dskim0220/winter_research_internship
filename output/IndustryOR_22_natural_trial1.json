@@ -35,9 +35,13 @@
             "A2": 20,
             "A3": 16
         },
-        "MIN_PROD_DAYS_A1": 22,
+        "MIN_PROD_DAYS": {
+            "A1": 22
+        },
         "TOTAL_PRODUCTION_LIMIT": 1210,
-        "MIN_PROD_LINE_ACTIVATION_MINUTES_A1": 57
+        "MIN_PROD_LINE_ACTIVATION_MINUTES": {
+            "A1": 57
+        }
     },
     "VARIABLES": [
         {
@@ -65,7 +69,7 @@
         },
         {
             "Constraint": "Activation_cost_constraint",
-            "Expression": "prod_A1 * ACTIVATION_COST['A1'] + prod_A2 * ACTIVATION_COST['A2'] + prod_A3 * ACTIVATION_COST['A3'] >= MIN_PROD_LINE_ACTIVATION_MINUTES_A1 * 60",
+            "Expression": "prod_A1 * ACTIVATION_COST['A1'] + prod_A2 * ACTIVATION_COST['A2'] + prod_A3 * ACTIVATION_COST['A3'] >= MIN_PROD_LINE_ACTIVATION_MINUTES['A1']",
             "Type": "GreaterEqual"
         },
         {
@@ -85,7 +89,7 @@
         },
         {
             "Constraint": "Price_constraint",
-            "Expression": "prod_A1 * PRICE['A1'] + prod_A2 * PRICE['A2'] + prod_A3 * PRICE['A3'] >= Revenue",
+            "Expression": "prod_A1 * PRICE['A1'] + prod_A2 * PRICE['A2'] + prod_A3 * PRICE['A3'] >= TOTAL_REVENUE",
             "Type": "GreaterEqual"
         },
         {
