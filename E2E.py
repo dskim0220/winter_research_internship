@@ -48,15 +48,15 @@ def e2e(problem,model):
 
 
 def e2e_v2(problem,model):
-    feedback = None
-    best_LaTeX_json = None
+    feedback = ""
+    best_LaTeX_json = ""
     best_score = -1.0
-    current_feedback = None
+    #current_feedback = None
 
     for i in range(max_trial):
         try:
             natural_maker = NaturalMaker(model=model)
-            if feedback is None or not isinstance(feedback,dict):
+            '''if feedback is None or not isinstance(feedback,dict):
                 current_feedback = ""
             else:
                 current_feedback = (
@@ -69,8 +69,9 @@ def e2e_v2(problem,model):
                     f"Constraints: {feedback.get('CONSTRAINTS_FEEDBACK', '')}\n\n"
                     "Instruction: Revise the optimization model by addressing each feedback point above."
                 )
-            
-            natural_json = natural_maker.forward(problem=problem,feedback=current_feedback)
+            '''
+
+            natural_json = natural_maker.forward(problem=problem,feedback=feedback)
             natural_file = save_output(natural_json, f"{problem_name}_natural_trial{i}","json")
 
             LaTeX_maker = LaTeXMaker(model=model)
@@ -82,19 +83,19 @@ def e2e_v2(problem,model):
             #confidence_score = feedback['CONFIDENCE_SCORE']
             
             #피드백 가공
-            if isinstance(raw_feedback, str):
-                try:
+            try:
                     refined_feedback = model_evaluator._extract_json(raw_feedback)
-                    feedback = json.loads(refined_feedback)
-                except Exception as e:
-                    print(f"JSON 추출 실패: {e}")
-                    feedback = {"CONFIDENCE_SCORE":0.0, "OVERALL_FEEDBACK":raw_feedback}
-            else:
-                feedback = raw_feedback
-                
+                    feedback = refined_feedback
+            except Exception as e:
+                    print(f"JSON 형식 변환 실패: {e}")
+                    error_dict = {"CONFIDENCE_SCORE":0.0, "OVERALL_FEEDBACK":str(raw_feedback)}
+                    feedback = json.dumps(error_dict)
+           
             feedback_file = save_output(feedback,f"{problem_name}_feedback_trial{i}","json")
-            confidence_score =feedback.get('CONFIDENCE_SCORE',0.0)
 
+            data = json.loads(feedback)
+            confidence_score = data['CONFIDENCE_SCORE']
+            
             if confidence_score >= confidence_standard:
                 best_LaTeX_json = LaTeX_json
                 best_score = confidence_score
@@ -105,9 +106,9 @@ def e2e_v2(problem,model):
         
         except Exception as e:
             print(f"{i}번째 시도 실패: {e}")
-            feedback = None
+            feedback = ""
             continue
-    if best_LaTeX_json is not None:
+    if best_LaTeX_json:
         try:
             code_generator = CodeGenerator(model=model)
             code = code_generator.forward(LaTeX_json=best_LaTeX_json)

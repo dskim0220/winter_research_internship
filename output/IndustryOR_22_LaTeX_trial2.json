@@ -1,8 +1,8 @@
 {
     "PROBLEM_TYPE": "MIP",
-    "SETS_LATEX": "I = \\{A1, A2, A3\\}, J = \\{1, 2,..., 22\\}",
-    "PARAMETERS_LATEX": "P_{{A1}}: \\text{{price}}, P_{{A2}}: \\text{{price}}, P_{{A3}}: \\text{{price}}, R_{{A1}}: \\text{{demand}}, R_{{A2}}: \\text{{demand}}, R_{{A3}}: \\text{{demand}}, C_{{A1}}: \\text{{cost}}, C_{{A2}}: \\text{{cost}}, C_{{A3}}: \\text{{cost}}, Q_{{A1}}: \\text{{quota}}, Q_{{A2}}: \\text{{quota}}, Q_{{A3}}: \\text{{quota}}, A_{{A1}}: \\text{{activation cost}}, A_{{A2}}: \\text{{activation cost}}, A_{{A3}}: \\text{{activation cost}}, B_{{A1}}: \\text{{min batch}}, B_{{A2}}: \\text{{min batch}}, B_{{A3}}: \\text{{min batch}}, D_{{A1}}: \\text{{min prod days}}, L_{{total}}: \\text{{total production limit}}, D_{{A1}}: \\text{{min prod line activation minutes}}",
-    "VARIABLES_LATEX": "x_{{A1}} \\geq 0, x_{{A2}} \\geq 0, x_{{A3}} \\geq 0, y_{{A1}} \\in \\{0, 1\\}, y_{{A2}} \\in \\{0, 1\\}, y_{{A3}} \\in \\{0, 1\\}",
-    "OBJECTIVE_LATEX": "\\max 124 x_{{A1}} + 109 x_{{A2}} + 115 x_{{A3}} - A_{{A1}} y_{{A1}} - A_{{A2}} y_{{A2}} - A_{{A3}} y_{{A3}}",
-    "CONSTRAINTS_LATEX": "x_{{A1}} + x_{{A2}} + x_{{A3}} \\leq L_{{total}}, x_{{A1}} \\leq R_{{A1}} Q_{{A1}}, x_{{A2}} \\leq R_{{A2}} Q_{{A2}}, x_{{A3}} \\leq R_{{A3}} Q_{{A3}}, 124 x_{{A1}} + 109 x_{{A2}} + 115 x_{{A3}} - A_{{A1}} y_{{A1}} - A_{{A2}} y_{{A2}} - A_{{A3}} y_{{A3}} \\geq 0, x_{{A1}} \\geq B_{{A1}} D_{{A1}} y_{{A1}}, x_{{A2}} \\geq B_{{A2}} D_{{A2}} y_{{A2}}, x_{{A3}} \\geq B_{{A3}} D_{{A3}} y_{{A3}}, y_{{A1}} + y_{{A2}} + y_{{A3}} \\leq 1"
+    "SETS_LATEX": "",
+    "PARAMETERS_LATEX": "P_{{A1}}: \\text{{Prices}}, P_{{A2}}: \\text{{Prices}}, P_{{A3}}: \\text{{Prices}}, R_{{A1}}: \\text{{Costs}}, R_{{A2}}: \\text{{Costs}}, R_{{A3}}: \\text{{Costs}}, C_{{A1}}: \\text{{ActivationCosts}}, C_{{A2}}: \\text{{ActivationCosts}}, C_{{A3}}: \\text{{ActivationCosts}}, B_{{A1}}: \\text{{MinimumBatches}}, B_{{A2}}: \\text{{MinimumBatches}}, B_{{A3}}: \\text{{MinimumBatches}}, D_{{A1}}: \\text{{Demand}}, D_{{A2}}: \\text{{Demand}}, D_{{A3}}: \\text{{Demand}}, L_{{total}}: \\text{{TotalProductionLimit}}, T_{{fixed}}: \\text{{FixedActivationTime}}",
+    "VARIABLES_LATEX": "x_{{A1}} \\geq 0, x_{{A2}} \\geq 0, x_{{A3}} \\geq 0, \\forall A1, A2, A3 \\in \\{A1, A2, A3\\}",
+    "OBJECTIVE_LATEX": "\\max P_{{A1}} x_{{A1}} + P_{{A2}} x_{{A2}} + P_{{A3}} x_{{A3}} - R_{{A1}} x_{{A1}} - R_{{A2}} x_{{A2}} - R_{{A3}} x_{{A3}} - C_{{A1}} x_{{A1}} - C_{{A2}} x_{{A2}} - C_{{A3}} x_{{A3}}",
+    "CONSTRAINTS_LATEX": "x_{{A1}} + x_{{A2}} + x_{{A3}} \\leq L_{{total}}, x_{{A1}} \\geq B_{{A1}} \\cdot B_{{A1}}, x_{{A2}} \\geq B_{{A2}} \\cdot B_{{A2}}, x_{{A3}} \\geq B_{{A3}} \\cdot B_{{A3}}, x_{{A1}} \\geq \\frac{T_{{fixed}}}{60}, x_{{A1}} \\geq 0.5 x_{{A1}} + 0.5 B_{{A1}}"
 }

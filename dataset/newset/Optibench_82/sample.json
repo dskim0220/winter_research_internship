@@ -2,15 +2,15 @@
   {
     "input": {
       "Number of workers starting on Monday": "3.0",
-      "Number of workers starting on Tuesday": "3.0",
-      "Number of workers starting on Wednesday": "4.0",
+      "Number of workers starting on Tuesday": "6.0",
+      "Number of workers starting on Wednesday": "1.0",
       "Number of workers starting on Thursday": "6.0",
-      "Number of workers starting on Friday": "2.0",
+      "Number of workers starting on Friday": "1.0",
       "Number of workers starting on Saturday": "3.0",
       "Number of workers starting on Sunday": "2.0"
     },
     "output": [
-      "23.0"
+      "22.0"
     ]
   }
 ]

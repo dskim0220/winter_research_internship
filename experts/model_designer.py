@@ -14,10 +14,10 @@ if root_path not in sys.path:
     sys.path.append(root_path)
 from custom_callback_qwen import get_custom_callback, get_llm
 
-class NaturalMaker(BaseExpert):
+class ModelDesigner(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are an expert in mathematical problem formulation. Your role is to translate natural language problems into structured optimization data.'
-    FORWARD_TASK = '''Analyze the problem and extract the type, Sets, Variables, Parameters, Objective, and Constraints from the problem statement for mathematical modeling.
+    ROLE_DESCRIPTION_EXTRACTOR = 'You are an expert in mathematical problem formulation. Your role is to translate natural language problems into structured optimization data.'
+    FORWARD_TASK_EXTRACTOR = '''Analyze the problem and extract the type, Sets, Variables, Parameters, Objective, and Constraints from the problem statement for mathematical modeling.
 
 CRITICAL INSTRUCTION:
 If "feedback from evaluator" is provided, you MUST prioritize addressing all issues, corrections, or suggestions mentioned in the feedback to refine the previous model. Integrate the feedback into the new formulation to ensure higher accuracy.
@@ -53,38 +53,79 @@ JSON Format:
 }}
 '''
 
+    ROLE_DESCRIPTION_FORMULATOR = ''
+    FORWARD_TASK_FORMULATOR = '''Using the extracted queries and original problem, formulate a complete mathematical model in LaTeX.
+
+[CRITICAL INSTRUCTION]
+1. Grounding: Each LaTeX formula MUST correspond to its provided "query".
+2. Symbolic Check: Use specific coefficients from the query. No undefined symbols like P, C, T.
+3. Logical Reformulation: Use Big-M notation for conditional constraints (If-Then) found in the queries.
+4. Decision Type: Strictly define variables as Binary, Integer, or Continuous.
+
+Extracted Query Data (from Agent 1):
+{extracted_queries}
+
+Problem Description (for context):
+{problem_description}
+
+JSON Format:
+{{
+    "SETS": {{ "query": "...", "LaTeX": "LaTeX formulation" }},
+    "PARAMETERS": [
+        {{ "name": "...", "query": "...", "LaTeX": "LaTeX with exact values" }}
+    ],
+    "VARIABLES": [
+        {{ "name": "...", "type": "Binary/Int/Cont", "query": "...", "LaTeX": "LaTeX definition" }}
+    ],
+    "OBJECTIVE": {{ "query": "...", "LaTeX": "LaTeX objective function" }},
+    "CONSTRAINTS": [
+        {{ "name": "...", "query": "...", "LaTeX": "LaTeX equation" }}
+    ]
+}}
+'''
+
     def __init__(self, model):
         super().__init__(
-            name='natural_maker',
+            name='model_designer',
             description='Decomposes natural language problems into 6-part structured modeling data',#자연어 JSON 제작
             model=model   
         )
-        self.llm = get_llm(model_name=self.model,temperature=0.1)
+        self.llm_extractor = get_llm(model_name=self.model,temperature=0.1)
+        self.llm_formulator = get_llm(model_name=self.model,temperature=0.1)
 
     
-    def forward(self,problem,feedback):
+    def semantic_extractor(self,problem,feedback):
         comments_text=""
-        message = self.forward_prompt_template.format(
+        message = self.FORWARD_TASK_EXTRACTOR.format(
             problem_description = problem,
             ##code_example = problem['code_example'],
             feedback = feedback,
             comments_text= comments_text
         )
-        raw_output = self.llm.invoke(message).content
-
+        raw_output = self.llm_extractor.invoke(message).content
         cleaned_json = self._extract_json(raw_output)
-
         return cleaned_json
     
+    def mathematical_formulator(self,problem,extracted_queries,feedback):
+        comments_text=""
+        message = self.FORWARD_TASK_FORMULATOR.format(
+            problem_description = problem,
+            ##code_example = problem['code_example'],
+            extracted_queries = extracted_queries,
+            feedback = feedback,
+            comments_text= comments_text
+        )
+        raw_output = self.llm_formulator.invoke(message).content
+        cleaned_json = self._extract_json(raw_output)
+        return cleaned_json
+    
+    def forward(self,problem,feedback):
+        queries_json = self.semantic_extractor(problem=problem,feedback=feedback)
+        final_formulation = self.mathematical_formulator(problem=problem,extracted_queries=queries_json,feedback=feedback)
+        return final_formulation
 
     def _extract_json(self,text):
         match = re.search(r'\{.*\}', text, re.DOTALL)
         if match:
             return match.group(0)
         return text # 매칭 실패 시 원본 반환
-
-
-
-
-
-   

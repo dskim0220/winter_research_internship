@@ -18,9 +18,11 @@ class ModelEvaluator(BaseExpert):
 
     ROLE_DESCRIPTION = 'You are an expert in mathematical optimization and modeling. Your role is to translate complex natural language descriptions into rigorous mathematical formulations and evaluate the modeling accuracy.'
     FORWARD_TASK = '''
-Analyze the provided problem description and perform a dual task: 
-1) Formulate the mathematical model using LaTeX within a structured JSON.
-2) Critically evaluate the formulation's alignment with the problem constraints and provide feedback.
+Analyze the provided problem description and perform a rigorous auditing task: 
+1) Audit the LaTeX model against the natural language problem.
+2) Detect and flag "Modeling Hallucinations" (e.g., using constants not in the text, or ignoring given constraints).
+3) Verify Dimensional Consistency: Ensure units (e.g., USD, Kg, Minutes) align across equations.
+4) Linearity Audit: Explicitly check for non-linearities (variable multiplications) that violate MILP standards.
 
 Problem Description:
 {problem_description}
@@ -43,13 +45,13 @@ IMPORTANT OUTPUT RULES:
 
 JSON Format:
 {{
-    "CONFIDENCE_SCORE": 0.00,
-    "OVERALL_FEEDBACK": "General assessment of the model's completeness and assumptions.",
-    "SETS_FEEDBACK": "Rationale for the defined index sets and their ranges.",
-    "PARAMETERS_FEEDBACK": "Explanation of given constants, data values, and their units.",
-    "VARIABLES_FEEDBACK": "Justification for variable types (Binary/Integer/Cont) and decision units.",
-    "OBJECTIVE_FEEDBACK": "Reasoning behind the objective function's structure and optimization goal.",
-    "CONSTRAINTS_FEEDBACK": "Detailed logic for all functional constraints, including Big-M or conditional handling."
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "...",
+    "DATA_FIDELITY_CHECK": "Did the model use the exact numbers from the problem? Flag any arbitrary constants.",
+    "LOGICAL_COUPLING_CHECK": "Are Binary and Continuous variables correctly linked (e.g., Big-M)?",
+    "LINEARITY_VALIDATION": "Confirm no variable-to-variable multiplication exists.",
+    "DIMENSIONAL_ANALYSIS": "Do the units on LHS and RHS of all constraints match?",
+    "CONSTRAINTS_FEEDBACK": "..."
 }}
 '''
 

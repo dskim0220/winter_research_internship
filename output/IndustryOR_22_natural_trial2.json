@@ -1,135 +1,83 @@
 {
     "PROBLEM_TYPE": "MIP",
-    "SETS": {
-        "PRODUCTS": "A1, A2, A3",
-        "DAYS": "1..22"
-    },
+    "SETS": "",
     "PARAMETERS": {
-        "MAX_DEMAND": {
-            "A1": 5300,
-            "A2": 4500,
-            "A3": 5400
-        },
-        "PRICE": {
+        "Prices": {
             "A1": 124,
             "A2": 109,
             "A3": 115
         },
-        "COST": {
+        "Costs": {
             "A1": 73.3,
             "A2": 52.9,
             "A3": 65.4
         },
-        "QUOTA": {
-            "A1": 500,
-            "A2": 450,
-            "A3": 550
-        },
-        "ACTIVATION_COST": {
+        "ActivationCosts": {
             "A1": 170000,
             "A2": 150000,
             "A3": 100000
         },
-        "MIN_BATCH": {
+        "MinimumBatches": {
             "A1": 20,
             "A2": 20,
             "A3": 16
         },
-        "MIN_PROD_DAYS": {
-            "A1": 22
+        "Demand": {
+            "A1": 5300,
+            "A2": 4500,
+            "A3": 5400
         },
-        "TOTAL_PRODUCTION_LIMIT": 1210,
-        "MIN_PROD_LINE_ACTIVATION_MINUTES": {
-            "A1": 57
-        }
+        "TotalProductionLimit": 1210,
+        "FixedActivationTime": 57
     },
     "VARIABLES": [
         {
-            "Variable": "prod_A1",
+            "Variable": "x_A1",
             "Type": "Continuous",
-            "Unit": "100 kg"
+            "Unit": "tons"
         },
         {
-            "Variable": "prod_A2",
+            "Variable": "x_A2",
             "Type": "Continuous",
-            "Unit": "100 kg"
+            "Unit": "tons"
         },
         {
-            "Variable": "prod_A3",
+            "Variable": "x_A3",
             "Type": "Continuous",
-            "Unit": "100 kg"
-        },
-        {
-            "Variable": "activation_cost_A1",
-            "Type": "Binary"
-        },
-        {
-            "Variable": "activation_cost_A2",
-            "Type": "Binary"
-        },
-        {
-            "Variable": "activation_cost_A3",
-            "Type": "Binary"
+            "Unit": "tons"
         }
     ],
-    "OBJECTIVE": "Maximize revenue - fixed costs",
+    "OBJECTIVE": "Maximize Revenue - Costs - FixedActivationCosts",
     "CONSTRAINTS": [
         {
-            "Constraint": "Total production limit",
-            "Expression": "prod_A1 + prod_A2 + prod_A3 <= 1210"
+            "Constraint": "TotalProductionLimit",
+            "Type": "LessEqual",
+            "Expression": "x_A1 + x_A2 + x_A3 <= 1210"
         },
         {
-            "Constraint": "Production quota constraint",
-            "Expression": "prod_A1 <= MAX_DEMAND['A1'] * 100 * QUOTA['A1']",
-            "Units": "100 kg"
+            "Constraint": "MinimumBatchA1",
+            "Type": "GreaterEqual",
+            "Expression": "x_A1 >= 20 * MinimumBatches['A1']"
         },
         {
-            "Constraint": "Production quota constraint",
-            "Expression": "prod_A2 <= MAX_DEMAND['A2'] * 100 * QUOTA['A2']",
-            "Units": "100 kg"
+            "Constraint": "MinimumBatchA2",
+            "Type": "GreaterEqual",
+            "Expression": "x_A2 >= 20 * MinimumBatches['A2']"
         },
         {
-            "Constraint": "Production quota constraint",
-            "Expression": "prod_A3 <= MAX_DEMAND['A3'] * 100 * QUOTA['A3']",
-            "Units": "100 kg"
+            "Constraint": "MinimumBatchA3",
+            "Type": "GreaterEqual",
+            "Expression": "x_A3 >= 16 * MinimumBatches['A3']"
         },
         {
-            "Constraint": "Revenue calculation",
-            "Expression": "124 * prod_A1 + 109 * prod_A2 + 115 * prod_A3 - ACTIVATION_COST['A1'] * activation_cost_A1 - ACTIVATION_COST['A2'] * activation_cost_A2 - ACTIVATION_COST['A3'] * activation_cost_A3"
+            "Constraint": "ActivationTimeA1",
+            "Type": "GreaterEqual",
+            "Expression": "x_A1 >= FixedActivationTime / 60"
         },
         {
-            "Constraint": "Minimum production batch constraint",
-            "Expression": "prod_A1 >= MIN_BATCH['A1']",
-            "Units": "100 kg"
-        },
-        {
-            "Constraint": "Minimum production batch constraint",
-            "Expression": "prod_A2 >= MIN_BATCH['A2']",
-            "Units": "100 kg"
-        },
-        {
-            "Constraint": "Minimum production batch constraint",
-            "Expression": "prod_A3 >= MIN_BATCH['A3']",
-            "Units": "100 kg"
-        },
-        {
-            "Constraint": "Activation cost binary constraint",
-            "Expression": "activation_cost_A1 + activation_cost_A2 + activation_cost_A3 <= 1"
-        },
-        {
-            "Constraint": "Activation cost binary constraint",
-            "Expression": "prod_A1 >= MIN_PROD_DAYS['A1'] * 100 * MIN_BATCH['A1'] * activation_cost_A1",
-            "Units": "100 kg"
-        },
-        {
-            "Constraint": "Activation cost binary constraint",
-            "Expression": "prod_A2 >= MIN_PROD_DAYS['A2'] * 100 * MIN_BATCH['A2'] * activation_cost_A2",
-            "Units": "100 kg"
-        },
-        {
-            "Constraint": "Activation cost binary constraint",
-            "Expression": "prod_A3 >= MIN_PROD_DAYS['A3'] * 100 * MIN_BATCH['A3'] * activation_cost_A3",
-            "Units": "100 kg"
+            "Constraint": "BinaryDecisionA1",
+            "Type": "Binary",
+            "Expression": "x_A1 >= 0.5 * x_A1 + 0.5 * MinimumBatches['A1']"
         }
     ]
 }

@@ -1,8 +1,8 @@
 {
     "PROBLEM_TYPE": "MIP",
-    "SETS_LATEX": "I = \\{A1, A2, A3\\}, J = \\{1, 2,..., 22\\}",
-    "PARAMETERS_LATEX": "P_{{i}}: \\text{{price}}, C_{{i}}: \\text{{cost}}, Q_{{i}}: \\text{{quota}}, A_{{i}}: \\text{{activation cost}}, M_{{i}}: \\text{{min batch}}, D_{{i}}: \\text{{min production days}}, T_{{i}}: \\text{{total production limit}}, L_{{i}}: \\text{{min production line activation minutes}}",
-    "VARIABLES_LATEX": "x_{{i}} \\geq 0, \\forall i \\in I",
-    "OBJECTIVE_LATEX": "\\max \\sum_{{i \\in I}} P_{{i}} x_{{i}}",
-    "CONSTRAINTS_LATEX": "x_{{i}} \\leq Q_{{i}}, \\forall i \\in I; \\sum_{{i \\in I}} x_{{i}} \\leq 1210; x_{{i}} \\geq M_{{i}}, \\forall i \\in I; x_{{i}} \\geq D_{{i}}, \\forall i \\in I; x_{{i}} \\leq P_{{i}} \\cdot x_{{i}} + A_{{i}}, \\forall i \\in I; x_{{i}} \\geq L_{{i}}, \\forall i \\in I; x_{{i}} \\leq T_{{i}}, \\forall i \\in I"
+    "SETS_LATEEX": "",
+    "PARAMETERS_LATEX": "P_{{A1}}: \\text{{Prices}}, P_{{A2}}: \\text{{Prices}}, P_{{A3}}: \\text{{Prices}}, R_{{A1}}: \\text{{ProductionCosts}}, R_{{A2}}: \\text{{ProductionCosts}}, R_{{A3}}: \\text{{ProductionCosts}}, C_{{A1}}: \\text{{ActivationCosts}}, C_{{A2}}: \\text{{ActivationCosts}}, C_{{A3}}: \\text{{ActivationCosts}}, L_{{A1}}: \\text{{MinimumBatches}}, L_{{A2}}: \\text{{MinimumBatches}}, L_{{A3}}: \\text{{MinimumBatches}}, D_{{A1}}: \\text{{Demand}}, D_{{A2}}: \\text{{Demand}}, D_{{A3}}: \\text{{Demand}}, T: \\text{{Days}}, T_{{LP}}: \\text{{TotalProductionLimit}}, A_{{A1}}: \\text{{ActivationTimeA1}}, F_{{A1}}: \\text{{FixedCosts}}, F_{{A2}}: \\text{{FixedCosts}}, F_{{A3}}: \\text{{FixedCosts}}",
+    "VARIABLES_LATEX": "x_{{A1}} \\in \\{0, 1\\}, x_{{A2}} \\in \\{0, 1\\}, x_{{A3}} \\in \\{0, 1\\}",
+    "OBJECTIVE_LATEX": "\\max \\left( x_{{A1}} \\cdot 53 \\cdot 124 + x_{{A2}} \\cdot 45 \\cdot 109 + x_{{A3}} \\cdot 54 \\cdot 115 - C_{{A1}} \\cdot x_{{A1}} - C_{{A2}} \\cdot x_{{A2}} - C_{{A3}} \\cdot x_{{A3}} - F_{{A1}} \\cdot x_{{A1}} - F_{{A2}} \\cdot x_{{A2}} - F_{{A3}} \\cdot x_{{A3}} \\right)",
+    "CONSTRAINTS_LATEX": "x_{{A1}} \\leq 500, x_{{A2}} \\leq 450, x_{{A3}} \\leq 550, x_{{A1}} + \\frac{A_{{A1}}}{60} \\geq 1, x_{{A1}} + x_{{A2}} + x_{{A3}} \\leq T_{{LP}}, x_{{A1}} \\cdot 53 + x_{{A2}} \\cdot 45 + x_{{A3}} \\cdot 54 \\leq T"
 }
