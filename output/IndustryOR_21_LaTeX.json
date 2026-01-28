@@ -1,8 +1,0 @@
-{
-    "PROBLEM_TYPE": "MIP",
-    "SETS_LATEX": "A = \\{\\text{{A}}, \\text{{B}}, \\text{{C}}\\}",
-    "PARAMETERS_LATEX": "c_{{A}} = 120, c_{{B}} = 110, c_{{C}} = 100, m_{{tables}} = 150, M_{{tables}} = 600, m_{{orders_A}} = 7, M_{{tables_A}} = 60, m_{{tables_AB}} = 25, m_{{tables_AC}} = 25, m_{{tables_BC}} = 30",
-    "VARIABLES_LATEX": "x_{{orders_A}} \\geq 0, x_{{orders_B}} \\geq 0, x_{{orders_C}} \\geq 0, \\forall A \\in A",
-    "OBJECTIVE_LATEX": "\\min \\sum_{{A \\in A}} c_{{A}} x_{{orders_A}}",
-    "CONSTRAINTS_LATEX": "x_{{orders_A}} \\cdot 20 + x_{{orders_B}} \\cdot 15 + x_{{orders_C}} \\cdot 15 \\geq m_{{tables}} \\text{{ and }} x_{{orders_A}} \\cdot 20 + x_{{orders_B}} \\cdot 15 + x_{{orders_C}} \\cdot 15 \\leq M_{{tables}}; x_{{orders_A}} \\geq m_{{orders_A}}, x_{{orders_A}} \\geq m_{{tables_AB}} - x_{{orders_B}}, x_{{orders_B}} \\geq m_{{tables_AC}} - x_{{orders_A}}, x_{{orders_C}} \\geq m_{{tables_BC}} - x_{{orders_B}}, x_{{orders_A}} + x_{{orders_B}} \\geq m_{{orders_A}}, x_{{orders_A}} \\leq M_{{tables_A}}"
-}

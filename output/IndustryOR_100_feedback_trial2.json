@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON contains numerous issues including incorrect variable types, logical errors, and missing constraints. Additionally, the objective function and constraints do not align with the problem description.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 'bandwidth_AB', 'transmission_efficiency_AE_direct') which are not present in the problem description. These should be replaced with actual numerical values.",
+    "DATA_FIDELITY_CHECK": "Numerous placeholders exist in the 'query' fields, such as 'bandwidth_AB', 'transmission_efficiency_AE_direct', etc. These need to be replaced with actual numerical values from the problem description.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly formulated based on the problem description. The provided constraints do not logically link the variables as described.",
+    "LINEARITY_VALIDATION": "The objective function and constraints include non-linear terms (e.g., efficiency constraints), violating the standard Linear Programming (LP) formulation.",
+    "DIMENSIONAL_ANALYSIS": "The unit consistency check is not applicable here as the problem description does not specify units for the variables and constraints.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are poorly formulated and do not match the problem description. For example, the'sum_bandwidth_constraint' and 'indirect_bandwidth_constraint' do not correctly reflect the problem requirements. The 'efficiency_constraint_AE_direct' and 'efficiency_constraint_AE_indirect' also contain logical errors."
+}

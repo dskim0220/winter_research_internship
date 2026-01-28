@@ -1,0 +1,21 @@
+{
+    "SETS": {
+        "DAYS_OF_WEEK": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}",
+        "WORKING_DAYS": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}\\}"
+    },
+    "PARAMETERS": [
+        { "name": "EMPLOYEES_REQUIRED", "query": "EMPLOYEES_REQUIRED", "LaTeX": "EMPLOYEES_REQUIRED = \\{\\text{Monday}: 15, \\text{Tuesday}: 13, \\text{Wednesday}: 15, \\text{Thursday}: 18, \\text{Friday}: 14, \\text{Saturday}: 16, \\text{Sunday}: 10\\}" },
+        { "name": "MIN_DIFFERENCE", "query": "MIN_DIFFERENCE", "LaTeX": "MIN_DIFFERENCE = 7" },
+        { "name": "SUNDAY_MONDAY_PAIR", "query": "SUNDAY_MONDAY_PAIR", "LaTeX": "SUNDAY_MONDAY_PAIR = 3" }
+    ],
+    "VARIABLES": [
+        { "name": "x_{d,i}", "type": "Binary", "query": "x_{d,i}", "LaTeX": "x_{d,i} \\in \\{0, 1\\}" },
+        { "name": "y_{d,i}", "type": "Binary", "query": "y_{d,i}", "LaTeX": "y_{d,i} \\in \\{0, 1\\}" }
+    ],
+    "OBJECTIVE": { "query": "minimize sum(x_{d,i} for d in DAYS_OF_WEEK for i in WORKING_DAYS)", "LaTeX": "\\min \\sum_{d \\in \\text{DAYS_OF_WEEK}} \\sum_{i \\in \\text{WORKING_DAYS}} x_{d,i}" },
+    "CONSTRAINTS": [
+        { "name": "sum(x_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "query": "sum(x_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\text{WORKING_DAYS}} x_{d,i} = 1 \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
+        { "name": "sum(y_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "query": "sum(y_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\text{WORKING_DAYS}} y_{d,i} = 1 \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
+        { "name": "sum(x_{d,i} for d in {Monday, Wednesday}) <= x_{d,i} + x_{d+1,i} for d in {Monday, Wednesday} for i in WORKING_DAYS", "query": "sum(x_{d,i} for d in {Monday, Wednesday}) <= x_{d,i} + x_{d+1,i} for d in {Monday, Wednesday} for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\{\\text{Monday}, \\text{Wednesday}\\}} x_{d,i} \\leq x_{d,i} + x_{d+1,i} \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
+        { "name": "sum(x_{d,i} for d in {Sunday, Monday}) >= y_{d,i} for d in {Sunday, Monday} for i in DAYS_OF_WEEK", "query": "sum(x_{d,i} for d in {Sunday, Monday}) >= y_{d,i} for d in {Sunday, Monday} for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\{\\text{Sunday}, \\text{Monday}\\}} x_{d,i} \\geq y_{d,i} \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
+        { "name": "sum(x_{d,i} for d in DAYS_OF_WEEK) == EMPLOYEES_REQUIRED[d] for d in DAYS_OF_WEEK", "query": "sum(x_{d,i} for d in DAYS_OF_WEEK) == EMPLOYEES_REQUIRED[d] for d in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\text{DAYS_OF_WEEK}} x_{d,i}

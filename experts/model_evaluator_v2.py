@@ -24,9 +24,19 @@ Perform a rigorous triple-audit of the provided modeling JSON:
 3) Mathematical Integrity: Check for Big-M validity, Linearity, and Dimensional consistency.
 
 [SPECIFIC AUDIT GUIDELINES]
-- Numerical Precision: If a query says "124", the LaTeX MUST use "124". Flag any "0" placeholders or arbitrary constants.
-- Logic Alignment: If the query describes a conditional "If-Then", ensure the LaTeX uses binary variables and Big-M correctly.
-- Missing Constraints: Compare the Problem Description with the JSON. Flag if a constraint mentioned in the text has no corresponding entry in the JSON.
+1. Variable Property Audit: 
+   - Check if production amounts are incorrectly set as 'Binary'. 
+   - Production quantity MUST be Continuous/Integer, while 'Decision to produce' MUST be Binary.
+2. Objective Logic Audit:
+   - Ensure the Objective Function includes: (Price - Cost) * Quantity - Fixed_Costs.
+   - Flag if Fixed Costs are wrongly placed in CONSTRAINTS instead of the OBJECTIVE.
+3. Logical Linking (Big-M) Audit:
+   - If a Fixed Cost or Minimum Batch exists, there MUST be a linking constraint (e.g., x <= M * y) between the quantity (x) and the binary activation variable (y).
+4. Numerical Precision:
+   - Every number in the 'query' (e.g., 170000) must appear in the 'LaTeX'. 
+   - Flag "Numeric Forcing": creating meaningless equations just to use a number.
+5. Missing Constraints:
+   - Check if "Minimum Batch", "Total Production Limit (Tons)", and "Activation Time" are all modeled.
 
 Problem Description:
 {problem_description}
@@ -35,7 +45,7 @@ modeling(v3 JSON):
 {model_json}
 
 IMPORTANT OUTPUT RULES:
-1) Return ONLY a valid JSON. No prose.
+1) Return ONLY a valid JSON. NO PREAMBLE, NO POSTSCRIPT.
 2) Be merciless in "DATA_FIDELITY_CHECK" if the model used placeholders (e.g., 0) instead of actual numbers.
 3) Confidence Score Penalty: Automatically drop the score below 0.5 if major numerical data (Price, Cost, Quota) is missing or set to 0.
 

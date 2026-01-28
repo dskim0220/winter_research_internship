@@ -1,0 +1,46 @@
+{
+    "SETS": {
+        "GOODS": "X, Y, Z",
+        "TRUCK_TYPES": "X, Y, Z"
+    },
+    "PARAMETERS": [
+        { "name": "initial_cost_per_truck_X", "query": "initial_cost_per_truck_X", "LaTeX": "1000" },
+        { "name": "initial_cost_per_truck_Y", "query": "initial_cost_per_truck_Y", "LaTeX": "1200" },
+        { "name": "initial_cost_per_truck_Z", "query": "initial_cost_per_truck_Z", "LaTeX": "1500" },
+        { "name": "cost_reduction_per_100_investment_X", "query": "cost_reduction_per_100_investment_X", "LaTeX": "10" },
+        { "name": "cost_reduction_per_100_investment_Y", "query": "cost_reduction_per_100_investment_Y", "LaTeX": "12" },
+        { "name": "cost_reduction_per_100_investment_Z", "query": "cost_reduction_per_100_investment_Z", "LaTeX": "15" },
+        { "name": "total_trucks_available", "query": "total_trucks_available", "LaTeX": "50" },
+        { "name": "budget_for_optimization_software", "query": "budget_for_optimization_software", "LaTeX": "10000" },
+        { "name": "minimum_trucks_X", "query": "minimum_trucks_X", "LaTeX": "10" },
+        { "name": "minimum_trucks_Y", "query": "minimum_trucks_Y", "LaTeX": "15" },
+        { "name": "maximum_trucks_Z", "query": "maximum_trucks_Z", "LaTeX": "25" },
+        { "name": "max_cost_reduction_Z", "query": "max_cost_reduction_Z", "LaTeX": "37500" },
+        { "name": "total_cost_reduction_required", "query": "total_cost_reduction_required", "LaTeX": "0" },
+        { "name": "investment_to_savings_ratio", "query": "investment_to_savings_ratio", "LaTeX": "100 / 75" }
+    ],
+    "VARIABLES": [
+        { "name": "trucks_X", "type": "Continuous", "unit": "count", "query": "trucks_X", "LaTeX": "x_{X}" },
+        { "name": "trucks_Y", "type": "Continuous", "unit": "count", "query": "trucks_Y", "LaTeX": "x_{Y}" },
+        { "name": "trucks_Z", "type": "Continuous", "unit": "count", "query": "trucks_Z", "LaTeX": "x_{Z}" }
+    ],
+    "OBJECTIVE": {
+        "query": "minimize 1000*trucks_X + 1200*trucks_Y + 1500*trucks_Z - 10*trucks_X*(trucks_X/100) - 12*trucks_Y*(trucks_Y/100) - 15*trucks_Z*(trucks_Z/100)",
+        "LaTeX": "\\min \\left( 1000 x_{X} + 1200 x_{Y} + 1500 x_{Z} - 10 x_{X} \\frac{x_{X}}{100} - 12 x_{Y} \\frac{x_{Y}}{100} - 15 x_{Z} \\frac{x_{Z}}{100} \\right)"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "total_trucks_constraint",
+            "query": "trucks_X + trucks_Y + trucks_Z <= total_trucks_available",
+            "LaTeX": "x_{X} + x_{Y} + x_{Z} \\leq 50"
+        },
+        {
+            "name": "minimum_trucks_X_constraint",
+            "query": "trucks_X >= minimum_trucks_X",
+            "LaTeX": "x_{X} \\geq 10"
+        },
+        {
+            "name": "minimum_trucks_Y_constraint",
+            "query": "trucks_Y >= minimum_trucks_Y",
+            "LaTeX": "x_{Y} \\geq 15"
+        }

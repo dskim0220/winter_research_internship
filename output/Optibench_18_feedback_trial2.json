@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON lacks critical details and logical consistency checks.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The 'query' fields should contain the actual numbers from the problem description.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies exist between 'query' and 'LaTeX' fields. Placeholder values and missing numbers are evident.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are defined based on the provided logic. The problem description does not specify any fixed costs or minimum batch requirements.",
+    "LINEARITY_VALIDATION": "The objective function and constraints are linear, but the problem description does not provide enough information to verify this rigorously.",
+    "DIMENSIONAL_ANALYSIS": "Unit consistency is not checked. The problem description mentions tons, but the units in the JSON are not specified.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are missing specific details such as the exact relationships between binary and continuous variables, and the logic behind the constraints is not clearly defined."
+}

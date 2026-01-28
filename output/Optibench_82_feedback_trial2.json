@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the 'LaTeX' formulations, and some key parameters are missing.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders and do not match the problem description. Specifically, 'EMPLOYEES_REQUIRED', 'MIN_DIFFERENCE', and 'SUNDAY_MONDAY_PAIR' are not defined in the problem description.",
+    "DATA_FIDELITY_CHECK": "Numerical values in 'query' fields are placeholders (e.g., 15, 13, 15, etc.). These do not correspond to actual numbers in the 'LaTeX' formulations.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the model, which is expected given the current formulation. However, the model lacks critical constraints such as 'Minimum Batch', 'Total Production Limit (Tons)', and 'Activation Time'.",
+    "LINEARITY_VALIDATION": "The model does not include any variable-to-variable multiplication, which is good. However, the model is not fully linear due to the presence of binary variables.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed in the model. The units of 'EMPLOYEES_REQUIRED' and other parameters are not specified.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are poorly formulated and do not align with the problem description. For example, the'shift_constraint_1' and'shift_constraint_2' do not correctly reflect the logic described in the problem. Additionally, the 'group_constraint' and 'employee_constraint' are redundant and should be simplified."
+}

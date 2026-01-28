@@ -1,0 +1,31 @@
+{
+    "SETS": {
+        "Warehouses": ["New_York", "Los_Angeles", "Chicago", "Atlanta"],
+        "Regions": ["Region_1", "Region_2", "Region_3"]
+    },
+    "PARAMETERS": [
+        { "name": "Fixed_Costs", "query": "Fixed_Costs(New_York)", "LaTeX": "$400$" },
+        { "name": "Fixed_Costs", "query": "Fixed_Costs(Los_Angeles)", "LaTeX": "$500$" },
+        { "name": "Fixed_Costs", "query": "Fixed_Costs(Chicago)", "LaTeX": "$300$" },
+        { "name": "Fixed_Costs", "query": "Fixed_Costs(Atlanta)", "LaTeX": "$150$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(New_York, Region_1)", "LaTeX": "$20$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(New_York, Region_2)", "LaTeX": "$40$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(New_York, Region_3)", "LaTeX": "$50$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Los_Angeles, Region_1)", "LaTeX": "$48$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Los_Angeles, Region_2)", "LaTeX": "$15$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Los_Angeles, Region_3)", "LaTeX": "$26$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Chicago, Region_1)", "LaTeX": "$26$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Chicago, Region_2)", "LaTeX": "$35$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Chicago, Region_3)", "LaTeX": "$18$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Atlanta, Region_1)", "LaTeX": "$24$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Atlanta, Region_2)", "LaTeX": "$50$" },
+        { "name": "Shipping_Costs", "query": "Shipping_Costs(Atlanta, Region_3)", "LaTeX": "$35$" },
+        { "name": "Demand", "query": "Demand(Region_1)", "LaTeX": "$80$" },
+        { "name": "Demand", "query": "Demand(Region_2)", "LaTeX": "$70$" },
+        { "name": "Demand", "query": "Demand(Region_3)", "LaTeX": "$40$" }
+    ],
+    "VARIABLES": [
+        { "name": "Open_New_York", "type": "Binary", "query": "Open_New_York", "LaTeX": "$x_{New_York}$" },
+        { "name": "Open_Los_Angeles", "type": "Binary", "query": "Open_Los_Angeles", "LaTeX": "$x_{Los_Angeles}$" },
+        { "name": "Open_Chicago", "type": "Binary", "query": "Open_Chicago", "LaTeX": "$x_{Chicago}$" },
+        { "name": "Open_Atlanta", "type": "Binary", "query": "Open_Atlanta", "LaTeX": "$x_{Atlanta}$" }

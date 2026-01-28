@@ -1,0 +1,17 @@
+{
+    "SETS": {
+        "CITIES": ["New York", "Los Angeles", "Chicago", "Atlanta"],
+        "REGIONS": ["Region 1", "Region 2", "Region 3"]
+    },
+    "PARAMETERS": [
+        { "name": "Fixed_Costs", "query": "Fixed Costs", "LaTeX": "\\begin{align*} \\text{Fixed_Costs}[\\text{New York}] &= 400 \\\\ \\text{Fixed_Costs}[\\text{Los Angeles}] &= 500 \\\\ \\text{Fixed_Costs}[\\text{Chicago}] &= 300 \\\\ \\text{Fixed_Costs}[\\text{Atlanta}] &= 150 \\end{align*}" },
+        { "name": "Shipment_Costs", "query": "Shipment Costs", "LaTeX": "\\begin{align*} \\text{Shipment_Costs}[\\text{New York}][\\text{Region 1}] &= 20 \\\\ \\text{Shipment_Costs}[\\text{New York}][\\text{Region 2}] &= 40 \\\\ \\text{Shipment_Costs}[\\text{New York}][\\text{Region 3}] &= 50 \\\\ \\text{Shipment_Costs}[\\text{Los Angeles}][\\text{Region 1}] &= 48 \\\\ \\text{Shipment_Costs}[\\text{Los Angeles}][\\text{Region 2}] &= 15 \\\\ \\text{Shipment_Costs}[\\text{Los Angeles}][\\text{Region 3}] &= 26 \\\\ \\text{Shipment_Costs}[\\text{Chicago}][\\text{Region 1}] &= 26 \\\\ \\text{Shipment_Costs}[\\text{Chicago}][\\text{Region 2}] &= 35 \\\\ \\text{Shipment_Costs}[\\text{Chicago}][\\text{Region 3}] &= 18 \\\\ \\text{Shipment_Costs}[\\text{Atlanta}][\\text{Region 1}] &= 24 \\\\ \\text{Shipment_Costs}[\\text{Atlanta}][\\text{Region 2}] &= 50 \\\\ \\text{Shipment_Costs}[\\text{Atlanta}][\\text{Region 3}] &= 35 \\end{align*}" },
+        { "name": "Demand", "query": "Weekly Demands", "LaTeX": "\\begin{align*} \\text{Demand}[\\text{Region 1}] &= 80 \\\\ \\text{Demand}[\\text{Region 2}] &= 70 \\\\ \\text{Demand}[\\text{Region 3}] &= 40 \\end{align*}" }
+    ],
+    "VARIABLES": [
+        { "name": "Open_New_York", "type": "Binary", "query": "Open New York Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{New York}} &\\in \\{0, 1\\} \\end{align*}" },
+        { "name": "Open_Los_Angeles", "type": "Binary", "query": "Open Los Angeles Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{Los Angeles}} &\\in \\{0, 1\\} \\end{align*}" },
+        { "name": "Open_Chicago", "type": "Binary", "query": "Open Chicago Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{Chicago}} &\\in \\{0, 1\\} \\end{align*}" },
+        { "name": "Open_Atlanta", "type": "Binary", "query": "Open Atlanta Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{Atlanta}} &\\in \\{0, 1\\} \\end{align*}" },
+        { "name": "Supply_New_York", "type": "Continuous", "query": "Supply from New York Warehouse", "LaTeX": "\\begin{align*} \\text{Supply}_{\\text{New York}} &\\in [0, 100] \\end{align*}" },
+        { "name": "Supply_Los_Angeles", "type": "Continuous", "query": "Supply from Los Angeles Warehouse", "LaTeX": "\\begin{align*} \\text{Supply}_{\\text{Los Angeles}}

@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON contains several issues that need to be addressed for it to be considered accurate and grounded in the problem description.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The queries are placeholders and do not reflect the actual problem requirements.",
+    "DATA_FIDELITY_CHECK": "Numerical values in the 'query' fields do not correspond to those in the LaTeX representations. For example, the fixed costs and shipment costs should include specific numerical values.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided in the JSON, which is required based on the logical conditions given in the problem description.",
+    "LINEARITY_VALIDATION": "The objective function does not follow the standard linear form. It should be (Price - Cost) * Quantity - Fixed_Costs, but the current formulation does not account for this properly.",
+    "DIMENSIONAL_ANALYSIS": "The dimensional consistency check is not applicable here as the problem is formulated in terms of units and costs rather than physical dimensions.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the variables and their types. For instance, the binary variables should be linked with continuous variables using Big-M constraints, and the continuous variables should be constrained by the fixed costs and minimum batch requirements."
+}

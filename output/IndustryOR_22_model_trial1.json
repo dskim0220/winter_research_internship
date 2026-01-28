@@ -1,0 +1,89 @@
+{
+    "SETS": {
+        "PRODUCTS": "A1, A2, A3",
+        "ACTIVATION_LINES": "A1, A2, A3"
+    },
+    "PARAMETERS": [
+        {
+            "name": "MAX_DEMAND",
+            "query": "MAX_DEMAND[A1]",
+            "LaTeX": "\\maxdemand{A1}"
+        },
+        {
+            "name": "PRICE",
+            "query": "PRICE[A1]",
+            "LaTeX": "\\price{A1}"
+        },
+        {
+            "name": "COST",
+            "query": "COST[A1]",
+            "LaTeX": "\\cost{A1}"
+        },
+        {
+            "name": "ACTIVATION_COST",
+            "query": "ACTIVATION_COST[A1]",
+            "LaTeX": "\\activationcost{A1}"
+        },
+        {
+            "name": "MINIMUM_BATCH",
+            "query": "MINIMUM_BATCH[A1]",
+            "LaTeX": "\\minimumbatch{A1}"
+        },
+        {
+            "name": "TOTAL_PRODUCTION_LIMIT",
+            "query": "TOTAL_PRODUCTION_LIMIT",
+            "LaTeX": "\\totalproductionlimit"
+        },
+        {
+            "name": "ACTIVATION_TIME",
+            "query": "ACTIVATION_TIME[A1]",
+            "LaTeX": "\\activationtime{A1}"
+        }
+    ],
+    "VARIABLES": [
+        {
+            "name": "produce_A1",
+            "type": "Binary",
+            "query": "produce_A1",
+            "LaTeX": "\\text{produce}_A1"
+        },
+        {
+            "name": "produce_A2",
+            "type": "Binary",
+            "query": "produce_A2",
+            "LaTeX": "\\text{produce}_A2"
+        },
+        {
+            "name": "produce_A3",
+            "type": "Binary",
+            "query": "produce_A3",
+            "LaTeX": "\\text{produce}_A3"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Maximize Revenue - Fixed Costs",
+        "LaTeX": "\\max \\left( \\sum_{i=A1}^{A3} \\price{i} \\cdot \\produce{i} - \\sum_{i=A1}^{A3} \\activationcost{i} \\cdot \\produce{i} \\right)"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "Total Production Limit",
+            "query": "produce_A1 * MAX_DEMAND[A1] + produce_A2 * MAX_DEMAND[A2] + produce_A3 * MAX_DEMAND[A3] <= TOTAL_PRODUCTION_LIMIT",
+            "LaTeX": "\\sum_{i=A1}^{A3} \\maxdemand{i} \\cdot \\produce{i} \\leq \\totalproductionlimit"
+        },
+        {
+            "name": "Activation Time Constraint",
+            "query": "produce_A1 * ACTIVATION_TIME[A1] >= 57",
+            "LaTeX": "\\activationtime{A1} \\cdot \\produce{A1} \\geq 57"
+        },
+        {
+            "name": "Fixed Activation Costs",
+            "query": "ACTIVATION_COST[A1] * produce_A1 + ACTIVATION_COST[A2] * produce_A2 + ACTIVATION_COST[A3] * produce_A3 >= 0",
+            "LaTeX": "\\activationcost{A1} \\cdot \\produce{A1} + \\activationcost{A2} \\cdot \\produce{A2} + \\activationcost{A3} \\cdot \\produce{A3} \\geq 0"
+        },
+        {
+            "name": "Minimum Batch Constraints",
+            "query": "produce_A1 >= MINIMUM_BATCH[A1], produce_A2 >= MINIMUM_BATCH[A2], produce_A3 >= MINIMUM_BATCH[A3]",
+            "LaTeX": "\\minimumbatch{A1} \\leq \\produce{A1}, \\minimumbatch{A2} \\leq \\produce{A2}, \\minimumbatch{A3} \\leq \\produce{A3}"
+        }
+    ]
+}

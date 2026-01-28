@@ -1,0 +1,107 @@
+{
+    "SETS": {
+        "Suppliers": [
+            "A",
+            "B",
+            "C"
+        ]
+    },
+    "PARAMETERS": [
+        {
+            "name": "Supplier_A_Price",
+            "query": "Supplier_A_Price",
+            "LaTeX": "120"
+        },
+        {
+            "name": "Supplier_B_Price",
+            "query": "Supplier_B_Price",
+            "LaTeX": "110"
+        },
+        {
+            "name": "Supplier_C_Price",
+            "query": "Supplier_C_Price",
+            "LaTeX": "100"
+        },
+        {
+            "name": "MinTables",
+            "query": "MinTables",
+            "LaTeX": "150"
+        },
+        {
+            "name": "MaxTables",
+            "query": "MaxTables",
+            "LaTeX": "600"
+        },
+        {
+            "name": "AtLeastSevenOrders",
+            "query": "AtLeastSevenOrders",
+            "LaTeX": "7"
+        }
+    ],
+    "VARIABLES": [
+        {
+            "name": "orders_A",
+            "type": "Binary",
+            "query": "orders_A",
+            "LaTeX": "x_{A}"
+        },
+        {
+            "name": "orders_B",
+            "type": "Integer",
+            "query": "orders_B",
+            "LaTeX": "x_{B}"
+        },
+        {
+            "name": "orders_C",
+            "type": "Integer",
+            "query": "orders_C",
+            "LaTeX": "x_{C}"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Objective",
+        "LaTeX": "\\text{Minimize } 120 x_{A} + 110 x_{B} + 100 x_{C}"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "TotalTables",
+            "query": "TotalTables",
+            "LaTeX": "20 x_{A} + 15 x_{B} + 15 x_{C} \\geq 150"
+        },
+        {
+            "name": "MaxTables",
+            "query": "MaxTables",
+            "LaTeX": "20 x_{A} + 15 x_{B} + 15 x_{C} \\leq 600"
+        },
+        {
+            "name": "AtLeastThreeOrdersFromB",
+            "query": "AtLeastThreeOrdersFromB",
+            "LaTeX": "x_{B} \\geq 3"
+        },
+        {
+            "name": "SupplierABDependent",
+            "query": "SupplierABDependent",
+            "LaTeX": "x_{B} \\geq 3 x_{A}"
+        },
+        {
+            "name": "SupplierBCDependent",
+            "query": "SupplierBCDependent",
+            "LaTeX": "x_{B} \\geq x_{C}"
+        },
+        {
+            "name": "SumOfOrdersFromAAndB",
+            "query": "SumOfOrdersFromAAndB",
+            "LaTeX": "x_{A} + x_{B} \\geq 25"
+        },
+        {
+            "name": "SumOfOrdersFromBAndC",
+            "query": "SumOfOrdersFromBAndC",
+            "LaTeX": "x_{B} + x_{C} \\geq 30"
+        },
+        {
+            "name": "AtLeastSevenOrders",
+            "query": "AtLeastSevenOrders",
+            "LaTeX": "x_{A} + x_{B} + x_{C} \\geq 7"
+        }
+    ]
+}

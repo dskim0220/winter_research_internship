@@ -1,0 +1,98 @@
+{
+    "SETS": {
+        "query": "Sets not applicable for this problem.",
+        "LaTeX": ""
+    },
+    "PARAMETERS": [
+        {
+            "name": "Total_Demand_Tons",
+            "query": "Total_Demand_Tons",
+            "LaTeX": "$T = 1210$"
+        },
+        {
+            "name": "Activation_Costs",
+            "query": "Activation_Costs",
+            "LaTeX": "\\begin{align*}
+                C_{A1} &= 170000 \\\\
+                C_{A2} &= 150000 \\\\
+                C_{A3} &= 100000
+            \\end{align*}"
+        },
+        {
+            "name": "Minimum_Batch",
+            "query": "Minimum_Batch",
+            "LaTeX": "\\begin{align*}
+                M_{A1} &= 20 \\\\
+                M_{A2} &= 20 \\\\
+                M_{A3} &= 16
+            \\end{align*}"
+        },
+        {
+            "name": "Days",
+            "query": "Days",
+            "LaTeX": "$D = 22$"
+        },
+        {
+            "name": "Demand_Satisfaction",
+            "query": "Demand_Satisfaction",
+            "LaTeX": "\\begin{align*}
+                S_{A1} &= 5300 \\\\
+                S_{A2} &= 4500 \\\\
+                S_{A3} &= 5400
+            \\end{align*}"
+        },
+        {
+            "name": "Demand",
+            "query": "Demand",
+            "LaTeX": "\\begin{align*}
+                D_{A1} &= 5300 \\\\
+                D_{A2} &= 4500 \\\\
+                D_{A3} &= 5400
+            \\end{align*}"
+        },
+        {
+            "name": "Activation_Time_Minutes",
+            "query": "Activation_Time_Minutes",
+            "LaTeX": "$T_{act} = 57$"
+        }
+    ],
+    "VARIABLES": [
+        {
+            "name": "produce_A1",
+            "type": "Binary",
+            "query": "produce_A1",
+            "LaTeX": "\\begin{align*}
+                x_{A1} &= 1 \quad \text{if } A1 \text{ is produced} \\\\
+                x_{A1} &= 0 \quad \text{otherwise}
+            \\end{align*}"
+        },
+        {
+            "name": "produce_A2",
+            "type": "Binary",
+            "query": "produce_A2",
+            "LaTeX": "\\begin{align*}
+                x_{A2} &= 1 \quad \text{if } A2 \text{ is produced} \\\\
+                x_{A2} &= 0 \quad \text{otherwise}
+            \\end{align*}"
+        },
+        {
+            "name": "produce_A3",
+            "type": "Binary",
+            "query": "produce_A3",
+            "LaTeX": "\\begin{align*}
+                x_{A3} &= 1 \quad \text{if } A3 \text{ is produced} \\\\
+                x_{A3} &= 0 \quad \text{otherwise}
+            \\end{align*}"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Maximize Revenue - Fixed Costs",
+        "LaTeX": "\\begin{align*}
+            \text{Maximize } Z &= \sum_{i=A1,A2,A3} \left( p_i \cdot x_i - c_i \cdot x_i - a_i \cdot y_i \right) \\\\
+                                &\text{subject to } \sum_{i=A1,A2,A3} x_i \leq T \\\\
+                                &\sum_{i=A1,A2,A3} y_i \geq T_{act} \\\\
+                                &x_i \in \{0,1\} \quad \forall i \in \{A1,A2,A3\} \\\\
+                                &y_i \in \{0,1\} \quad \forall i \in \{A1,A2,A3\} \\\\
+                                &x_i + y_i \leq 1 \quad \forall i \in \{A1,A2,A3\}
+        \\end{align*}"
+    }

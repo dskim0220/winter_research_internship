@@ -1,15 +1,10 @@
 {
-    "CONFIDENCE_SCORE": 0.50,
-    "OVERALL_FEEDBACK": "The model attempts to capture the essence of the problem but contains several issues. The binary and continuous variable coupling is not clearly defined, and there are inconsistencies in the constraints and objective function.",
-    "DATA_FIDELITY_CHECK": "The model uses the exact numbers from the problem, but some constants like 'FixedActivationTime' are not defined in the problem statement.",
-    "LOGICAL_COUPLING_CHECK": "The coupling between binary and continuous variables is unclear. The constraint \( x_{A1} \geq \frac{T_{fixed}}{60} \) is problematic because 'T_fixed' is not defined in the problem statement.",
-    "LINEARITY_VALIDATION": "There is a non-linear term \( x_{A1} \geq 0.5 x_{A1} + 0.5 B_{A1} \). This term suggests a quadratic relationship which violates the MILP standard.",
-    "DIMENSIONAL_ANALYSIS": "The units do not consistently align across all equations. For example, the activation cost terms are in dollars per 100 kg, but the production cost terms are in dollars per 100 kg.",
-    "CONSTRAINTS_FEEDBACK": {
-        "Total Production Limit": "The constraint \( x_{A1} + x_{A2} + x_{A3} \leq L_{total} \) is correct, but \( L_{total} \) should be in units of 100 kg.",
-        "Minimum Production Batch": "The constraints \( x_{A1} \geq B_{A1} \cdot B_{A1} \), \( x_{A2} \geq B_{A2} \cdot B_{A2} \), and \( x_{A3} \geq B_{A3} \cdot B_{A3} \) are incorrect. They suggest a quadratic relationship which is not present in the problem.",
-        "Fixed Activation Time": "The constraint \( x_{A1} \geq \frac{T_{fixed}}{60} \) is problematic because 'T_fixed' is not defined in the problem statement.",
-        "Daily Production Limit": "The constraint \( x_{A1} \geq 57 \) minutes is not appropriate. It should be related to the daily production limit of 22 days.",
-        "Revenue Maximization": "The objective function \( \max P_{A1} x_{A1} + P_{A2} x_{A2} + P_{A3} x_{A3} - R_{A1} x_{A1} - R_{A2} x_{A2} - R_{A3} x_{A3} - C_{A1} x_{A1} - C_{A2} x_{A2} - C_{A3} x_{A3} \) is correct."
-    }
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. Additionally, the objective function and constraints do not fully align with the problem description.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields are not faithfully extracted from the problem description. The following queries are hallucinations:\n- 'produce_A1', 'produce_A2', 'produce_A3' should be 'produce_A1', 'produce_A2', 'produce_A3' respectively.\n- 'produce_A1', 'produce_A2', 'produce_A3' are incorrectly set as 'Binary' when they should be 'Continuous/Integer'.\n- 'produce_A1', 'produce_A2', 'produce_A3' are not correctly linked to the 'activate' logic.",
+    "DATA_FIDELITY_CHECK": "Numerical mismatches and zero-filling are found in the 'LaTeX' compared to the 'query'. The following discrepancies are noted:\n- 'MAX_DEMAND' and 'PRICE' are correctly represented.\n- 'COST' is correctly represented.\n- 'ACTIVATION_COST' is correctly represented.\n- 'MIN_BATCH' is correctly represented.\n- 'TOTAL_PRODUCTION_LIMIT' is correctly represented.\n- 'FIXED_ACTIVATION_TIME' is correctly represented.\n- 'produce_A1', 'produce_A2', 'produce_A3' are incorrectly set as 'Binary' and not linked to the 'activate' logic.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly implemented based on the logic in the queries. The 'Fixed_Activation_Time' constraint is incorrectly formulated.",
+    "LINEARITY_VALIDATION": "The model is not linear due to the presence of binary variables and non-linear terms like 'produce_A1 * MAX_DEMAND[A1]'.",
+    "DIMENSIONAL_ANALYSIS": "The unit conversion from tons to 100kg units is not performed consistently across the model.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are poorly formulated and do not accurately reflect the problem description. The following issues are noted:\n- 'Total_Demand' constraint is incorrectly formulated.\n- 'Fixed_Activation_Time' constraint is incorrectly formulated.\n- 'Production_Limitation' constraint is incorrectly formulated.\n- 'Minimum_Batch' constraints are correctly formulated but redundant since 'produce_A1', 'produce_A2', 'produce_A3' are binary variables."
 }

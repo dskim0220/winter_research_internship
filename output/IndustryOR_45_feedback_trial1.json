@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.5,
+    "OVERALL_FEEDBACK": "The model largely follows the problem description but lacks specific numerical values and some logical constraints are not fully addressed.",
+    "QUERY_GROUNDING_AUDIT": "No hallucinations found. All 'query' fields are faithful extracts from the problem.",
+    "DATA_FIDELITY_CHECK": "Numerical values in 'query' fields do not match those in 'LaTeX'. Some values are placeholders (e.g., 0), which should be replaced with actual numbers.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M links are present in the current formulation. Additional constraints are needed to enforce the logical conditions.",
+    "LINEARITY_VALIDATION": "The model appears linear, but the objective function needs to be adjusted to include the correct terms.",
+    "DIMENSIONAL_ANALYSIS": "Unit consistency is maintained within the given data.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are mostly correctly mapped to their corresponding queries, but some logical conditions need to be enforced through additional constraints."
+}

@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON lacks critical details and logical consistency checks.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The 'query' fields are placeholders and do not reflect the actual problem requirements.",
+    "DATA_FIDELITY_CHECK": "No numeric values from the query are present in the LaTeX formulation.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are defined based on the provided logic.",
+    "LINEARITY_VALIDATION": "The model does not include any variable-to-variable multiplication, but this check cannot be performed without complete information.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is provided.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the provided queries and LaTeX formulations. Many constraints are missing or incorrectly formulated."
+}

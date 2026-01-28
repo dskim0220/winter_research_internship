@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON does not match the problem description and contains several logical errors.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not correspond to the problem description. The queries are placeholders and do not reflect the actual problem requirements.",
+    "DATA_FIDELITY_CHECK": "No numeric values from the problem description are present in the 'LaTeX' section. All numbers are set to 0.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided, which is required based on the problem description.",
+    "LINEARITY_VALIDATION": "The model is not linear due to the presence of binary variables and the objective function structure.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed, and the units are inconsistent with the problem description.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the problem description. For example, the requirement that 'if the New York warehouse is opened, then the Los Angeles warehouse must be opened' is not represented in the constraints."
+}

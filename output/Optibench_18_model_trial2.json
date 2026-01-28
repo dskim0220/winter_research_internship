@@ -1,0 +1,36 @@
+{
+    "SETS": {
+        "LINES": "4",
+        "WORKERS": "50"
+    },
+    "PARAMETERS": [
+        { "name": "PRODUCTIVITY.line1.smartphones", "query": "10", "LaTeX": "10" },
+        { "name": "PRODUCTIVITY.line1.tablets", "query": "5", "LaTeX": "5" },
+        { "name": "PRODUCTIVITY.line1.laptops", "query": "3", "LaTeX": "3" },
+        { "name": "PRODUCTIVITY.line2.smartphones", "query": "8", "LaTeX": "8" },
+        { "name": "PRODUCTIVITY.line2.tablets", "query": "6", "LaTeX": "6" },
+        { "name": "PRODUCTIVITY.line2.laptops", "query": "4", "LaTeX": "4" },
+        { "name": "PRODUCTIVITY.line3.smartphones", "query": "6", "LaTeX": "6" },
+        { "name": "PRODUCTIVITY.line3.tablets", "query": "7", "LaTeX": "7" },
+        { "name": "PRODUCTIVITY.line3.laptops", "query": "5", "LaTeX": "5" },
+        { "name": "PRODUCTIVITY.line4.smartphones", "query": "5", "LaTeX": "5" },
+        { "name": "PRODUCTIVITY.line4.tablets", "query": "8", "LaTeX": "8" },
+        { "name": "PRODUCTIVITY.line4.laptops", "query": "6", "LaTeX": "6" },
+        { "name": "DEMAND.smartphones", "query": "1000", "LaTeX": "1000" },
+        { "name": "DEMAND.tablets", "query": "800", "LaTeX": "800" },
+        { "name": "DEMAND.laptops", "query": "600", "LaTeX": "600" },
+        { "name": "MAX_WORKERS_PER_LINE", "query": "20", "LaTeX": "20" },
+        { "name": "FULL_LINE_MIN_WORKERS", "query": "20", "LaTeX": "20" },
+        { "name": "OTHER_LINES_MAX_WORKERS", "query": "30", "LaTeX": "30" },
+        { "name": "NO_THREE_FULL", "query": "2", "LaTeX": "2" },
+        { "name": "LINE_3_MAX_WORKERS", "query": "10", "LaTeX": "10" },
+        { "name": "WORKERS_AVAILABLE", "query": "50", "LaTeX": "50" }
+    ],
+    "VARIABLES": [
+        { "name": "hours_smartphones", "type": "Continuous", "unit": "hours", "query": "...", "LaTeX": "\\text{hours}_{\\text{smartphones}}" },
+        { "name": "hours_tablets", "type": "Continuous", "unit": "hours", "query": "...", "LaTeX": "\\text{hours}_{\\text{tablets}}" },
+        { "name": "hours_laptops", "type": "Continuous", "unit": "hours", "query": "...", "LaTeX": "\\text{hours}_{\\text{laptops}}" }
+    ],
+    "OBJECTIVE": { "query": "Minimize hours_smartphones + hours_tablets + hours_laptops", "LaTeX": "\\min \\quad \\text{hours}_{\\text{smartphones}} + \\text{hours}_{\\text{tablets}} + \\text{hours}_{\\text{laptops}}" },
+    "CONSTRAINTS": [
+        { "name": "Demand_Satisfaction", "constraint_type": "Equality", "expression": "PRODUCTIVITY.line1.smartphones * hours_smartphones + PRODUCTIVITY.line2.smartphones * hours_smartphones + PRODUCTIVITY.line3.smartphones * hours_smartphones + PRODUCTIVITY.line4.smartphones * hours_smartphones >= DEMAND.smartphones", "LaTeX": "\\begin{aligned} & \\sum_{i=1}^{4} \\text{PRODUCTIVITY}.linei.smartphones * \\text{hours}_{\\text{smartphones}} \\geq \\text{DEMAND}.smartphones \\\\ & \\sum_{i=1}^{4} \\text{PRODUCTIVITY}.linei.tablets * \\text{hours}_{\\text{tablets}} \\geq \\text{DEMAND}.tablets \\\\ & \\sum_{i=1}^{4} \\text{PRODUCTIVITY}

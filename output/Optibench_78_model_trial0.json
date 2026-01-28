@@ -1,0 +1,26 @@
+{
+    "SETS": {
+        "CITIES": "4",
+        "REGIONS": "3",
+        "WAREHOUSES": "4"
+    },
+    "PARAMETERS": [
+        { "name": "fixed_costs", "query": "FIXED_COSTS", "LaTeX": "\\text{FIXED_COSTS} = \\begin{pmatrix} 400 & 500 \\\\ 300 & 150 \\end{pmatrix}" },
+        { "name": "shipment_costs", "query": "SHIPMENT_COSTS", "LaTeX": "\\text{SHIPMENT_COSTS} = \\begin{pmatrix} 20 & 40 & 50 \\\\ 48 & 15 & 26 \\\\ 26 & 35 & 18 \\\\ 24 & 50 & 35 \\end{pmatrix}" },
+        { "name": "demands", "query": "DEMANDS", "LaTeX": "\\text{DEMANDS} = \\begin{pmatrix} 80 \\\\ 70 \\\\ 40 \\end{pmatrix}" }
+    ],
+    "VARIABLES": [
+        { "name": "open_NY", "type": "Binary", "query": "open_NY", "LaTeX": "\\text{open}_{\\text{NY}} \\in \\{0, 1\\}" },
+        { "name": "open_LA", "type": "Binary", "query": "open_LA", "LaTeX": "\\text{open}_{\\text{LA}} \\in \\{0, 1\\}" },
+        { "name": "open_CHI", "type": "Binary", "query": "open_CHI", "LaTeX": "\\text{open}_{\\text{CHI}} \\in \\{0, 1\\}" },
+        { "name": "open_ATL", "type": "Binary", "query": "open_ATL", "LaTeX": "\\text{open}_{\\text{ATL}} \\in \\{0, 1\\}" },
+        { "name": "ship_NY_R1", "type": "Continuous", "query": "ship_NY_R1", "LaTeX": "\\text{ship}_{\\text{NY}}^{\\text{R1}} \\geq 0" },
+        { "name": "ship_NY_R2", "type": "Continuous", "query": "ship_NY_R2", "LaTeX": "\\text{ship}_{\\text{NY}}^{\\text{R2}} \\geq 0" },
+        { "name": "ship_NY_R3", "type": "Continuous", "query": "ship_NY_R3", "LaTeX": "\\text{ship}_{\\text{NY}}^{\\text{R3}} \\geq 0" },
+        { "name": "ship_LA_R1", "type": "Continuous", "query": "ship_LA_R1", "LaTeX": "\\text{ship}_{\\text{LA}}^{\\text{R1}} \\geq 0" },
+        { "name": "ship_LA_R2", "type": "Continuous", "query": "ship_LA_R2", "LaTeX": "\\text{ship}_{\\text{LA}}^{\\text{R2}} \\geq 0" },
+        { "name": "ship_LA_R3", "type": "Continuous", "query": "ship_LA_R3", "LaTeX": "\\text{ship}_{\\text{LA}}^{\\text{R3}} \\geq 0" },
+        { "name": "ship_CHI_R1", "type": "Continuous", "query": "ship_CHI_R1", "LaTeX": "\\text{ship}_{\\text{CHI}}^{\\text{R1}} \\geq 0" },
+        { "name": "ship_CHI_R2", "type": "Continuous", "query": "ship_CHI_R2", "LaTeX": "\\text{ship}_{\\text{CHI}}^{\\text{R2}} \\geq 0" },
+        { "name": "ship_CHI_R3", "type": "Continuous", "query": "ship_CHI_R3", "LaTeX": "\\text{ship}_{\\text{CHI}}^{\\text{R3}} \\geq 0" },
+        { "name": "ship_ATL_R1", "type": "Continuous", "query": "ship_ATL_R1", "LaTeX": "\\text{ship}_{\\text{ATL}}^{\\text{R1}} \\geq 0" }

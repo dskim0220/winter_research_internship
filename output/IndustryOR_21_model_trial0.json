@@ -1,0 +1,138 @@
+{
+    "SETS": {
+        "Suppliers": "A, B, C"
+    },
+    "PARAMETERS": [
+        {
+            "name": "Supplier_A_Price",
+            "query": "Supplier_A_Price",
+            "LaTeX": "120"
+        },
+        {
+            "name": "Supplier_B_Price",
+            "query": "Supplier_B_Price",
+            "LaTeX": "110"
+        },
+        {
+            "name": "Supplier_C_Price",
+            "query": "Supplier_C_Price",
+            "LaTeX": "100"
+        },
+        {
+            "name": "MinTables",
+            "query": "MinTables",
+            "LaTeX": "150"
+        },
+        {
+            "name": "MaxTables",
+            "query": "MaxTables",
+            "LaTeX": "600"
+        },
+        {
+            "name": "OrdersFromA",
+            "query": "OrdersFromA",
+            "LaTeX": "20"
+        },
+        {
+            "name": "OrdersFromB",
+            "query": "OrdersFromB",
+            "LaTeX": "15"
+        },
+        {
+            "name": "OrdersFromC",
+            "query": "OrdersFromC",
+            "LaTeX": "15"
+        },
+        {
+            "name": "OrdersFromAAndB",
+            "query": "OrdersFromAAndB",
+            "LaTeX": "25"
+        },
+        {
+            "name": "OrdersFromBAndC",
+            "query": "OrdersFromBAndC",
+            "LaTeX": "30"
+        },
+        {
+            "name": "OrdersFromAOrBOrC",
+            "query": "OrdersFromAOrBOrC",
+            "LaTeX": "7"
+        }
+    ],
+    "VARIABLES": [
+        {
+            "name": "orders_A",
+            "type": "Integer",
+            "query": "orders_A",
+            "LaTeX": "\\text{Let } x_{A} \\text{ be the number of orders from Supplier A}"
+        },
+        {
+            "name": "orders_B",
+            "type": "Integer",
+            "query": "orders_B",
+            "LaTeX": "\\text{Let } x_{B} \\text{ be the number of orders from Supplier B}"
+        },
+        {
+            "name": "orders_C",
+            "type": "Integer",
+            "query": "orders_C",
+            "LaTeX": "\\text{Let } x_{C} \\text{ be the number of orders from Supplier C}"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Objective",
+        "LaTeX": "\\text{Minimize } 120x_{A} + 110x_{B} + 100x_{C}"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "MinTablesConstraint",
+            "query": "MinTablesConstraint",
+            "LaTeX": "20x_{A} + 15x_{B} + 15x_{C} \\geq 150"
+        },
+        {
+            "name": "MaxTablesConstraint",
+            "query": "MaxTablesConstraint",
+            "LaTeX": "20x_{A} + 15x_{B} + 15x_{C} \\leq 600"
+        },
+        {
+            "name": "AtLeastOneOrderFromA",
+            "query": "AtLeastOneOrderFromA",
+            "LaTeX": "x_{A} \\geq 1"
+        },
+        {
+            "name": "AtLeastThreeOrdersFromB",
+            "query": "AtLeastThreeOrdersFromB",
+            "LaTeX": "x_{B} \\geq 3"
+        },
+        {
+            "name": "SupplierABDependent",
+            "query": "SupplierABDependent",
+            "LaTeX": "x_{B} \\geq M(1 - x_{A})"
+        },
+        {
+            "name": "SupplierBCDependent",
+            "query": "SupplierBCDependent",
+            "LaTeX": "x_{C} \\geq M(1 - x_{B})"
+        },
+        {
+            "name": "SumOfOrdersFromAAndB",
+            "query": "SumOfOrdersFromAAndB",
+            "LaTeX": "20x_{A} + 15x_{B} \\geq 25"
+        },
+        {
+            "name": "SumOfOrdersFromBAndC",
+            "query": "SumOfOrdersFromBAndC",
+            "LaTeX": "15x_{B} + 15x_{C} \\geq 30"
+        },
+        {
+            "name": "AtLeastSevenOrders",
+            "query": "AtLeastSevenOrders",
+            "LaTeX": "x_{A} + x_{B} + x_{C} \\geq 7"
+        },
+        {
+            "name": "MaxTablesFromA",
+            "query": "MaxTablesFromA",
+            "LaTeX": "x_{A} \\leq 60"
+        }
+    ]
+}

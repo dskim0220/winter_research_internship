@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON contains numerous issues including incorrect variable types, logical errors, and missing constraints. Additionally, the mathematical formulation does not align with the problem description.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. Specifically, the 'Open_New_York', 'Open_Los_Angeles', 'Open_Chicago', and 'Open_Atlanta' variables should be Binary, but they are incorrectly set as Continuous. The 'Supply_New_York', 'Supply_Los_Angeles', etc., should be Continuous, but they are incorrectly set as Binary.",
+    "DATA_FIDELITY_CHECK": "Numerous numbers in the 'query' fields are placeholders (e.g., 0) and do not correspond to the actual values in the problem description. For example, the fixed costs and shipment costs are not correctly represented.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided, which is required for the given logical conditions (e.g., if New York is open, Los Angeles must be open).",
+    "LINEARITY_VALIDATION": "The objective function does not follow the correct form (Price - Cost) * Quantity - Fixed_Costs. The variable-to-variable multiplication is present, violating the MILP standard.",
+    "DIMENSIONAL_ANALYSIS": "The unit consistency check is not applicable here as the problem description and provided JSON do not specify units.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the provided variables and parameters. For instance, the constraint that 'if New York is open, then Los Angeles must be open' is not properly formulated. Similarly, the constraints regarding the total production limit and activation time are missing."
+}

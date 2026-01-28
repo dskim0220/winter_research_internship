@@ -1,0 +1,12 @@
+{
+    "SETS": {
+        "STUDENTS": {"1", "2", "3", "4", "5", "6"},
+        "DAYS": {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"}
+    },
+    "PARAMETERS": [
+        { "name": "wages", "query": "wages", "LaTeX": "\\begin{aligned} &\\text{wages}_{1, \\text{Monday}} = 6 \\\\ &\\text{wages}_{1, \\text{Tuesday}} = 0 \\\\ &\\text{wages}_{1, \\text{Wednesday}} = 6 \\\\ &\\text{wages}_{1, \\text{Thursday}} = 0 \\\\ &\\text{wages}_{1, \\text{Friday}} = 7 \\\\ &\\text{wages}_{2, \\text{Monday}} = 0 \\\\ &\\text{wages}_{2, \\text{Tuesday}} = 8 \\\\ &\\text{wages}_{2, \\text{Wednesday}} = 9 \\\\ &\\text{wages}_{2, \\text{Thursday}} = 5 \\\\ &\\text{wages}_{2, \\text{Friday}} = 0 \\\\ &\\text{wages}_{3, \\text{Monday}} = 4 \\\\ &\\text{wages}_{3, \\text{Tuesday}} = 8 \\\\ &\\text{wages}_{3, \\text{Wednesday}} = 3 \\\\ &\\text{wages}_{3, \\text{Thursday}} = 0 \\\\ &\\text{wages}_{3, \\text{Friday}} = 5 \\\\ &\\text{wages}_{4, \\text{Monday}} = 5 \\\\ &\\text{wages}_{4, \\text{Tuesday}} = 5 \\\\ &\\text{wages}_{4, \\text{Wednesday}} = 6 \\\\ &\\text{wages}_{4, \\text{Thursday}} = 0 \\\\ &\\text{wages}_{4, \\text{Friday}} = 4 \\\\ &\\text{wages}_{5, \\text{Monday}} = 3 \\\\ &\\text{wages}_{5, \\text{Tuesday}} = 0 \\\\ &\\text{wages}_{5, \\text{Wednesday}} = 5 \\\\ &\\text{wages}_{5, \\text{Thursday}} = 8 \\\\ &\\text{wages}_{5, \\text{Friday}} = 0 \\\\ &\\text{wages}_{6, \\text{Monday}} = 0 \\\\ &\\text{wages}_{6, \\text{Tuesday}} = 6 \\\\ &\\text{wages}_{6, \\text{Wednesday}} = 0 \\\\ &\\text{wages}_{6, \\text{Thursday}} = 6 \\\\ &\\text{wages}_{6, \\text{Friday}} = 5 \\\\ \\end{aligned}" },
+        { "name": "min_hours", "query": "min_hours", "LaTeX": "\\begin{aligned} &\\text{min_hours}_{1} = 8 \\\\ &\\text{min_hours}_{2} = 8 \\\\ &\\text{min_hours}_{3} = 8 \\\\ &\\text{min_hours}_{4} = 8 \\\\ &\\text{min_hours}_{5} = 7 \\\\ &\\text{min_hours}_{6} = 7 \\\\ \\end{aligned}" },
+        { "name": "max_shifts", "query": "max_shifts", "LaTeX": "\\begin{aligned} &\\text{max_shifts}_{1} = 2 \\\\ &\\text{max_shifts}_{2} = 2 \\\\ &\\text{max_shifts}_{3} = 2 \\\\ &\\text{max_shifts}_{4} = 2 \\\\ &\\text{max_shifts}_{5} = 2 \\\\ &\\text{max_shifts}_{6} = 2 \\\\ \\end{aligned}" },
+        { "name": "max_students_per_day", "query": "max_students_per_day", "LaTeX": "\\text{max_students_per_day} = 3" },
+        { "name": "total_hours", "query": "total_hours", "LaTeX": "\\text{total_hours} = 70" },
+        { "name": "max_hours_5_and_6", "query": "max_hours_5_and_6", "LaTeX": "\\text{max_hours_5_and_6} = 14" }

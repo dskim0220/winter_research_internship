@@ -1,0 +1,48 @@
+{
+    "SETS": {
+        "NODES": "A B C D E"
+    },
+    "PARAMETERS": [
+        { "name": "bandwidth_AB", "query": "bandwidth_AB", "LaTeX": "90" },
+        { "name": "bandwidth_AC", "query": "bandwidth_AC", "LaTeX": "85" },
+        { "name": "bandwidth_AD", "query": "bandwidth_AD", "LaTeX": "67" },
+        { "name": "bandwidth_BC", "query": "bandwidth_BC", "LaTeX": "70" },
+        { "name": "bandwidth_BD", "query": "bandwidth_BD", "LaTeX": "30" },
+        { "name": "bandwidth_CD", "query": "bandwidth_CD", "LaTeX": "25" },
+        { "name": "bandwidth_CE", "query": "bandwidth_CE", "LaTeX": "80" },
+        { "name": "bandwidth_DE", "query": "bandwidth_DE", "LaTeX": "56" },
+        { "name": "transmission_efficiency_AE_direct", "query": "transmission_efficiency_AE_direct", "LaTeX": "10" },
+        { "name": "transmission_efficiency_AE_indirect", "query": "transmission_efficiency_AE_indirect", "LaTeX": "96" },
+        { "name": "transmission_efficiency_AB", "query": "transmission_efficiency_AB", "LaTeX": "90" },
+        { "name": "min_bandwidth_AE_direct", "query": "min_bandwidth_AE_direct", "LaTeX": "65" },
+        { "name": "min_bandwidth_AE_indirect", "query": "min_bandwidth_AE_indirect", "LaTeX": "80" },
+        { "name": "min_bandwidth_sum", "query": "min_bandwidth_sum", "LaTeX": "100" }
+    ],
+    "VARIABLES": [
+        { "name": "link_AE_direct", "type": "Continuous", "unit": "bandwidth", "query": "link_AE_direct", "LaTeX": "x_{AE}" }
+    ],
+    "OBJECTIVE": { "query": "Maximize link_AE_direct", "LaTeX": "\\max x_{AE}" },
+    "CONSTRAINTS": [
+        { "name": "link_AE_direct_non_negative", "query": "link_AE_direct_non_negative", "LaTeX": "x_{AE} \\geq 0" },
+        { "name": "link_AE_indirect_non_negative", "query": "link_AE_indirect_non_negative", "LaTeX": "y_{AE} \\geq 0" },
+        { "name": "sum_bandwidth_constraint", "query": "sum_bandwidth_constraint", "LaTeX": "x_{AE} + y_{AE} \\leq 100" },
+        { "name": "indirect_bandwidth_constraint", "query": "indirect_bandwidth_constraint", "LaTeX": "y_{AE} \\leq 80" },
+        { "name": "direct_bandwidth_constraint", "query": "direct_bandwidth_constraint", "LaTeX": "x_{AE} \\geq 65" },
+        { "name": "efficiency_constraint_AE_direct", "query": "efficiency_constraint_AE_direct", "LaTeX": "x_{AE} = 10 \\cdot 0.9 \cdot 0.9" },
+        { "name": "efficiency_constraint_AE_indirect", "query": "efficiency_constraint_AE_indirect", "LaTeX": "y_{AE} = 96 \cdot 0.9" }
+    ]
+}
+```
+
+### Explanation:
+- **Sets**: Defined `NODES` as `A B C D E`.
+- **Parameters**:
+  - `bandwidth_AB`, `bandwidth_AC`, etc., are defined with their respective values from the table.
+  - `transmission_efficiency_AE_direct`, `transmission_efficiency_AE_indirect`, etc., are defined with their respective values.
+  - `min_bandwidth_AE_direct`, `min_bandwidth_AE_indirect`, and `min_bandwidth_sum` are defined with their respective values.
+- **Variables**:
+  - `link_AE_direct` is defined as a continuous variable `x_{AE}`.
+- **Objective Function**:
+  - Maximize `link_AE_direct` which is `x_{AE}`.
+- **Constraints**:
+  - `link_AE_direct_non_negative` ensures `x_{AE}

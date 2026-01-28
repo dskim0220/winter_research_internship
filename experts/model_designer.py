@@ -85,13 +85,12 @@ JSON Format:
 '''
 
     def __init__(self, model):
-        super().__init__(
-            name='model_designer',
-            description='Decomposes natural language problems into 6-part structured modeling data',#자연어 JSON 제작
-            model=model   
-        )
+        self.name='model_designer',
+        self.description='Decomposes natural language problems into 6-part structured modeling data',#자연어 JSON 제작
+        self.model=model   
         self.llm_extractor = get_llm(model_name=self.model,temperature=0.1)
         self.llm_formulator = get_llm(model_name=self.model,temperature=0.1)
+        print("초기화 완료!")
 
     
     def semantic_extractor(self,problem,feedback):
@@ -104,6 +103,7 @@ JSON Format:
         )
         raw_output = self.llm_extractor.invoke(message).content
         cleaned_json = self._extract_json(raw_output)
+        print("추출완료!")
         return cleaned_json
     
     def mathematical_formulator(self,problem,extracted_queries,feedback):
@@ -117,6 +117,7 @@ JSON Format:
         )
         raw_output = self.llm_formulator.invoke(message).content
         cleaned_json = self._extract_json(raw_output)
+        print("수식완료!")
         return cleaned_json
     
     def forward(self,problem,feedback):

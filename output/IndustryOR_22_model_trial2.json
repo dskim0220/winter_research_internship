@@ -1,0 +1,99 @@
+{
+    "SETS": {
+        "PRODUCTS": "A1, A2, A3",
+        "DAYS": "1, 2,..., 22"
+    },
+    "PARAMETERS": [
+        {
+            "name": "MAX_DEMAND",
+            "query": "MAX_DEMAND[A1]",
+            "LaTeX": "\\text{MAX_DEMAND}[A1]"
+        },
+        {
+            "name": "PRICE",
+            "query": "PRICE[A1]",
+            "LaTeX": "\\text{PRICE}[A1]"
+        },
+        {
+            "name": "COST",
+            "query": "COST[A1]",
+            "LaTeX": "\\text{COST}[A1]"
+        },
+        {
+            "name": "ACTIVATION_COST",
+            "query": "ACTIVATION_COST[A1]",
+            "LaTeX": "\\text{ACTIVATION_COST}[A1]"
+        },
+        {
+            "name": "MIN_BATCH",
+            "query": "MIN_BATCH[A1]",
+            "LaTeX": "\\text{MIN_BATCH}[A1]"
+        },
+        {
+            "name": "TOTAL_PRODUCTION_LIMIT",
+            "query": "TOTAL_PRODUCTION_LIMIT",
+            "LaTeX": "\\text{TOTAL_PRODUCTION_LIMIT}"
+        },
+        {
+            "name": "FIXED_ACTIVATION_TIME",
+            "query": "FIXED_ACTIVATION_TIME[A1]",
+            "LaTeX": "\\text{FIXED_ACTIVATION_TIME}[A1]"
+        }
+    ],
+    "VARIABLES": [
+        {
+            "name": "produce_A1",
+            "type": "Binary",
+            "query": "produce_A1",
+            "LaTeX": "x_{A1}"
+        },
+        {
+            "name": "produce_A2",
+            "type": "Binary",
+            "query": "produce_A2",
+            "LaTeX": "x_{A2}"
+        },
+        {
+            "name": "produce_A3",
+            "type": "Binary",
+            "query": "produce_A3",
+            "LaTeX": "x_{A3}"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Maximize 124*produce_A1 + 109*produce_A2 + 115*produce_A3 - 170000*produce_A1 - 150000*produce_A2 - 100000*produce_A3",
+        "LaTeX": "\\max \\left( 124 x_{A1} + 109 x_{A2} + 115 x_{A3} - 170000 x_{A1} - 150000 x_{A2} - 100000 x_{A3} \\right)"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "Total_Demand",
+            "query": "5300*produce_A1 + 4500*produce_A2 + 5400*produce_A3 <= 1210000",
+            "LaTeX": "5300 x_{A1} + 4500 x_{A2} + 5400 x_{A3} \\leq 1210000"
+        },
+        {
+            "name": "Fixed_Activation_Time",
+            "query": "produce_A1 >= FIXED_ACTIVATION_TIME[A1] / 60",
+            "LaTeX": "x_{A1} \\geq \\frac{\\text{FIXED_ACTIVATION_TIME}[A1]}{60}"
+        },
+        {
+            "name": "Production_Limitation",
+            "query": "produce_A1 + produce_A2 + produce_A3 <= TOTAL_PRODUCTION_LIMIT / 100",
+            "LaTeX": "x_{A1} + x_{A2} + x_{A3} \\leq \\frac{\\text{TOTAL_PRODUCTION_LIMIT}}{100}"
+        },
+        {
+            "name": "Minimum_Batch",
+            "query": "produce_A1 >= MIN_BATCH[A1]",
+            "LaTeX": "x_{A1} \\geq \\text{MIN_BATCH}[A1]"
+        },
+        {
+            "name": "Minimum_Batch",
+            "query": "produce_A2 >= MIN_BATCH[A2]",
+            "LaTeX": "x_{A2} \\geq \\text{MIN_BATCH}[A2]"
+        },
+        {
+            "name": "Minimum_Batch",
+            "query": "produce_A3 >= MIN_BATCH[A3]",
+            "LaTeX": "x_{A3} \\geq \\text{MIN_BATCH}[A3]"
+        }
+    ]
+}

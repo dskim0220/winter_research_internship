@@ -1,0 +1,19 @@
+{
+    "SETS": {
+        "LINES": "4",
+        "WORKERS": "50"
+    },
+    "PARAMETERS": [
+        { "name": "LINE_PRODUCES", "query": "production line efficiency", "LaTeX": "\\begin{align*} \\text{line}_1 & : \\begin{pmatrix} 10 \\\\ 5 \\\\ 3 \\end{pmatrix}, & \\text{line}_2 & : \\begin{pmatrix} 8 \\\\ 6 \\\\ 4 \\end{pmatrix}, & \\text{line}_3 & : \\begin{pmatrix} 6 \\\\ 7 \\\\ 5 \\end{pmatrix}, & \\text{line}_4 & : \\begin{pmatrix} 5 \\\\ 8 \\\\ 6 \\end{pmatrix} \\end{align*}" },
+        { "name": "TARGET_DAILY_DEMAND", "query": "daily demand", "LaTeX": "\\begin{align*} \\text{smartphones} & : 1000, & \\text{tablets} & : 800, & \\text{laptops} & : 600 \\end{align*}" },
+        { "name": "WORKERS_PER_LINE", "query": "workers per line", "LaTeX": "\\begin{align*} \\text{line}_1 & : 20, & \\text{line}_2 & : 20, & \\text{line}_3 & : 20, & \\text{line}_4 & : 20 \\end{align*}" },
+        { "name": "MIN_WORKERS_ON_LINE", "query": "minimum workers on line", "LaTeX": "\\begin{align*} \\text{line}_1 & : 1, & \\text{line}_2 & : 1, & \\text{line}_3 & : 1, & \\text{line}_4 & : 1 \\end{align*}" },
+        { "name": "MAX_WORKERS_ON_LINE", "query": "maximum workers on line", "LaTeX": "\\begin{align*} \\text{line}_1 & : 20, & \\text{line}_2 & : 20, & \\text{line}_3 & : 20, & \\text{line}_4 & : 20 \\end{align*}" },
+        { "name": "FULL_LINE_MIN_WORKERS", "query": "full line minimum workers", "LaTeX": "\\begin{align*} \\text{line}_1 & : 20, & \\text{line}_2 & : 20, & \\text{line}_3 & : 20, & \\text{line}_4 & : 20 \\end{align*}" },
+        { "name": "OTHER_LINES_MAX_WORKERS", "query": "other lines max workers", "LaTeX": "\\begin{align*} \\text{line}_1 & : 30, & \\text{line}_2 & : 30, & \\text{line}_3 & : 30, & \\text{line}_4 & : 30 \\end{align*}" },
+        { "name": "SIMULTANEOUS_FULL_LINES", "query": "simultaneous full lines", "LaTeX": "\\begin{align*} \\text{line}_1 & : 1, & \\text{line}_2 & : 1, & \\text{line}_3 & : 1, & \\text{line}_4 & : 1 \\end{align*}" },
+        { "name": "EXCLUSIVE_FULL_LINES", "query": "exclusive full lines", "LaTeX": "\\begin{align*} \\text{line}_1 & : 1, & \\text{line}_2 & : 1, & \\text{line}_3 & : 1, & \\text{line}_4 & : 1 \\end{align*}" },
+        { "name": "LINE_3_MAX_WORKERS", "query": "line 3 max workers", "LaTeX": "\\begin{align*} \\text{line}_3 & : 10 \\end{align*}" }
+    ],
+    "VARIABLES": [
+        { "name": "hours_line_1", "type": "Continuous", "unit": "hours", "query": "hours on line 1", "LaTeX": "\\begin{align*} x_1 & : \\text{hours on line 1} \\end{align*}" }

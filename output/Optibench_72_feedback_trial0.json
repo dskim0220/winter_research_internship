@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. The queries do not match the LaTeX formulations, and some constraints are missing or incorrectly formulated.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 100000, 60000, etc.) which should be replaced with actual numerical values from the problem description.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between 'query' and 'LaTeX' fields. Placeholder values should be replaced with actual numbers.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided, which is necessary for logical linking based on the given conditions.",
+    "LINEARITY_VALIDATION": "The model does not validate linearity; there is no indication of variable-to-variable multiplication.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. Units need to be checked for consistency.",
+    "CONSTRAINTS_FEEDBACK": "Missing constraints include 'Minimum Batch', 'Total Production Limit (Tons)', and 'Activation Time'. Some constraints like 'MIN_APPX_APPY_RATIO' and 'MAX_APPX_APPY_APPW_APPV_TEAMS' are not correctly formulated in terms of continuous and binary variables."
+}

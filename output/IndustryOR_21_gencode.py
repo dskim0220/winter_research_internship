@@ -1,43 +1,46 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-# 1. Data and Sets
-sets_A = ['A', 'B', 'C']
-parameters_c = {'A': 120, 'B': 110, 'C': 100}
-parameters_m_tables = 150
-parameters_M_tables = 600
-parameters_m_orders_A = 7
-parameters_M_tables_A = 60
-parameters_m_tables_AB = 25
-parameters_m_tables_AC = 25
-parameters_m_tables_BC = 30
+# 1. Data Section (Directly extracted from JSON 'query' fields)
+price_A = 120
+price_B = 110
+price_C = 100
+demand_A = 5300
+demand_B = 3
+demand_C = 3
+max_tables = 600
+min_tables = 150
+at_least_three_orders_from_B = 3
+supplier_AB_dependent = 3
+supplier_BC_dependent = 1
+sum_of_orders_from_A_and_B = 25
+sum_of_orders_from_B_and_C = 30
+at_least_seven_orders = 7
 
 # 2. Model Initialization
-m = gp.Model("table_production")
+m = gp.Model("production_optimization")
 
-# 3. Variables
-variables_orders = {set_: m.addVar(vtype=GRB.CONTINUOUS, name=f"x_{set_}") for set_ in sets_A}
+# 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
+x_A = m.addVar(vtype=GRB.BINARY, name="orders_A")
+x_B = m.addVar(vtype=GRB.INTEGER, name="orders_B")
+x_C = m.addVar(vtype=GRB.INTEGER, name="orders_C")
 
-# 4. Objective
-m.setObjective(gp.quicksum(parameters_c[set_] * variables_orders[set_] for set_ in sets_A), GRB.MINIMIZE)
+# 4. Objective (Use 'LaTeX' logic + 'query' numbers)
+m.setObjective(price_A * x_A + price_B * x_B + price_C * x_C, GRB.MINIMIZE)
 
-# 5. Constraints
-m.addConstr(gp.quicksum(parameters_c[set_] * 20 * variables_orders[set_] for set_ in sets_A) >= parameters_m_tables, "constraint1")
-m.addConstr(gp.quicksum(parameters_c[set_] * 20 * variables_orders[set_] for set_ in sets_A) <= parameters_M_tables, "constraint2")
-m.addConstr(variables_orders['A'] >= parameters_m_orders_A, "constraint3")
-m.addConstr(variables_orders['A'] >= parameters_m_tables_AB - variables_orders['B'], "constraint4")
-m.addConstr(variables_orders['B'] >= parameters_m_tables_AC - variables_orders['A'], "constraint5")
-m.addConstr(variables_orders['C'] >= parameters_m_tables_BC - variables_orders['B'], "constraint6")
-m.addConstr(variables_orders['A'] + variables_orders['B'] >= parameters_m_orders_A, "constraint7")
-m.addConstr(variables_orders['A'] <= parameters_M_tables_A, "constraint8")
+# 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
+m.addConstr(20 * x_A + 15 * x_B + 15 * x_C >= min_tables, "TotalTables")
+m.addConstr(20 * x_A + 15 * x_B + 15 * x_C <= max_tables, "MaxTables")
+m.addConstr(x_B >= at_least_three_orders_from_B, "AtLeastThreeOrdersFromB")
+m.addConstr(x_B >= supplier_AB_dependent * x_A, "SupplierABDependent")
+m.addConstr(x_B >= supplier_BC_dependent * x_C, "SupplierBCDependent")
+m.addConstr(x_A + x_B >= sum_of_orders_from_A_and_B, "SumOfOrdersFromAAndB")
+m.addConstr(x_B + x_C >= sum_of_orders_from_B_and_C, "SumOfOrdersFromBAndC")
+m.addConstr(x_A + x_B + x_C >= at_least_seven_orders, "AtLeastSevenOrders")
 
 # 6. Optimization and Output
 m.optimize()
-
-print("Optimization finished.")
-if m.status == GRB.OPTIMAL:
-    print(f"Optimal objective value: {m.objVal}")
-    for var in variables_orders.values():
-        print(f"{var.varName}: {var.x}")
-else:
-    print("The model is not optimal.")
+# Print results for each variable
+for v in m.getVars():
+    print(f'{v.varName}: {v.x}')
+print(f'Total Objective Value: {m.objVal}')

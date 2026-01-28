@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. Placeholder values and missing constraints significantly impact the model's integrity.",
+    "QUERY_GROUNDING_AUDIT": "No hallucinations detected. However, some queries are placeholders and need to be replaced with actual numbers.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between queries and LaTeX. Placeholder values and missing actual numbers indicate poor data fidelity.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present, indicating potential issues with logical coupling.",
+    "LINEARITY_VALIDATION": "No variable-to-variable multiplication found, suggesting linearity is maintained.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis performed; conversion factors are needed for consistency.",
+    "CONSTRAINTS_FEEDBACK": "Constraints do not fully capture the problem's requirements. Missing constraints include:\\n- Total cost reduction for GoodsX, GoodsY, and GoodsZ.\\n- Investment increased savings constraint.\\n- Total investment in optimization does not exceed total cost savings from software."
+}

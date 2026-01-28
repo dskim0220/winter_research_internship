@@ -1,0 +1,32 @@
+{
+    "SETS": {
+        "WORK_DAYS": {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"},
+        "EMPLOYEES": {"Employee_1", "Employee_2", "Employee_3", "Employee_4", "Employee_5"}
+    },
+    "PARAMETERS": [
+        { "name": "EMPLOYEES_REQUIRED", "query": "EMPLOYEES_REQUIRED", "LaTeX": "\\text{EMPLOYEES_REQUIRED} = \\{15, 13, 15, 18, 14, 16, 10\\}" },
+        { "name": "MIN_EMPLOYEES_DIFFERENCE", "query": "MIN_EMPLOYEES_DIFFERENCE", "LaTeX": "\\text{MIN_EMPLOYEES_DIFFERENCE} = 7" },
+        { "name": "MIN_SUNDAY_MONDAY_PAIR", "query": "MIN_SUNDAY_MONDAY_PAIR", "LaTeX": "\\text{MIN_SUNDAY_MONDAY_PAIR} = 3" }
+    ],
+    "VARIABLES": [
+        { "name": "shift_assignment", "type": "Binary", "query": "shift_assignment", "LaTeX": "\\text{Let } x_{i,j} \\text{ be a binary variable indicating if Employee } j \\text{ works on Day } i." }
+    ],
+    "OBJECTIVE": { "query": "minimize sum(shift_assignment[Employee])", "LaTeX": "\\text{Minimize } \\sum_{j \\in \\text{EMPLOYEES}} x_{i,j}" },
+    "CONSTRAINTS": [
+        {
+            "name": "EmploymentRequirement",
+            "constraint": "sum(shift_assignment[Employee][WORK_DAY] for WORK_DAY in WORK_DAYS) == EMPLOYEES_REQUIRED[WORK_DAY] for WORK_DAY in WORK_DAYS",
+            "LaTeX": "\\forall i \\in \\text{WORK_DAYS}, \\quad \\sum_{j \\in \\text{EMPLOYEES}} x_{i,j} = \\text{EMPLOYEES_REQUIRED}[i]"
+        },
+        {
+            "name": "MinDifferenceConstraint",
+            "constraint": "abs(sum(shift_assignment[Employee]['Monday'] for Employee in EMPLOYEES) - sum(shift_assignment[Employee]['Wednesday'] for Employee in EMPLOYEES)) <= MIN_EMPLOYEES_DIFFERENCE",
+            "LaTeX": "\\left| \\sum_{j \\in \\text{EMPLOYEES}} x_{\\text{Monday},j} - \\sum_{j \\in \\text{EMPLOYEES}} x_{\\text{Wednesday},j} \\right| \\leq \\text{MIN_EMPLOYEES_DIFFERENCE}"
+        },
+        {
+            "name": "SundayMondayPairConstraint",
+            "constraint": "sum(shift_assignment[Employee]['Sunday'] for Employee in EMPLOYEES) + sum(shift_assignment[Employee]['Monday'] for Employee in EMPLOYEES) >= MIN_SUNDAY_MONDAY_PAIR",
+            "LaTeX": "\\sum_{j \\in \\text{EMPLOYEES}} x_{\\text{Sunday},j} + \\sum_{j \\in \\text{EMPLOYEES}} x_{\\text{Monday},j} \\geq \\text{MIN_SUNDAY_MONDAY_PAIR}"
+        }
+    ]
+}

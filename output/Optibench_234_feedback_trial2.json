@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. Placeholder values and missing constraints significantly impact the model's integrity.",
+    "QUERY_GROUNDING_AUDIT": "No hallucinations detected. However, some queries are placeholders and need to be replaced with actual numbers.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between queries and LaTeX. Placeholder values and missing actual numbers indicate poor data fidelity.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M links identified based on the provided queries. The model lacks the necessary constraints to enforce logical coupling.",
+    "LINEARITY_VALIDATION": "Variable-to-variable multiplication is present in the objective function, violating the MILP standard. This makes the model non-linear.",
+    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies exist. For example, the cost terms should be consistent with the units of trucks and cost reductions.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are poorly defined and lack clarity. For instance, the 'total_cost_reduction_required' constraint is missing, and the 'investment_to_savings_ratio' is not utilized effectively."
+}

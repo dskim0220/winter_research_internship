@@ -1,8 +1,0 @@
-{
-    "PROBLEM_TYPE": "MIP",
-    "SETS_LATEEX": "",
-    "PARAMETERS_LATEX": "P_{{A1}}: \\text{{Prices}}, P_{{A2}}: \\text{{Prices}}, P_{{A3}}: \\text{{Prices}}, R_{{A1}}: \\text{{Costs}}, R_{{A2}}: \\text{{Costs}}, R_{{A3}}: \\text{{Costs}}, C_{{A1}}: \\text{{ActivationCosts}}, C_{{A2}}: \\text{{ActivationCosts}}, C_{{A3}}: \\text{{ActivationCosts}}, B_{{A1}}: \\text{{MinimumBatches}}, B_{{A2}}: \\text{{MinimumBatches}}, B_{{A3}}: \\text{{MinimumBatches}}, D: \\text{{Days}}, L: \\text{{TotalProductionLimit}}, T_{{A1}}: \\text{{ActivationTimeA1}}",
-    "VARIABLES_LATEX": "x_{{A1}} \\in \\{0, 1\\}, x_{{A2}} \\in \\{0, 1\\}, x_{{A3}} \\in \\{0, 1\\}",
-    "OBJECTIVE_LATEX": "\\max \\left( \\sum_{{A1}} P_{{A1}} x_{{A1}} - \\sum_{{A1}} R_{{A1}} x_{{A1}} \\right) + \\sum_{{A1}} C_{{A1}} x_{{A1}} + \\sum_{{A1}} C_{{A1}} x_{{A1}} \\cdot \\frac{T_{{A1}}}{60} - \\sum_{{A1}} B_{{A1}} x_{{A1}}",
-    "CONSTRAINTS_LATEX": "x_{{A1}} + x_{{A2}} + x_{{A3}} \\leq \\frac{L}{53}, x_{{A1}} \\geq 1 + x_{{A1}} \\cdot \\frac{T_{{A1}}}{60}, x_{{A1}} \\cdot 5300 \\leq 100 \\cdot P_{{A1}} \\cdot D, x_{{A2}} \\cdot 4500 \\leq 100 \\cdot P_{{A2}} \\cdot D, x_{{A3}} \\cdot 5400 \\leq 100 \\cdot P_{{A3}} \\cdot D, \\sum_{{A1}} C_{{A1}} x_{{A1}} + \\sum_{{A1}} C_{{A1}} x_{{A1}} \\cdot \\frac{T_{{A1}}}{60} + \\sum_{{A1}} B_{{A1}} x_{{A1}} \\leq L \\cdot 100 \\cdot R_{{A1}} + L \\cdot 100 \\cdot R_{{A2}} + L \\cdot 100 \\cdot R_{{A3}}"
-}

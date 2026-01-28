@@ -1,0 +1,62 @@
+{
+    "SETS": {
+        "GOODS": "X, Y, Z",
+        "TRUCKS": "1..50"
+    },
+    "PARAMETERS": [
+        { "name": "Price_X", "query": "Price_X", "LaTeX": "1000" },
+        { "name": "Price_Y", "query": "Price_Y", "LaTeX": "1200" },
+        { "name": "Price_Z", "query": "Price_Z", "LaTeX": "1500" },
+        { "name": "OptimizationCostReduction_X", "query": "OptimizationCostReduction_X", "LaTeX": "10" },
+        { "name": "OptimizationCostReduction_Y", "query": "OptimizationCostReduction_Y", "LaTeX": "12" },
+        { "name": "OptimizationCostReduction_Z", "query": "OptimizationCostReduction_Z", "LaTeX": "15" },
+        { "name": "Budget_OptimizationSoftware", "query": "Budget_OptimizationSoftware", "LaTeX": "10000" },
+        { "name": "MinimumTrucksX", "query": "MinimumTrucksX", "LaTeX": "10" },
+        { "name": "MinimumTrucksY", "query": "MinimumTrucksY", "LaTeX": "15" },
+        { "name": "MaximumTrucksZ", "query": "MaximumTrucksZ", "LaTeX": "25" },
+        { "name": "MaxCostReductionZ", "query": "MaxCostReductionZ", "LaTeX": "37500" },
+        { "name": "TotalTrucksAvailable", "query": "TotalTrucksAvailable", "LaTeX": "50" },
+        { "name": "TotalCostReductionRequired", "query": "TotalCostReductionRequired", "LaTeX": "0" },
+        { "name": "InvestmentIncreasedSavings", "query": "InvestmentIncreasedSavings", "LaTeX": "0" }
+    ],
+    "VARIABLES": [
+        { "name": "TrucksX", "type": "Integer", "Unit": "count", "query": "TrucksX", "LaTeX": "x_{X}" },
+        { "name": "TrucksY", "type": "Integer", "Unit": "count", "query": "TrucksY", "LaTeX": "x_{Y}" },
+        { "name": "TrucksZ", "type": "Integer", "Unit": "count", "query": "TrucksZ", "LaTeX": "x_{Z}" },
+        { "name": "OptimizationSoftwareInvestment", "type": "Continuous", "Unit": "$", "query": "OptimizationSoftwareInvestment", "LaTeX": "s" }
+    ],
+    "OBJECTIVE": {
+        "query": "Minimize TotalDeliveryCost",
+        "LaTeX": "\\min \\quad s + \\sum_{i \\in X} x_i \\cdot \\text{Price}_i + \\sum_{j \\in Y} x_j \\cdot \\text{Price}_j + \\sum_{k \\in Z} x_k \\cdot \\text{Price}_k"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "TotalTrucksConstraint",
+            "query": "TotalTrucksConstraint",
+            "LaTeX": "x_{X} + x_{Y} + x_{Z} \\leq 50"
+        },
+        {
+            "name": "MinimumTrucksXConstraint",
+            "query": "MinimumTrucksXConstraint",
+            "LaTeX": "x_{X} \\geq 10"
+        },
+        {
+            "name": "MinimumTrucksYConstraint",
+            "query": "MinimumTrucksYConstraint",
+            "LaTeX": "x_{Y} \\geq 15"
+        },
+        {
+            "name": "MaximumTrucksZConstraint",
+            "query": "MaximumTrucksZConstraint",
+            "LaTeX": "x_{Z} \\leq 25"
+        },
+        {
+            "name": "CostReductionConstraint",
+            "query": "CostReductionConstraint",
+            "LaTeX": "s \\cdot \\text{OptimizationCostReduction}_X \\geq \\text{CostReduction}_X"
+        },
+        {
+            "name": "CostReductionConstraintY",
+            "query": "CostReductionConstraintY",
+            "LaTeX": "s \\cdot \\text{OptimizationCostReduction}_Y \\geq \\text{CostReduction}_Y"
+        }

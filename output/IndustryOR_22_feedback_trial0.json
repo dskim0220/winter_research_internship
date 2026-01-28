@@ -1,9 +1,10 @@
 {
-    "CONFIDENCE_SCORE": 0.50,
-    "OVERALL_FEEDBACK": "The model attempts to capture the essence of the problem but contains several issues. The binary variables \(x_{A1}\), \(x_{A2}\), and \(x_{A3}\) are incorrectly formulated. The objective function and constraints need significant adjustments to ensure they accurately reflect the problem's requirements. Additionally, there are inconsistencies in the dimensional analysis and logical coupling between variables.",
-    "DATA_FIDELITY_CHECK": "The model uses arbitrary constants such as 5300, 4500, 5400, 124, 109, 115, 73.30, 52.90, 65.40, 170000, 150000, 100000, 20, 20, 16, and 22. These values should be derived from the problem statement or are not explicitly mentioned.",
-    "LOGICAL_COUPLING_CHECK": "Binary variables \(x_{A1}\), \(x_{A2}\), and \(x_{A3}\) are incorrectly linked with continuous variables. The Big-M method is used without proper justification, which requires human verification.",
-    "LINEARITY_VALIDATION": "The model includes non-linear terms such as \(x_{A1} \cdot \frac{T_{A1}}{60}\) and \(x_{A1} \cdot 5300\). These terms violate the standard linear programming (LP) formulation.",
-    "DIMENSIONAL_ANALYSIS": "There are dimensional inconsistencies in the objective function and constraints. For example, the term \(x_{A1} \cdot 5300\) has units of \(100 \mathrm{~kg} \cdot \mathrm{days}\), which do not match the units in the rest of the equation.",
-    "CONSTRAINTS_FEEDBACK": "The constraints \(x_{A1} + x_{A2} + x_{A3} \leq \frac{L}{53}\) and \(x_{A1} \geq 1 + x_{A1} \cdot \frac{T_{A1}}{60}\) are not correctly formulated. The first constraint should be based on the total production limit in tons, and the second constraint should be adjusted to ensure logical consistency."
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON contains significant errors and omissions that violate the guidelines. The model does not correctly map the queries to the LaTeX formulations, lacks critical constraints, and uses placeholder values where actual data is required.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The queries are placeholders and do not reflect the actual problem requirements.",
+    "DATA_FIDELITY_CHECK": "Numerous discrepancies exist between the 'query' and 'LaTeX' fields. Placeholder values and incorrect numerical data are present.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are included, which is a requirement given the presence of minimum batch and activation time constraints.",
+    "LINEARITY_VALIDATION": "The model is not linear due to the presence of binary variables and the lack of proper coupling constraints.",
+    "DIMENSIONAL_ANALYSIS": "The unit conversion from tons to 100 kg is not handled properly, leading to dimensional inconsistencies.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the queries. For example, the total production limit is not reflected in the objective function or constraints, and the activation time constraint is missing. Additionally, the minimum batch constraints are not properly formulated."
 }

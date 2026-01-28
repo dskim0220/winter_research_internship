@@ -1,0 +1,38 @@
+{
+    "SETS": {
+        "PRODUCTS": "I, II, III",
+        "EQUIPMENTS_A": "A1, A2",
+        "EQUIPMENTS_B": "B1, B2, B3"
+    },
+    "PARAMETERS": [
+        { "name": "PRODUCTION_COST_I", "query": "0.25", "LaTeX": "0.25" },
+        { "name": "PRODUCTION_COST_II", "query": "0.35", "LaTeX": "0.35" },
+        { "name": "PRODUCTION_COST_III", "query": "0.50", "LaTeX": "0.50" },
+        { "name": "UNIT_PRICE_I", "query": "1.25", "LaTeX": "1.25" },
+        { "name": "UNIT_PRICE_II", "query": "2.00", "LaTeX": "2.00" },
+        { "name": "UNIT_PRICE_III", "query": "2.80", "LaTeX": "2.80" },
+        { "name": "EFFECTIVE_MACHINE_HOURS_A1", "query": "10000", "LaTeX": "10000" },
+        { "name": "EFFECTIVE_MACHINE_HOURS_A2", "query": "4000", "LaTeX": "4000" },
+        { "name": "EFFECTIVE_MACHINE_HOURS_B1", "query": "7000", "LaTeX": "7000" },
+        { "name": "EFFECTIVE_MACHINE_HOURS_B2", "query": "4000", "LaTeX": "4000" },
+        { "name": "EFFECTIVE_MACHINE_HOURS_B3", "query": "0", "LaTeX": "0" },
+        { "name": "FULL_CAPACITY_COST_A1", "query": "321", "LaTeX": "321" },
+        { "name": "FULL_CAPACITY_COST_A2", "query": "250", "LaTeX": "250" },
+        { "name": "FULL_CAPACITY_COST_B1", "query": "783", "LaTeX": "783" },
+        { "name": "FULL_CAPACITY_COST_B2", "query": "200", "LaTeX": "200" },
+        { "name": "FULL_CAPACITY_COST_B3", "query": "0", "LaTeX": "0" },
+        { "name": "MAX_PRODUCT_I", "query": "1200", "LaTeX": "1200" },
+        { "name": "MAX_PRODUCT_I_AND_III", "query": "1510", "LaTeX": "1510" },
+        { "name": "MAX_PRODUCT_II", "query": "800", "LaTeX": "800" },
+        { "name": "MAX_TOTAL_PRODUCTS", "query": "1509", "LaTeX": "1509" }
+    ],
+    "VARIABLES": [
+        { "name": "production_I", "type": "Continuous", "query": "production_I", "LaTeX": "x_{I}" },
+        { "name": "production_II", "type": "Continuous", "query": "production_II", "LaTeX": "x_{II}" },
+        { "name": "production_III", "type": "Continuous", "query": "production_III", "LaTeX": "x_{III}" }
+    ],
+    "OBJECTIVE": { "query": "Maximize profit", "LaTeX": "\\text{Maximize } Z = \\sum_{i \\in I} (\\text{UNIT_PRICE}_i - \\text{PRODUCTION_COST}_i)x_i" },
+    "CONSTRAINTS": [
+        { "name": "Total production of Product I cannot exceed 1200", "query": "production_I <= MAX_PRODUCT_I", "LaTeX": "x_{I} \\leq 1200" },
+        { "name": "Total production of Product I and III cannot exceed 1510", "query": "production_I + production_III <= MAX_PRODUCT_I_AND_III", "LaTeX": "x_{I} + x_{III} \\leq 1510" },
+        { "name": "Total production of Product II cannot exceed 800", "query": "production_II <= MAX_PRODUCT_II", "LaTeX": "x_{II} \\leq 800" }

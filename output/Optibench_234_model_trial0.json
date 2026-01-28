@@ -1,0 +1,51 @@
+{
+    "SETS": {
+        "GOODS": "3",
+        "TRUCKS": "50"
+    },
+    "PARAMETERS": [
+        { "name": "PRICE_GOODS_X", "query": "PRICE_GOODS_X", "LaTeX": "1000" },
+        { "name": "PRICE_GOODS_Y", "query": "PRICE_GOODS_Y", "LaTeX": "1200" },
+        { "name": "PRICE_GOODS_Z", "query": "PRICE_GOODS_Z", "LaTeX": "1500" },
+        { "name": "OPTIMIZATION_COST_PER_100_GOODS_X", "query": "OPTIMIZATION_COST_PER_100[GOODS_X]", "LaTeX": "10" },
+        { "name": "OPTIMIZATION_COST_PER_100_GOODS_Y", "query": "OPTIMIZATION_COST_PER_100[GOODS_Y]", "LaTeX": "12" },
+        { "name": "OPTIMIZATION_COST_PER_100_GOODS_Z", "query": "OPTIMIZATION_COST_PER_100[GOODS_Z]", "LaTeX": "15" },
+        { "name": "TOTAL_TRUCKS_AVAILABLE", "query": "TOTAL_TRUCKS_AVAILABLE", "LaTeX": "50" },
+        { "name": "ROUTE_OPTIMIZATION_BUDGET", "query": "ROUTE_OPTIMIZATION_BUDGET", "LaTeX": "10000" },
+        { "name": "MIN_TRUCKS_GOODS_X", "query": "MIN_TRUCKS_GOODS_X", "LaTeX": "10" },
+        { "name": "MIN_TRUCKS_GOODS_Y", "query": "MIN_TRUCKS_GOODS_Y", "LaTeX": "15" },
+        { "name": "MAX_TRUCKS_GOODS_Z", "query": "MAX_TRUCKS_GOODS_Z", "LaTeX": "25" },
+        { "name": "MAX_COST_REDUCTION_GOODS_Z", "query": "MAX_COST_REDUCTION_GOODS_Z", "LaTeX": "3750" },
+        { "name": "TOTAL_COST_REDUCTION_REQUIRED", "query": "TOTAL_COST_REDUCTION_REQUIRED", "LaTeX": "0" },
+        { "name": "INVESTMENT_INCREASED_SAVINGS", "query": "INVESTMENT_INCREASED_SAVINGS", "LaTeX": "True" }
+    ],
+    "VARIABLES": [
+        { "name": "Trucks_Goods_X", "type": "Integer", "query": "Trucks_Goods_X", "LaTeX": "x_{i}" },
+        { "name": "Trucks_Goods_Y", "type": "Integer", "query": "Trucks_Goods_Y", "LaTeX": "y_{i}" },
+        { "name": "Trucks_Goods_Z", "type": "Integer", "query": "Trucks_Goods_Z", "LaTeX": "z_{i}" }
+    ],
+    "OBJECTIVE": {
+        "query": "Minimize SUM(Price[Good] * Trucks[Good]) + SUM(OptimizationCost[Good] * InvestmentInOptimization / 100)",
+        "LaTeX": "\\min \\sum_{i=1}^{3} \\left( \\text{PRICE_GOODS}_i \\cdot x_i + \\text{OPTIMIZATION_COST_PER_100}_{\\text{GOODS}_i} \\cdot \\frac{\\text{InvestmentInOptimization}}{100} \\right)"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "TotalTrucksConstraint",
+            "query": "Trucks_Goods_X + Trucks_Goods_Y + Trucks_Goods_Z <= TOTAL_TRUCKS_AVAILABLE",
+            "LaTeX": "x_{i} + y_{i} + z_{i} \\leq 50"
+        },
+        {
+            "name": "GoodsXMinConstraint",
+            "query": "Trucks_Goods_X >= MIN_TRUCKS_GOODS_X",
+            "LaTeX": "x_{i} \\geq 10"
+        },
+        {
+            "name": "GoodsYMinConstraint",
+            "query": "Trucks_Goods_Y >= MIN_TRUCKS_GOODS_Y",
+            "LaTeX": "y_{i} \\geq 15"
+        },
+        {
+            "name": "GoodsZMaxConstraint",
+            "query": "Trucks_Goods_Z <= MAX_TRUCKS_GOODS_Z",
+            "LaTeX": "z_{i} \\leq 25"
+        }

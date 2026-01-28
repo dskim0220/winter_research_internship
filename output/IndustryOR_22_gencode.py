@@ -1,44 +1,47 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-# 1. Data and Sets
-prices = {'A1': 53 * 124, 'A2': 45 * 109, 'A3': 54 * 115}
-production_costs = {'A1': 0, 'A2': 0, 'A3': 0}
-activation_costs = {'A1': 0, 'A2': 0, 'A3': 0}
-fixed_costs = {'A1': 0, 'A2': 0, 'A3': 0}
-minimum_batches = {'A1': 0, 'A2': 0, 'A3': 0}
-demand = {'A1': 0, 'A2': 0, 'A3': 0}
-total_production_limit = 0
-activation_time = {'A1': 0 / 60, 'A2': 0 / 60, 'A3': 0 / 60}
-days = 0
+# 1. Data Section (Directly extracted from JSON 'query' fields)
+price_A1 = 124
+price_A2 = 109
+price_A3 = 170000 / 100  # Convert tons to 100kg units
+demand_A1 = 5300
+demand_A2 = 4800
+demand_A3 = 1210000 / 100  # Convert tons to 100kg units
+activation_cost_A1 = 1000
+activation_cost_A2 = 1500
+activation_cost_A3 = 2000
+min_batch_A1 = 100
+min_batch_A2 = 150
+min_batch_A3 = 200
+total_production_limit = 1210000 / 100  # Convert tons to 100kg units
+activation_time_A1 = 57
 
 # 2. Model Initialization
-m = gp.Model("production_model")
+m = gp.Model("production_optimization")
 
-# 3. Variables
-x_A1 = m.addVar(vtype=gp.GRB.BINARY, name="x_A1")
-x_A2 = m.addVar(vtype=gp.GRB.BINARY, name="x_A2")
-x_A3 = m.addVar(vtype=gp.GRB.BINARY, name="x_A3")
+# 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
+produce_A1 = m.addVar(vtype=GRB.BINARY, name="produce_A1")
+produce_A2 = m.addVar(vtype=GRB.BINARY, name="produce_A2")
+produce_A3 = m.addVar(vtype=GRB.BINARY, name="produce_A3")
 
-# 4. Objective
-obj = prices['A1'] * x_A1 + prices['A2'] * x_A2 + prices['A3'] * x_A3 - activation_costs['A1'] * x_A1 - activation_costs['A2'] * x_A2 - activation_costs['A3'] * x_A3 - fixed_costs['A1'] * x_A1 - fixed_costs['A2'] * x_A2 - fixed_costs['A3'] * x_A3
-m.setObjective(obj, GRB.MAXIMIZE)
+# 4. Objective (Use 'LaTeX' logic + 'query' numbers)
+m.setObjective(
+    price_A1 * produce_A1 + price_A2 * produce_A2 + price_A3 * produce_A3,
+    GRB.MAXIMIZE
+)
 
-# 5. Constraints
-m.addConstr(x_A1 <= total_production_limit, "Cap_A1")
-m.addConstr(x_A2 <= total_production_limit, "Cap_A2")
-m.addConstr(x_A3 <= total_production_limit, "Cap_A3")
-m.addConstr(x_A1 + activation_time['A1'] >= 1, "Min_A1")
-m.addConstr(x_A1 + x_A2 + x_A3 <= days, "Sum_A1_A2_A3")
-m.addConstr(prices['A1'] * x_A1 + prices['A2'] * x_A2 + prices['A3'] * x_A3 <= total_production_limit, "Prod_A1_A2_A3")
+# 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
+m.addConstr(demand_A1 * produce_A1 + demand_A2 * produce_A2 + demand_A3 * produce_A3 <= total_production_limit, "Total_Production_Limit")
+m.addConstr(activation_time_A1 * produce_A1 >= activation_time_A1, "Activation_Time_Constraint")
+m.addConstr(activation_cost_A1 * produce_A1 + activation_cost_A2 * produce_A2 + activation_cost_A3 * produce_A3 >= 0, "Fixed_Activation_Costs")
+m.addConstr(min_batch_A1 <= produce_A1, "Minimum_Batch_Constraint_A1")
+m.addConstr(min_batch_A2 <= produce_A2, "Minimum_Batch_Constraint_A2")
+m.addConstr(min_batch_A3 <= produce_A3, "Minimum_Batch_Constraint_A3")
 
 # 6. Optimization and Output
 m.optimize()
-
-if m.status == GRB.OPTIMAL:
-    print('Optimal Solution:')
-    print(f"x_A1 = {x_A1.x}")
-    print(f"x_A2 = {x_A2.x}")
-    print(f"x_A3 = {x_A3.x}")
-else:
-    print('No optimal solution found.')
+# Print results for each variable
+for v in m.getVars():
+    print(f'{v.varName} = {v.x}')
+print(f'Total Objective Value = {m.objVal}')

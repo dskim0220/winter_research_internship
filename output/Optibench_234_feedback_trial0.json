@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. Placeholder values and missing constraints significantly impact the model's integrity.",
+    "QUERY_GROUNDING_AUDIT": "No hallucinations detected. However, some queries are placeholders and need to be replaced with actual numbers.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between queries and LaTeX representations. Placeholder values and missing actual numbers indicate poor data fidelity.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present, which is a requirement given the presence of minimum batch and total production limits.",
+    "LINEARITY_VALIDATION": "No variable-to-variable multiplication found, indicating linearity. However, the model is incomplete and lacks critical constraints.",
+    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies exist due to the absence of conversion factors. The model should include dimensional analysis to ensure consistency.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are poorly defined and lack critical information. For example, the 'TotalCostReductionRequired' constraint is missing, and the 'InvestmentIncreasedSavings' condition is unclear without context."
+}

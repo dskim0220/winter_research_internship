@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The model contains significant issues with grounding, mapping, and logical integrity. Many queries do not match the problem description, and some constraints are logically flawed.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 'bandwidth_AB', 'transmission_efficiency_AE_direct') which should be replaced with actual numerical values from the problem description.",
+    "DATA_FIDELITY_CHECK": "Numerous queries contain placeholders ('bandwidth_AB', 'transmission_efficiency_AE_direct') that should be replaced with actual numerical values from the problem description. Some queries are missing entirely.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly formulated based on the problem description. The 'link_AE_indirect' variable should be linked to 'link_AE_direct' using a Big-M constraint.",
+    "LINEARITY_VALIDATION": "The model does not follow linear programming standards. Variables are mixed with binary and continuous types without proper separation.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. The units of bandwidth and efficiency need to be consistent.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are poorly formulated and do not align with the problem description. For example, the 'efficiency_constraint' is incorrect as it does not reflect the problem's conditions."
+}

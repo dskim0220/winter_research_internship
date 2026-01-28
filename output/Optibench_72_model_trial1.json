@@ -1,0 +1,34 @@
+{
+    "SETS": {
+        "PRODUCTS": "APPX, APPY, APPZ, APPW, APPV",
+        "TEAMS": "1 to 30"
+    },
+    "PARAMETERS": [
+        { "name": "REVENUE_PER_TEAM_APPX", "query": "100000", "LaTeX": "100000" },
+        { "name": "DEVELOPMENT_COST_PER_TEAM_APPX", "query": "60000", "LaTeX": "60000" },
+        { "name": "MARKETING_COST_PER_TEAM_APPX", "query": "20000", "LaTeX": "20000" },
+        { "name": "REVENUE_PER_TEAM_APPY", "query": "150000", "LaTeX": "150000" },
+        { "name": "DEVELOPMENT_COST_PER_TEAM_APPY", "query": "80000", "LaTeX": "80000" },
+        { "name": "MARKETING_COST_PER_TEAM_APPY", "query": "30000", "LaTeX": "30000" },
+        { "name": "REVENUE_PER_TEAM_APPZ", "query": "200000", "LaTeX": "200000" },
+        { "name": "DEVELOPMENT_COST_PER_TEAM_APPZ", "query": "100000", "LaTeX": "100000" },
+        { "name": "MARKETING_COST_PER_TEAM_APPZ", "query": "40000", "LaTeX": "40000" },
+        { "name": "REVENUE_PER_TEAM_APPW", "query": "120000", "LaTeX": "120000" },
+        { "name": "DEVELOPMENT_COST_PER_TEAM_APPW", "query": "70000", "LaTeX": "70000" },
+        { "name": "MARKETING_COST_PER_TEAM_APPW", "query": "25000", "LaTeX": "25000" },
+        { "name": "REVENUE_PER_TEAM_APPV", "query": "180000", "LaTeX": "180000" },
+        { "name": "DEVELOPMENT_COST_PER_TEAM_APPV", "query": "90000", "LaTeX": "90000" },
+        { "name": "MARKETING_COST_PER_TEAM_APPV", "query": "35000", "LaTeX": "35000" },
+        { "name": "TOTAL_DEVELOPMENT_TEAMS_AVAILABLE", "query": "30", "LaTeX": "30" },
+        { "name": "MARKETING_BUDGET", "query": "2500000", "LaTeX": "2500000" },
+        { "name": "MIN_APPX_APPY_RATIO", "query": "2", "LaTeX": "2" },
+        { "name": "MIN_APPX_TEAMS", "query": "2", "LaTeX": "2" },
+        { "name": "MAX_APPX_APPY_APPW_APPV_TEAMS", "query": "10", "LaTeX": "10" },
+        { "name": "MAX_APPZ_APPV_TEAMS", "query": "28", "LaTeX": "28" }
+    ],
+    "VARIABLES": [
+        { "name": "teams_APPX", "type": "Continuous", "query": "teams_APPX", "LaTeX": "x_{APPX}" },
+        { "name": "teams_APPY", "type": "Continuous", "query": "teams_APPY", "LaTeX": "x_{APPY}" },
+        { "name": "teams_APPZ", "type": "Continuous", "query": "teams_APPZ", "LaTeX": "x_{APPZ}" },
+        { "name": "teams_APPW", "type": "Continuous", "query": "teams_APPW", "LaTeX": "x_{APPW}" },
+        { "name": "teams_APPV", "type": "Continuous", "query": "teams_APPV", "LaTeX": "x_{APPV}" }

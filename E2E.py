@@ -1,8 +1,10 @@
 import os
 import json
+import time
 from experts.natural_maker import NaturalMaker
 from experts.LaTeX_maker import LaTeXMaker
 from experts.code_generator import CodeGenerator
+from experts.code_generator_v2 import CodeGeneratorV2
 from experts.model_evaluator import ModelEvaluator
 from experts.model_evaluator_v2 import ModelEvaluatorV2
 from experts.model_designer import ModelDesigner
@@ -10,7 +12,7 @@ from custom_callback_qwen import get_llm, get_custom_callback
 
 #설정부분
 data_set='newset'
-problem_name='IndustryOR_22'
+problem_name='Optibench_82'
 max_trial = 3
 confidence_standard=0.8
 
@@ -124,6 +126,8 @@ def e2e_v2(problem,model):
 
 
 def e2e_v3(problem,model):
+    start_time = time.time()
+
     feedback = ""
     best_model_json = ""
     best_confidence_score = -1.0
@@ -136,7 +140,7 @@ def e2e_v3(problem,model):
         model_file = save_output(model_json, f"{problem_name}_model_trial{i}","json")
 
         raw_feedback = model_evaluator.forward(problem = problem, model_json=model_json)
-        refined_feedback = model_evaluator._extract_json(raw_feedback)
+        refined_feedback = model_evaluator._extract_json(raw_feedback).replace('\\','\\\\')
         feedback = refined_feedback
 
         feedback_file = save_output(feedback,f"{problem_name}_feedback_trial{i}","json")
@@ -153,18 +157,21 @@ def e2e_v3(problem,model):
             best_confidence_score = confidence_score
 
     if best_model_json:
-        code_generator = CodeGenerator(model=model)
-        code = code_generator.forward(LaTeX_json=best_model_json)
+        code_generator = CodeGeneratorV2(model=model)
+        code = code_generator.forward(model_json=best_model_json)
         code_file = save_output(code,f"{problem_name}_gencode","py")
     
     print(f"모델링 및 코드 생성 완료! confidence:{best_confidence_score}")
+    end_time = time.time()
+    running_time = end_time - start_time
+    print(f"총 소요시간: {running_time:.2f}s")
     return
 
 if __name__ == '__main__':
     from utils import read_problem2
     # 풀 문제 설정
     problem = read_problem2(data_set, problem_name)
-    e2e_v2(problem, model ='Qwen/Qwen2.5-3B-Instruct')
+    e2e_v3(problem, model ='Qwen/Qwen2.5-3B-Instruct')
 
 
 #일단 코드 맞게 나옴

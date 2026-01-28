@@ -1,0 +1,73 @@
+{
+    "SETS": {
+        "WORK_DAYS": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}",
+        "GROUPS": "\\{\\text{Group1}, \\text{Group2}, \\text{Group3}, \\text{Group4}, \\text{Group5}\\}"
+    },
+    "PARAMETERS": [
+        {
+            "name": "EMPLOYEES_REQUIRED",
+            "query": "EMPLOYEES_REQUIRED",
+            "LaTeX": "\\{\\text{Monday}: 15, \\text{Tuesday}: 13, \\text{Wednesday}: 15, \\text{Thursday}: 18, \\text{Friday}: 14, \\text{Saturday}: 16, \\text{Sunday}: 10\\}"
+        },
+        {
+            "name": "MIN_DIFFERENCE",
+            "query": "MIN_DIFFERENCE",
+            "LaTeX": "7"
+        },
+        {
+            "name": "SUNDAY_MONDAY_PAIR",
+            "query": "SUNDAY_MONDAY_PAIR",
+            "LaTeX": "3"
+        }
+    ],
+    "VARIABLES": [
+        {
+            "name": "x_{d,i}",
+            "type": "Binary",
+            "query": "x_{d,i}",
+            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}, \\forall i \\in \\text{GROUPS}: x_{d,i}"
+        },
+        {
+            "name": "y_{d,i}",
+            "type": "Continuous",
+            "query": "y_{d,i}",
+            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}, \\forall i \\in \\text{GROUPS}: y_{d,i}"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "minimize sum(x_{d,i} for d in WORK_DAYS)",
+        "LaTeX": "\\min \\sum_{d \\in \\text{WORK_DAYS}} x_{d,i}"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "shift_constraint_1",
+            "query": "sum(x_{d,i} for d in \\{\\text{Monday}, \\text{Wednesday}\\}) <= x_{d,i} + x_{d+1,i}",
+            "LaTeX": "\\forall i \\in \\text{GROUPS}: \\sum_{d \\in \\{\\text{Monday}, \\text{Wednesday}\\}} x_{d,i} \\leq x_{d,i} + x_{d+1,i}"
+        },
+        {
+            "name": "shift_constraint_2",
+            "query": "sum(x_{d,i} for d in \\{\\text{Sunday}, \\text{Monday}\\}) >= y_{d,i}",
+            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: x_{d,i} + x_{d+1,i} + x_{d+2,i} + x_{d+3,i} + x_{d+4,i} \\geq y_{d,i}"
+        },
+        {
+            "name": "group_constraint",
+            "query": "sum(x_{d,i} for i in GROUPS) == 1",
+            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: \\sum_{i \\in \\text{GROUPS}} x_{d,i} = 1"
+        },
+        {
+            "name": "employee_constraint",
+            "query": "sum(y_{d,i} for d in WORK_DAYS) == EMPLOYEES_REQUIRED[d]",
+            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: \\sum_{i \\in \\text{GROUPS}} y_{d,i} = \\EMPLOYEES_REQUIRED[d]"
+        },
+        {
+            "name": "difference_constraint",
+            "query": "sum(y_{d,i} for d in \\{\\text{Monday}, \\text{Wednesday}\\}) <= MIN_DIFFERENCE",
+            "LaTeX": "\\forall i \\in \\text{GROUPS}: \\sum_{d \\in \\{\\text{Monday}, \\text{Wednesday}\\}} y_{d,i} \\leq \\MIN_DIFFERENCE"
+        },
+        {
+            "name": "pair_constraint",
+            "query": "sum(y_{d,i} for d in \\{\\text{Sunday}, \\text{Monday}\\}) >= SUNDAY_MONDAY_PAIR",
+            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: x_{d,i} + x_{d+1,i} + x_{d+2,i} + x_{d+3,i} + x_{d+4,i} \\geq \\SUNDAY_MONDAY_PAIR"
+        }
+    ]
+}
