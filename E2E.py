@@ -4,6 +4,8 @@ from experts.natural_maker import NaturalMaker
 from experts.LaTeX_maker import LaTeXMaker
 from experts.code_generator import CodeGenerator
 from experts.model_evaluator import ModelEvaluator
+from experts.model_evaluator_v2 import ModelEvaluatorV2
+from experts.model_designer import ModelDesigner
 from custom_callback_qwen import get_llm, get_custom_callback
 
 #설정부분
@@ -95,7 +97,7 @@ def e2e_v2(problem,model):
 
             data = json.loads(feedback)
             confidence_score = data['CONFIDENCE_SCORE']
-            
+
             if confidence_score >= confidence_standard:
                 best_LaTeX_json = LaTeX_json
                 best_score = confidence_score
@@ -118,6 +120,44 @@ def e2e_v2(problem,model):
             print(f"코드 생성 실패: {e}")
     else:
         print(f"모델 생성 실패 문제:{problem_name}, 시도: {max_trial}")
+    return
+
+
+def e2e_v3(problem,model):
+    feedback = ""
+    best_model_json = ""
+    best_confidence_score = -1.0
+
+    model_designer = ModelDesigner(model=model)
+    model_evaluator = ModelEvaluatorV2(model=model)
+
+    for i in range(max_trial):
+        model_json = model_designer.forward(problem=problem,feedback=feedback)
+        model_file = save_output(model_json, f"{problem_name}_model_trial{i}","json")
+
+        raw_feedback = model_evaluator.forward(problem = problem, model_json=model_json)
+        refined_feedback = model_evaluator._extract_json(raw_feedback)
+        feedback = refined_feedback
+
+        feedback_file = save_output(feedback,f"{problem_name}_feedback_trial{i}","json")
+        data = json.loads(feedback)
+        confidence_score = data.get('CONFIDENCE_SCORE',0.0)
+
+        if confidence_score >= confidence_standard:
+            best_model_json = model_json
+            best_confidence_score = confidence_score
+            break
+        
+        elif confidence_score >= best_confidence_score:
+            best_model_json = model_json
+            best_confidence_score = confidence_score
+
+    if best_model_json:
+        code_generator = CodeGenerator(model=model)
+        code = code_generator.forward(LaTeX_json=best_model_json)
+        code_file = save_output(code,f"{problem_name}_gencode","py")
+    
+    print(f"모델링 및 코드 생성 완료! confidence:{best_confidence_score}")
     return
 
 if __name__ == '__main__':

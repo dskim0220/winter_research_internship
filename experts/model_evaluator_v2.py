@@ -1,0 +1,83 @@
+import sys
+import os
+import json
+import re
+
+from experts.base_expert import BaseExpert
+
+from langchain_core.prompts import PromptTemplate
+from langchain_classic.chains.llm import LLMChain
+#from langchain_google_genai import ChatGoogleGenerativeAI
+
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if root_path not in sys.path:
+    sys.path.append(root_path)
+from custom_callback_qwen import get_custom_callback, get_llm
+
+class ModelEvaluatorV2(BaseExpert):
+
+    ROLE_DESCRIPTION = 'You are an expert Mathematical Optimization Auditor. Your role is to perform a three-way cross-verification between the Problem Description, extracted Queries, and generated LaTeX formulations.'
+    FORWARD_TASK = '''
+Perform a rigorous triple-audit of the provided modeling JSON:
+1) Grounding Check: Is the "query" content actually present in the Problem Description? (Detect fabricated queries).
+2) Mapping Check: Does the "LaTeX" accurately represent the numerical values and logic within its paired "query"?
+3) Mathematical Integrity: Check for Big-M validity, Linearity, and Dimensional consistency.
+
+[SPECIFIC AUDIT GUIDELINES]
+- Numerical Precision: If a query says "124", the LaTeX MUST use "124". Flag any "0" placeholders or arbitrary constants.
+- Logic Alignment: If the query describes a conditional "If-Then", ensure the LaTeX uses binary variables and Big-M correctly.
+- Missing Constraints: Compare the Problem Description with the JSON. Flag if a constraint mentioned in the text has no corresponding entry in the JSON.
+
+Problem Description:
+{problem_description}
+
+modeling(v3 JSON):
+{model_json}
+
+IMPORTANT OUTPUT RULES:
+1) Return ONLY a valid JSON. No prose.
+2) Be merciless in "DATA_FIDELITY_CHECK" if the model used placeholders (e.g., 0) instead of actual numbers.
+3) Confidence Score Penalty: Automatically drop the score below 0.5 if major numerical data (Price, Cost, Quota) is missing or set to 0.
+
+JSON Format:
+{{
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "General assessment of grounding and accuracy.",
+    "QUERY_GROUNDING_AUDIT": "Is every 'query' field a faithful extract from the problem? List hallucinations.",
+    "DATA_FIDELITY_CHECK": "Compare Query numbers vs LaTeX numbers. Identify any mismatches or zero-filling.",
+    "LOGICAL_COUPLING_CHECK": "Check Big-M links between Binary/Continuous variables based on the logic in the queries.",
+    "LINEARITY_VALIDATION": "Confirm no variable-to-variable multiplication (MILP standard).",
+    "DIMENSIONAL_ANALYSIS": "Check unit consistency (e.g., converting tons to 100kg units if necessary).",
+    "CONSTRAINTS_FEEDBACK": "Detailed critique of each constraint's query-to-LaTeX mapping."
+}}
+'''
+
+    def __init__(self, model):
+        super().__init__(
+            name='model_evaluator',
+            description='Decomposes natural language problems into 6-part structured modeling data',#자연어 JSON 제작
+            model=model   
+        )
+        self.llm = get_llm(model_name=self.model,temperature=0.1)
+
+    
+    def forward(self,problem,model_json):
+        comments_text=""
+        message = self.forward_prompt_template.format(
+            problem_description = problem,
+            ##code_example = problem['code_example'],
+            model_json = model_json,
+            comments_text= comments_text
+        )
+        raw_output = self.llm.invoke(message).content
+
+        cleaned_json = self._extract_json(raw_output)
+
+        return cleaned_json
+    
+
+    def _extract_json(self,text):
+        match = re.search(r'\{.*\}', text, re.DOTALL)
+        if match:
+            return match.group(0)
+        return text # 매칭 실패 시 원본 반환
