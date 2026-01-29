@@ -16,11 +16,17 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class ModelDesigner(BaseExpert):
 
-    ROLE_DESCRIPTION_EXTRACTOR = 'You are an expert in mathematical problem formulation. Your role is to translate natural language problems into structured optimization data.'
-    FORWARD_TASK_EXTRACTOR = '''Analyze the problem and extract the type, Sets, Variables, Parameters, Objective, and Constraints from the problem statement for mathematical modeling.
+    ROLE_DESCRIPTION_EXTRACTOR = 'You are an expert in mathematical problem extraction. Your role is to perform a "Full-Sentence-Extraction" to ensure zero information loss.'
+    
+    FORWARD_TASK_EXTRACTOR = '''Analyze the problem and extract EVERY single numerical value, logical rule, and set definition. 
+Do not summarize; perform a literal extraction of all constraints.
 
-CRITICAL INSTRUCTION:
-If "feedback from evaluator" is provided, you MUST prioritize addressing all issues, corrections, or suggestions mentioned in the feedback to refine the previous model. Integrate the feedback into the new formulation to ensure higher accuracy.
+[STRICT EXTRACTION RULES]
+1. Zero-Loss Extraction: Create a dedicated entry for every sentence containing a number or a constraint. 
+2. Reference Tagging: Assign a unique "rule_id" to each extracted constraint to ensure the Formulator can track them later.
+3. Unit Mapping: Explicitly extract units (e.g., tons, 100kg, KRW, hours) and ensure they are paired with their values.
+4. Data Dictionary Focus: Identify every coefficient (Price, Cost, Demand, etc.) and list them explicitly.
+5. Feedback Priority: If "feedback from evaluator" is provided, you MUST specifically address and correct the failed components mentioned in the feedback.
 
 Problem Description:
 {problem_description}
@@ -28,65 +34,122 @@ Problem Description:
 feedback from evaluator:
 {feedback}
 
-To ensure the generated code is immediately executable and produces valid results, you MUST adhere to the following rules:
-1. Eliminate Symbolic Placeholders: Never use undefined symbolic constants (e.g., P, C, Q, T) or placeholders. Using undefined variables causes a `NameError` and renders the code non-executable.
-2. Mandatory Data Dictionary: Every Python script MUST begin with a comprehensive data section. Define a `data` or `parameters` dictionary that contains ALL numerical values extracted from the problem description.
-3. Explicit Parameter Mapping: You must explicitly map every specific number provided (e.g., Prices: 124, 109, 115; Costs: 73.3, 52.9, 65.4) into the model. Do not leave parameters for the user to fill in.
-4. Zero-Abstraction for Instances: If a specific problem instance is provided, your task is to solve that specific instance, not to create a generalized template. Use the exact coefficients provided in the text for objective functions and constraints.
-5. Dimensional Consistency: Verify that the units used in the data section (e.g., 100kg units vs. tons) are consistently applied throughout the constraints to avoid dimensional hallucinations.
-
 IMPORTANT OUTPUT RULES:
-1) Return ONLY a valid JSON object. No extra text or explanations.
-2) Do NOT use LaTeX. Use ASCII operators (<=, >=, =).
-3) Decision Unit Accuracy: Determine if variables are Binary (Yes/No), Integer (Counts), or Continuous (Amounts). If the problem says "number of orders must be an integer", use Integer.
-4) Conditional Logic: Explicitly capture "If-Then" or "Only if" relationships in the CONSTRAINTS. (e.g., "If A is ordered, B must be at least 30").
-5) Indexing: Be specific about indices and sets (e.g., "Set I: Suppliers").
+1) Return ONLY a valid JSON object. No extra text.
+2) Do NOT use LaTeX here. Use plain text or ASCII for logical expressions.
+3) Accuracy: If a value is "1,210 tons", do not just write "1210". Write "1210 (tons)".
 
 JSON Format:
 {{
-    "PROBLEM_TYPE": "LP/MIP/NLP/etc",
-    "SETS": "Index sets for the problem",
-    "PARAMETERS": "Given fixed values and data with their units",
-    "VARIABLES": "List variables to be determined with (Type, Unit). Example: orders_A (Integer, count)",
-    "OBJECTIVE": "The optimization goal function",
-    "CONSTRAINTS": "List of functional constraints reflecting the provided feedback"
+    "PROBLEM_TYPE": "MIP/LP/Routing/etc",
+    "SETS": [
+        {{ "id": "index_symbol", "description": "set_name", "size": "N" }}
+    ],
+    "PARAMETERS": [
+        {{ 
+            "name": "param_name", 
+            "value": "numeric_value", 
+            "unit": "unit_name", 
+            "context": "The original sentence this data came from" 
+        }}
+    ],
+    "CONSTRAINTS_RAW": [
+        {{ 
+            "rule_id": 1, 
+            "logic": "mathematical_logic_in_ASCII", 
+            "original_text": "Complete sentence from problem description" 
+        }}
+    ],
+    "OBJECTIVE_RAW": "The exact goal sentence from the text"
 }}
 '''
 
-    ROLE_DESCRIPTION_FORMULATOR = ''
-    FORWARD_TASK_FORMULATOR = '''Using the extracted queries and original problem, formulate a complete mathematical model in LaTeX.
+    ROLE_DESCRIPTION_FORMULATOR = 'You are a Mathematical Formulator. Your role is to translate extracted raw data into a rigorous LaTeX optimization model with 1:1 mapping.'
+    FORWARD_TASK_FORMULATOR = '''Using the "Extracted Query Data", formulate a complete mathematical model in LaTeX.
 
-[CRITICAL INSTRUCTION]
-1. Grounding: Each LaTeX formula MUST correspond to its provided "query".
-2. Symbolic Check: Use specific coefficients from the query. No undefined symbols like P, C, T.
-3. Logical Reformulation: Use Big-M notation for conditional constraints (If-Then) found in the queries.
-4. Decision Type: Strictly define variables as Binary, Integer, or Continuous.
+[CRITICAL MAPPING RULES]
+1. Atomic Correspondence: For every "rule_id" in CONSTRAINTS_RAW, you MUST generate exactly one corresponding LaTeX formula. 
+2. Symbolic Consistency: Use the exact numerical values (e.g., 124, 1000) in LaTeX. No undefined symbols like P, C, or T.
+3. Explicit Indices: For routing/grid problems, use specific indices (i for path, u,v for nodes, d for direction).
+4. Logic Reformulation: Use Big-M notation or binary indicators for conditional constraints (If-Then).
 
-Extracted Query Data (from Agent 1):
+Extracted Query Data (from Extractor):
 {extracted_queries}
 
 Problem Description (for context):
 {problem_description}
-####
-####
-####
+
 JSON Format:
 {{
-    "SETS": {{ "query": "...", "LaTeX": "LaTeX formulation" }},
-    "PARAMETERS": [
-        {{ "name": "...", "query": "...", "LaTeX": "LaTeX with exact values" }},
-        {{ "name": "...", "query": "...", "LaTeX": "LaTeX with exact values" }},
-    ],
+    "SETS": {{ "query": "Definition of all indices", "LaTeX": "LaTeX formulation" }},
     "VARIABLES": [
-        {{ "name": "...", "type": "Binary/Int/Cont", "query": "...", "LaTeX": "LaTeX definition" }}
+        {{ "name": "var_name", "type": "Binary/Int/Cont", "LaTeX": "x_{{i}} \\in \\{{0, 1\\}}", "description": "..." }}
     ],
-    "OBJECTIVE": {{ "query": "...", "LaTeX": "LaTeX objective function" }},
+    "PARAMETERS": [
+        {{ "name": "param_name", "LaTeX": "Value = 100", "description": "..." }}
+    ],
+    "OBJECTIVE": {{ "query": "Objective from Extractor", "LaTeX": "\\min \\sum ..." }},
     "CONSTRAINTS": [
-        {{ "name": "...", "query": "...", "LaTeX": "LaTeX equation" }}
+        {{ 
+            "rule_id": "Must match rule_id from Extractor",
+            "name": "constraint_name",
+            "query": "The raw logic from Extractor",
+            "LaTeX": "The formal equation"
+        }}
     ]
 }}
 
-Following example given below
+[EXAMPLE OUTPUT]
+{{
+    "SETS": {{
+        "query": "Set of 3 products (A1, A2, A3) and 2 production lines (L1, L2)",
+        "LaTeX": "I = \\{{A1, A2, A3\\}}, J = \\{{L1, L2\\}}"
+    }},
+    "VARIABLES": [
+        {{
+            "name": "x_ij",
+            "type": "Continuous",
+            "LaTeX": "x_{{i,j}} \\geq 0, \\forall i \\in I, j \\in J",
+            "description": "Quantity of product i produced on line j"
+        }},
+        {{
+            "name": "y_ij",
+            "type": "Binary",
+            "LaTeX": "y_{{i,j}} \\in \\{{0, 1\\}}, \\forall i \\in I, j \\in J",
+            "description": "Binary indicator: 1 if product i is assigned to line j"
+        }}
+    ],
+    "PARAMETERS": [
+        {{
+            "name": "Price_A1",
+            "LaTeX": "P_{{A1}} = 124",
+            "description": "Selling price of product A1"
+        }},
+        {{
+            "name": "Capacity_L1",
+            "LaTeX": "Cap_{{L1}} = 5000",
+            "description": "Total production capacity of line L1"
+        }}
+    ],
+    "OBJECTIVE": {{
+        "query": "Maximize total profit (Revenue - Fixed Cost)",
+        "LaTeX": "\\max \\sum_{{i \\in I}} \\sum_{{j \\in J}} (P_i \\cdot x_{{i,j}}) - \\sum_{{i \\in I}} \\sum_{{j \\in J}} (FixedCost_{{i,j}} \\cdot y_{{i,j}})"
+    }},
+    "CONSTRAINTS": [
+        {{
+            "rule_id": 1,
+            "name": "Demand_Constraint",
+            "query": "Total production of A1 must be at least 300 units",
+            "LaTeX": "\\sum_{{j \\in J}} x_{{A1,j}} \\geq 300"
+        }},
+        {{
+            "rule_id": 2,
+            "name": "BigM_Activation",
+            "query": "Product i can only be produced on line j if line j is activated",
+            "LaTeX": "x_{{i,j}} \\leq 1000000 \\cdot y_{{i,j}}, \\forall i \\in I, j \\in J"
+        }}
+    ]
+}}
 '''
 
     def __init__(self, model):

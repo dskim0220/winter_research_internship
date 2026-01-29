@@ -8,7 +8,7 @@ load_dotenv()
 
 url = "https://genai.postech.ac.kr/agent/api/a1/gpt"
 api_key = os.getenv("api_key") 
-file_path = "dataset/newset/Optibench_234/description.txt"
+file_path = "dataset/newset/routing_problem/description.txt"
 problem_text = ""
 
 try:
