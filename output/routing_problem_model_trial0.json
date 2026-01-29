@@ -1,0 +1,64 @@
+{
+    "SETS": {
+        "INPUT_PORTS": "N",
+        "OUTPUT_PORTS": "N",
+        "NODES": "\\text{Total number of nodes in the octagonal grid}",
+        "EDGES": "\\text{Total number of edges in the octagonal grid}"
+    },
+    "PARAMETERS": [
+        { "name": "N", "query": "Number of input/output ports", "LaTeX": "N" },
+        { "name": "L_E", "query": "Unit length of a grid edge", "LaTeX": "l_e" },
+        { "name": "W", "query": "Penalty cost per turn", "LaTeX": "\\omega" },
+        { "name": "MIN_CLEARANCE", "query": "Minimum perpendicular distance between paths", "LaTeX": "\\frac{l_e \\sqrt{2}}{2}" }
+    ],
+    "VARIABLES": [
+        {
+            "name": "path_length_i",
+            "type": "Continuous",
+            "unit": "length",
+            "query": "Continuous variable representing the length of path i",
+            "LaTeX": "p_{i,j,k,l} \\in [0, \\infty)"
+        },
+        {
+            "name": "turn_count_i",
+            "type": "Continuous",
+            "unit": "count",
+            "query": "Continuous variable representing the number of turns in path i",
+            "LaTeX": "t_{i,j,k,l} \\in [0, \\infty)"
+        },
+        {
+            "name": "path_i",
+            "type": "Binary",
+            "unit": "1",
+            "query": "Binary variable indicating if path i exists",
+            "LaTeX": "x_{i,j,k,l} \\in \\{0, 1\\}"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Minimize the weighted sum of the total path length and the total number of turns across all N paths",
+        "LaTeX": "\\min \\sum_{i=1}^{N} \\left(p_{i,j,k,l} + \\omega \\cdot t_{i,j,k,l}\\right)"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "path_disjointness",
+            "description": "Each node and edge on the grid layer can be occupied by only one path (no re-use or sharing)",
+            "query": "Ensure that each node and edge is used by at most one path",
+            "LaTeX": "\\forall j, k, l, m, n, p, q, r, s \\in \\text{nodes}, \\forall i \\in \\{1, \\dots, N\\}: x_{i,j,k,l} + x_{i,m,n,o} \\leq 1"
+        },
+        {
+            "name": "non_crossing_condition",
+            "description": "Paths must not cross or overlap each other in the 2D plane",
+            "query": "Ensure that paths do not intersect",
+            "LaTeX": "\\forall j, k, l, m, n, p, q, r, s \\in \\text{nodes}, \\forall i, j \\in \\{1, \\dots, N\\}: p_{i,j,k,l} - p_{j,i,m,n} \\geq 0 \\land p_{j,i,m,n} - p_{i,j,k,l} \\geq 0"
+        },
+        {
+            "name": "movement_limitations",
+            "description": "From any given node, movement is restricted to 8 adjacent directions (horizontal, vertical, and the four diagonals)",
+            "query": "Ensure that the movement is within the allowed directions",
+            "LaTeX": "\\forall j, k, l, m, n, p, q, r, s \\in \\text{nodes}, \\forall i \\in \\{1, \\dots, N\\}: \\sum_{d \\in \\{1, \\dots, 8\\}} x_{i,j+k\\cdot d, k+l\\cdot d, l+m\\cdot d} \\leq 1"
+        },
+        {
+            "name": "curvature_constraint",
+            "description": "Any edge along a path cannot deviate by more than 45 degrees from the direction of the previous edge",
+            "query": "Ensure that the curvature constraint is satisfied",
+            "LaTeX": "\\forall j, k, l, m, n, p, q, r, s \\in \\text{nodes}, \\forall i \\in \\{1, \\dots, N\\}: \\left|\\frac{p_{i,j,k,l} - p_{i-1,j,k,l}}{t_{i,j,k,l}} - \\frac{p_{i-1,j,k,l}

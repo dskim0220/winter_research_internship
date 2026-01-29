@@ -1,73 +1,26 @@
 {
     "SETS": {
-        "WORK_DAYS": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}",
-        "GROUPS": "\\{\\text{Group1}, \\text{Group2}, \\text{Group3}, \\text{Group4}, \\text{Group5}\\}"
+        "DaysOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     },
     "PARAMETERS": [
-        {
-            "name": "EMPLOYEES_REQUIRED",
-            "query": "EMPLOYEES_REQUIRED",
-            "LaTeX": "\\{\\text{Monday}: 15, \\text{Tuesday}: 13, \\text{Wednesday}: 15, \\text{Thursday}: 18, \\text{Friday}: 14, \\text{Saturday}: 16, \\text{Sunday}: 10\\}"
-        },
-        {
-            "name": "MIN_DIFFERENCE",
-            "query": "MIN_DIFFERENCE",
-            "LaTeX": "7"
-        },
-        {
-            "name": "SUNDAY_MONDAY_PAIR",
-            "query": "SUNDAY_MONDAY_PAIR",
-            "LaTeX": "3"
-        }
+        { "name": "EMPLOYEES_REQUIRED", "query": "EMPLOYEES_REQUIRED", "LaTeX": "\\begin{align*} \\text{EMPLOYEES_REQUIRED}[\\text{Monday}] &= 15 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Tuesday}] &= 13 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Wednesday}] &= 15 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Thursday}] &= 18 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Friday}] &= 14 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Saturday}] &= 16 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Sunday}] &= 10 \\end{align*}" },
+        { "name": "MIN_SUNDAY_MONDAY_PAIR", "query": "MIN_SUNDAY_MONDAY_PAIR", "LaTeX": "\\begin{align*} \\text{MIN_SUNDAY_MONDAY_PAIR} &= 3 \\end{align*}" },
+        { "name": "DIFFERENCE_LIMIT", "query": "DIFFERENCE_LIMIT", "LaTeX": "\\begin{align*} \\text{DIFFERENCE_LIMIT} &= 7 \\end{align*}" }
     ],
     "VARIABLES": [
-        {
-            "name": "x_{d,i}",
-            "type": "Binary",
-            "query": "x_{d,i}",
-            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}, \\forall i \\in \\text{GROUPS}: x_{d,i}"
-        },
-        {
-            "name": "y_{d,i}",
-            "type": "Continuous",
-            "query": "y_{d,i}",
-            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}, \\forall i \\in \\text{GROUPS}: y_{d,i}"
-        }
+        { "name": "EmployeeSchedule", "type": "Binary", "query": "EmployeeSchedule", "LaTeX": "\\begin{align*} \\text{EmployeeSchedule}[\\text{Monday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Tuesday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Wednesday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Thursday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Friday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Saturday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Sunday}] &\\in \\{0, 1\\} \\end{align*}" },
+        { "name": "ShiftStartDay", "type": "Continuous", "query": "ShiftStartDay", "LaTeX": "\\begin{align*} \\text{ShiftStartDay}[\\text{Monday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Tuesday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Wednesday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Thursday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Friday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Saturday}] &\\in \\mathbb{R} \\end{align*}" }
     ],
     "OBJECTIVE": {
-        "query": "minimize sum(x_{d,i} for d in WORK_DAYS)",
-        "LaTeX": "\\min \\sum_{d \\in \\text{WORK_DAYS}} x_{d,i}"
+        "query": "Objective Function", "LaTeX": "\\begin{align*} \\text{Minimize} \\quad \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek}] \\end{align*}"
     },
     "CONSTRAINTS": [
         {
-            "name": "shift_constraint_1",
-            "query": "sum(x_{d,i} for d in \\{\\text{Monday}, \\text{Wednesday}\\}) <= x_{d,i} + x_{d+1,i}",
-            "LaTeX": "\\forall i \\in \\text{GROUPS}: \\sum_{d \\in \\{\\text{Monday}, \\text{Wednesday}\\}} x_{d,i} \\leq x_{d,i} + x_{d+1,i}"
+            "name": "EmploymentRequirement",
+            "query": "EmploymentRequirement",
+            "LaTeX": "\\begin{align*} \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek}] &= \\text{EMPLOYEERS_REQUIRED}[\\text{DayOfWeek}] \\quad \\forall \\text{DayOfWeek} \\in \\text{DaysOfWeek} \\end{align*}"
         },
         {
-            "name": "shift_constraint_2",
-            "query": "sum(x_{d,i} for d in \\{\\text{Sunday}, \\text{Monday}\\}) >= y_{d,i}",
-            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: x_{d,i} + x_{d+1,i} + x_{d+2,i} + x_{d+3,i} + x_{d+4,i} \\geq y_{d,i}"
-        },
-        {
-            "name": "group_constraint",
-            "query": "sum(x_{d,i} for i in GROUPS) == 1",
-            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: \\sum_{i \\in \\text{GROUPS}} x_{d,i} = 1"
-        },
-        {
-            "name": "employee_constraint",
-            "query": "sum(y_{d,i} for d in WORK_DAYS) == EMPLOYEES_REQUIRED[d]",
-            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: \\sum_{i \\in \\text{GROUPS}} y_{d,i} = \\EMPLOYEES_REQUIRED[d]"
-        },
-        {
-            "name": "difference_constraint",
-            "query": "sum(y_{d,i} for d in \\{\\text{Monday}, \\text{Wednesday}\\}) <= MIN_DIFFERENCE",
-            "LaTeX": "\\forall i \\in \\text{GROUPS}: \\sum_{d \\in \\{\\text{Monday}, \\text{Wednesday}\\}} y_{d,i} \\leq \\MIN_DIFFERENCE"
-        },
-        {
-            "name": "pair_constraint",
-            "query": "sum(y_{d,i} for d in \\{\\text{Sunday}, \\text{Monday}\\}) >= SUNDAY_MONDAY_PAIR",
-            "LaTeX": "\\forall d \\in \\text{WORK_DAYS}: x_{d,i} + x_{d+1,i} + x_{d+2,i} + x_{d+3,i} + x_{d+4,i} \\geq \\SUNDAY_MONDAY_PAIR"
-        }
-    ]
-}
+            "name": "SundayMondayPairConstraint",
+            "query": "SundayMondayPairConstraint",
+            "LaTeX": "\\begin{align*} \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek}] - \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek} + 1] &\\geq \\text{MIN_SUNDAY_MONDAY_PAIR} \\quad \\forall \\text{DayOfWeek} \\in \\text{DaysOfWeek}

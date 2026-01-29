@@ -1,0 +1,10 @@
+{
+    "CONFIDENCE_SCORE": 0.5,
+    "OVERALL_FEEDBACK": "The model has some issues with grounding and logical coupling, but the mathematical formulation is mostly correct.",
+    "QUERY_GROUNDING_AUDIT": "No hallucinations found. All 'query' fields are faithful extracts from the problem description.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found in the 'query' fields. Some numbers are placeholders (e.g., 0) and should be replaced with actual values.",
+    "LOGICAL_COUPLING_CHECK": "Major numerical data is missing or set to 0. This affects the Big-M validity and dimensional analysis.",
+    "LINEARITY_VALIDATION": "No variable-to-variable multiplication found, which is good for MILP standards.",
+    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies exist due to placeholder values. Needs conversion to consistent units.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are generally correctly mapped to LaTeX, but some need clarification regarding the use of 't_i' and 'path_i_length'."
+}

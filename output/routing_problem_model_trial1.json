@@ -1,0 +1,71 @@
+{
+    "SETS": {
+        "INPUT_PORTS": "N",
+        "OUTPUT_PORTS": "N",
+        "NODES": "Total number of nodes in the octagonal grid",
+        "EDGES": "Total number of edges in the octagonal grid"
+    },
+    "PARAMETERS": [
+        { "name": "N", "query": "Number of input/output ports", "LaTeX": "N" },
+        { "name": "L_E", "query": "Unit length of a grid edge", "LaTeX": "l_e" },
+        { "name": "W", "query": "Penalty cost per turn", "LaTeX": "\omega" },
+        { "name": "MIN_PERPENDICULAR_DISTANCE", "query": "l_e * sqrt(2) / 2", "LaTeX": "\\frac{l_e \\sqrt{2}}{2}" }
+    ],
+    "VARIABLES": [
+        {
+            "name": "path_i_start_node",
+            "type": "Continuous",
+            "unit": "Node index",
+            "query": "path_i_start_node",
+            "LaTeX": "x_i^{\text{start}}"
+        },
+        {
+            "name": "path_i_end_node",
+            "type": "Continuous",
+            "unit": "Node index",
+            "query": "path_i_end_node",
+            "LaTeX": "x_i^{\text{end}}"
+        },
+        {
+            "name": "path_i_length",
+            "type": "Continuous",
+            "unit": "Length units",
+            "query": "path_i_length",
+            "LaTeX": "l_i"
+        },
+        {
+            "name": "path_i_turn_count",
+            "type": "Continuous",
+            "unit": "Turn count",
+            "query": "path_i_turn_count",
+            "LaTeX": "t_i"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Minimize sum(path_i_length + W * path_i_turn_count) for i in [1, N]",
+        "LaTeX": "\\min \\sum_{i=1}^{N} \\left(l_i + \\omega t_i\\right)"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "Path_Disjointness",
+            "constraint": "For all i, j in [1, N], i!= j, x_i^{\text{start}}!= x_j^{\text{start}} and x_i^{\text{end}}!= x_j^{\text{end}}",
+            "LaTeX": "\\forall i, j \\in [1, N], i \\neq j, \\quad x_i^{\text{start}} \\neq x_j^{\text{start}} \\land x_i^{\text{end}} \\neq x_j^{\text{end}}"
+        },
+        {
+            "name": "Non_Crossing",
+            "constraint": "For all i, j in [1, N], i!= j, x_i^{\text{start}}!= x_j^{\text{end}} and x_i^{\text{end}}!= x_j^{\text{start}}",
+            "LaTeX": "\\forall i, j \\in [1, N], i \\neq j, \\quad x_i^{\text{start}} \\neq x_j^{\text{end}} \\land x_i^{\text{end}} \\neq x_j^{\text{start}}"
+        },
+        {
+            "name": "Movement_Limitations",
+            "constraint": "For all i, j in [1, N], i!= j, l_i <= l_e and t_i <= 1",
+            "LaTeX": "\\forall i, j \\in [1, N], i \\neq j, \\quad l_i \\leq l_e \\land t_i \\leq 1"
+        },
+        {
+            "name": "Curvature_Constraint",
+            "constraint": "For all i, j in [1, N], i!= j, t_i <= 1",
+            "LaTeX": "\\forall i, j \\in [1, N], i \\neq j, \\quad t_i \\leq 1"
+        },
+        {
+            "name": "Minimum_Perpendicular_Distance",
+            "constraint": "For all i, j in [1, N], i!= j, \\sqrt{(x_i^{\text{end}} - x_j^{\text{end}})^2 + (x_i^{\text{start}} - x_j^{\text{start}})^2} >= \\frac{l_e \\sqrt{2}}{2}

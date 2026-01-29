@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.5,
     "OVERALL_FEEDBACK": "The model largely follows the problem description but lacks some critical details and logical checks.",
-    "QUERY_GROUNDING_AUDIT": "No hallucinations found. All 'query' fields are faithful extracts from the problem.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies found in the 'query' fields. Some numbers do not match the LaTeX representations. Specifically, the fixed costs should be included in the objective function.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present, which is expected since no minimum batch or activation time is mentioned. However, this could lead to issues with optimization.",
-    "LINEARITY_VALIDATION": "The model appears linear, as there are no variable-to-variable multiplications.",
-    "DIMENSIONAL_ANALYSIS": "Unit consistency is maintained throughout the model.",
-    "CONSTRAINTS_FEEDBACK": "Constraints are correctly formulated, but the objective function needs adjustment. The fixed costs should be included in the objective function to maximize profit."
+    "QUERY_GROUNDING_AUDIT": "No hallucinations found.",
+    "DATA_FIDELITY_CHECK": "Numerical values match except for the Fixed Costs which should be included in the objective function.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present as required by the problem description.",
+    "LINEARITY_VALIDATION": "The model is linear as no variable-to-variable multiplication is observed.",
+    "DIMENSIONAL_ANALYSIS": "Unit consistency is maintained.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are correctly formulated but need to include Fixed Costs in the objective function."
 }

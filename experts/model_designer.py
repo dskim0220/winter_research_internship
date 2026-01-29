@@ -67,12 +67,15 @@ Extracted Query Data (from Agent 1):
 
 Problem Description (for context):
 {problem_description}
-
+####
+####
+####
 JSON Format:
 {{
     "SETS": {{ "query": "...", "LaTeX": "LaTeX formulation" }},
     "PARAMETERS": [
-        {{ "name": "...", "query": "...", "LaTeX": "LaTeX with exact values" }}
+        {{ "name": "...", "query": "...", "LaTeX": "LaTeX with exact values" }},
+        {{ "name": "...", "query": "...", "LaTeX": "LaTeX with exact values" }},
     ],
     "VARIABLES": [
         {{ "name": "...", "type": "Binary/Int/Cont", "query": "...", "LaTeX": "LaTeX definition" }}
@@ -82,6 +85,8 @@ JSON Format:
         {{ "name": "...", "query": "...", "LaTeX": "LaTeX equation" }}
     ]
 }}
+
+Following example given below
 '''
 
     def __init__(self, model):

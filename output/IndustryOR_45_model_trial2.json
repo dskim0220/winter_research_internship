@@ -1,14 +1,21 @@
 {
     "SETS": {
-        "STUDENTS": ["1", "2", "3", "4", "5", "6"],
-        "DAYS": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        "STUDENTS": {"1", "2", "3", "4", "5", "6"},
+        "DAYS": {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"}
     },
     "PARAMETERS": [
-        { "name": "WAGE", "query": "Wage (CNY/h)", "LaTeX": "\\begin{aligned} & WAGE[1][\\text{Monday}] = 6 \\\\ & WAGE[1][\\text{Tuesday}] = 0 \\\\ & WAGE[1][\\text{Wednesday}] = 6 \\\\ & WAGE[1][\\text{Thursday}] = 0 \\\\ & WAGE[1][\\text{Friday}] = 7 \\\\ & WAGE[2][\\text{Monday}] = 0 \\\\ & WAGE[2][\\text{Tuesday}] = 8 \\\\ & WAGE[2][\\text{Wednesday}] = 9 \\\\ & WAGE[2][\\text{Thursday}] = 5 \\\\ & WAGE[2][\\text{Friday}] = 0 \\\\ & WAGE[3][\\text{Monday}] = 4 \\\\ & WAGE[3][\\text{Tuesday}] = 8 \\\\ & WAGE[3][\\text{Wednesday}] = 3 \\\\ & WAGE[3][\\text{Thursday}] = 0 \\\\ & WAGE[3][\\text{Friday}] = 5 \\\\ & WAGE[4][\\text{Monday}] = 5 \\\\ & WAGE[4][\\text{Tuesday}] = 5 \\\\ & WAGE[4][\\text{Wednesday}] = 6 \\\\ & WAGE[4][\\text{Thursday}] = 0 \\\\ & WAGE[4][\\text{Friday}] = 4 \\\\ & WAGE[5][\\text{Monday}] = 3 \\\\ & WAGE[5][\\text{Tuesday}] = 0 \\\\ & WAGE[5][\\text{Wednesday}] = 5 \\\\ & WAGE[5][\\text{Thursday}] = 8 \\\\ & WAGE[5][\\text{Friday}] = 0 \\\\ & WAGE[6][\\text{Monday}] = 0 \\\\ & WAGE[6][\\text{Tuesday}] = 6 \\\\ & WAGE[6][\\text{Wednesday}] = 0 \\\\ & WAGE[6][\\text{Thursday}] = 6 \\\\ & WAGE[6][\\text{Friday}] = 5 \\end{aligned}" },
-        { "name": "HOURS", "query": "Hours per student", "LaTeX": "\\begin{aligned} & HOURS[1] = 8 \\\\ & HOURS[2] = 8 \\\\ & HOURS[3] = 7 \\\\ & HOURS[4] = 7 \\\\ & HOURS[5] = 7 \\\\ & HOURS[6] = 7 \\end{aligned}" },
-        { "name": "MAX_HOURS", "query": "Maximum hours per day", "LaTeX": "\\begin{aligned} & MAX_HOURS[\\text{Monday}] = 10 \\\\ & MAX_HOURS[\\text{Tuesday}] = 10 \\\\ & MAX_HOURS[\\text{Wednesday}] = 10 \\\\ & MAX_HOURS[\\text{Thursday}] = 10 \\\\ & MAX_HOURS[\\text{Friday}] = 10 \\end{aligned}" },
-        { "name": "MAX_SHIFT", "query": "Maximum shifts per student", "LaTeX": "MAX_SHIFT = 2" },
-        { "name": "MAX_STUDENTS_PER_DAY", "query": "Maximum students per day", "LaTeX": "MAX_STUDENTS_PER_DAY = 3" },
-        { "name": "TOTAL_DUTY_HOURS", "query": "Total duty hours", "LaTeX": "TOTAL_DUTY_HOURS = 70" },
-        { "name": "MAX_5_6_HOURS", "query": "Maximum hours for students 5 and 6 combined", "LaTeX": "MAX_5_6_HOURS = 14" },
-        { "name": "THURSDAY_5_LIMIT", "query": "Limit on Thursday's hours for student 5", "LaTeX": "THURSDAY_5_LIMIT = 2" }
+        { "name": "WAGE", "query": "Wage (CNY/h)", "LaTeX": "\\text{WAGE}_{\\text{1}} = \\begin{pmatrix} 6 & 0 & 6 & 0 & 7 \\\\ 0 & 8 & 9 & 6 & 0 \\\\ 4 & 8 & 3 & 0 & 5 \\\\ 5 & 5 & 6 & 0 & 4 \\\\ 3 & 0 & 5 & 8 & 0 \\\\ 0 & 6 & 0 & 6 & 5 \\end{pmatrix}" },
+        { "name": "HOURS", "query": "Maximum Duty Hours", "LaTeX": "\\text{HOURS}_{\\text{1}} = 8, \\text{HOURS}_{\\text{2}} = 8, \\text{HOURS}_{\\text{3}} = 7, \\text{HOURS}_{\\text{4}} = 7, \\text{HOURS}_{\\text{5}} = 7, \\text{HOURS}_{\\text{6}} = 7" },
+        { "name": "MIN_HOURS", "query": "Minimum Duty Hours", "LaTeX": "\\text{MIN_HOURS}_{\\text{1}} = 8, \\text{MIN_HOURS}_{\\text{2}} = 8, \\text{MIN_HOURS}_{\\text{3}} = 7, \\text{MIN_HOURS}_{\\text{4}} = 7, \\text{MIN_HOURS}_{\\text{5}} = 7, \\text{MIN_HOURS}_{\\text{6}} = 7" },
+        { "name": "MAX_HOURS", "query": "Maximum Shifts", "LaTeX": "\\text{MAX_HOURS}_{\\text{1}} = 2, \\text{MAX_HOURS}_{\\text{2}} = 2, \\text{MAX_HOURS}_{\\text{3}} = 2, \\text{MAX_HOURS}_{\\text{4}} = 2, \\text{MAX_HOURS}_{\\text{5}} = 2, \\text{MAX_HOURS}_{\\text{6}} = 2" },
+        { "name": "TOTAL_DUTY_HOURS", "query": "Total Duty Hours", "LaTeX": "\\sum_{i \\in \\text{STUDENTS}} \\sum_{d \\in \\text{DAYS}} x_{id} \\cdot \\text{WAGE}_{i,d} = 70" },
+        { "name": "SUM_STUDENTS_5_6", "query": "Sum of Duty Hours for Students 5 and 6", "LaTeX": "\\sum_{d \\in \\text{DAYS}} x_{5,d} + \\sum_{d \\in \\text{DAYS}} x_{6,d} \\leq 14" },
+        { "name": "STUDENT_5_THURSDAY", "query": "Student 5's Duty Hours on Thursday", "LaTeX": "\\sum_{d \\in \\text{DAYS}} x_{5,d} \\leq 2" }
+    },
+    "VARIABLES": [
+        { "name": "x_{id}", "type": "Binary", "query": "Student id i works on day d", "LaTeX": "x_{\\text{id},d} \\in \\{0, 1\\}" }
+    ],
+    "OBJECTIVE": { "query": "Minimize Gross Pay", "LaTeX": "\\min \\sum_{i \\in \\text{STUDENTS}} \\sum_{d \\in \\text{DAYS}} x_{id} \\cdot \\text{WAGE}_{i,d}" },
+    "CONSTRAINTS": [
+        { "name": "STUDENT_MIN_HOURS", "query": "Each Student Works Minimum Hours", "LaTeX": "\\sum_{d \\in \\text{DAYS}} x_{i,d} \\geq \\text{MIN_HOURS}_{i} \\quad \\forall i \\in \\text{STUDENTS}" },
+        { "name": "STUDENT_MAX_HOURS", "query": "Each Student Works Maximum Shifts", "LaTeX": "\\sum_{d \\in \\text{DAYS}} x_{i,d} \\leq \\text{MAX_HOURS}_{i}

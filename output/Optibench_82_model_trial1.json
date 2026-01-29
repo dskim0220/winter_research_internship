@@ -1,21 +1,58 @@
 {
     "SETS": {
-        "DAYS_OF_WEEK": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}",
-        "WORKING_DAYS": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}\\}"
+        "WORK_DAYS": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}",
+        "EMPLOYEES": "\\{\\text{Employee}_1, \\text{Employee}_2, \\text{Employee}_3, \\text{Employee}_4, \\text{Employee}_5, \\text{Employee}_6, \\text{Employee}_7, \\text{Employee}_8, \\text{Employee}_9, \\text{Employee}_{10}\\}"
     },
     "PARAMETERS": [
-        { "name": "EMPLOYEES_REQUIRED", "query": "EMPLOYEES_REQUIRED", "LaTeX": "EMPLOYEES_REQUIRED = \\{\\text{Monday}: 15, \\text{Tuesday}: 13, \\text{Wednesday}: 15, \\text{Thursday}: 18, \\text{Friday}: 14, \\text{Saturday}: 16, \\text{Sunday}: 10\\}" },
-        { "name": "MIN_DIFFERENCE", "query": "MIN_DIFFERENCE", "LaTeX": "MIN_DIFFERENCE = 7" },
-        { "name": "SUNDAY_MONDAY_PAIR", "query": "SUNDAY_MONDAY_PAIR", "LaTeX": "SUNDAY_MONDAY_PAIR = 3" }
+        {
+            "name": "EMPLOYEES_REQUIRED",
+            "query": "EMPLOYEES_REQUIRED",
+            "LaTeX": "\\{15, 13, 15, 18, 14, 16, 10\\}"
+        },
+        {
+            "name": "MIN_SUNDAY_MONDAY_PAIR",
+            "query": "MIN_SUNDAY_MONDAY_PAIR",
+            "LaTeX": "3"
+        },
+        {
+            "name": "DIFFERENCE_LIMIT",
+            "query": "DIFFERENCE_LIMIT",
+            "LaTeX": "7"
+        }
     ],
     "VARIABLES": [
-        { "name": "x_{d,i}", "type": "Binary", "query": "x_{d,i}", "LaTeX": "x_{d,i} \\in \\{0, 1\\}" },
-        { "name": "y_{d,i}", "type": "Binary", "query": "y_{d,i}", "LaTeX": "y_{d,i} \\in \\{0, 1\\}" }
+        {
+            "name": "shift_assignment",
+            "type": "Binary",
+            "query": "shift_assignment",
+            "LaTeX": "\\forall \\text{Employee} \\in \\text{EMPLOYEES}, \\forall \\text{Day} \\in \\text{WORK_DAYS}: x_{\\text{Employee}, \\text{Day}} \\in \\{0, 1\\}"
+        },
+        {
+            "name": "employee_schedule",
+            "type": "Continuous",
+            "query": "employee_schedule",
+            "LaTeX": "\\forall \\text{Employee} \\in \\text{EMPLOYEES}, \\forall \\text{Day} \\in \\text{WORK_DAYS}: y_{\\text{Employee}, \\text{Day}} \\in [0, 1]"
+        }
     ],
-    "OBJECTIVE": { "query": "minimize sum(x_{d,i} for d in DAYS_OF_WEEK for i in WORKING_DAYS)", "LaTeX": "\\min \\sum_{d \\in \\text{DAYS_OF_WEEK}} \\sum_{i \\in \\text{WORKING_DAYS}} x_{d,i}" },
+    "OBJECTIVE": {
+        "query": "minimize sum(shift_assignment[Employee] for Employee in EMPLOYEES)",
+        "LaTeX": "\\min \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Day}}"
+    },
     "CONSTRAINTS": [
-        { "name": "sum(x_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "query": "sum(x_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\text{WORKING_DAYS}} x_{d,i} = 1 \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
-        { "name": "sum(y_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "query": "sum(y_{d,i} for d in WORKING_DAYS) == 1 for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\text{WORKING_DAYS}} y_{d,i} = 1 \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
-        { "name": "sum(x_{d,i} for d in {Monday, Wednesday}) <= x_{d,i} + x_{d+1,i} for d in {Monday, Wednesday} for i in WORKING_DAYS", "query": "sum(x_{d,i} for d in {Monday, Wednesday}) <= x_{d,i} + x_{d+1,i} for d in {Monday, Wednesday} for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\{\\text{Monday}, \\text{Wednesday}\\}} x_{d,i} \\leq x_{d,i} + x_{d+1,i} \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
-        { "name": "sum(x_{d,i} for d in {Sunday, Monday}) >= y_{d,i} for d in {Sunday, Monday} for i in DAYS_OF_WEEK", "query": "sum(x_{d,i} for d in {Sunday, Monday}) >= y_{d,i} for d in {Sunday, Monday} for i in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\{\\text{Sunday}, \\text{Monday}\\}} x_{d,i} \\geq y_{d,i} \\quad \\forall i \\in \\text{DAYS_OF_WEEK}" },
-        { "name": "sum(x_{d,i} for d in DAYS_OF_WEEK) == EMPLOYEES_REQUIRED[d] for d in DAYS_OF_WEEK", "query": "sum(x_{d,i} for d in DAYS_OF_WEEK) == EMPLOYEES_REQUIRED[d] for d in DAYS_OF_WEEK", "LaTeX": "\\sum_{d \\in \\text{DAYS_OF_WEEK}} x_{d,i}
+        {
+            "name": "EmploymentRequirement",
+            "query": "EmploymentRequirement",
+            "LaTeX": "\\forall \\text{Day} \\in \\text{WORK_DAYS}: \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Day}} \\cdot y_{\\text{Employee}, \\text{Day}} = \\text{EMPLOYEES_REQUIRED}[\\text{Day}]"
+        },
+        {
+            "name": "SundayMondayPairConstraint",
+            "query": "SundayMondayPairConstraint",
+            "LaTeX": "\\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Sunday}} \\cdot x_{\\text{Employee}, \\text{Monday}} \\geq \\text{MIN_SUNDAY_MONDAY_PAIR}"
+        },
+        {
+            "name": "DifferenceConstraint",
+            "query": "DifferenceConstraint",
+            "LaTeX": "\\left| \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Monday}} - \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Wednesday}} \\right| \\leq \\text{DIFFERENCE_LIMIT}"
+        }
+    ]
+}

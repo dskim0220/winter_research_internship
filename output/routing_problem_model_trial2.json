@@ -1,0 +1,91 @@
+{
+    "SETS": {
+        "INPUT_PORTS": "N",
+        "OUTPUT_PORTS": "N",
+        "NODES": "\\text{Total number of nodes in the octagonal grid}",
+        "EDGES": "\\text{Total number of edges in the octagonal grid}"
+    },
+    "PARAMETERS": [
+        {
+            "name": "N",
+            "query": "Number of input/output ports",
+            "LaTeX": "N"
+        },
+        {
+            "name": "L_E",
+            "query": "Unit length of a grid edge",
+            "LaTeX": "l_e"
+        },
+        {
+            "name": "W",
+            "query": "Penalty cost per turn",
+            "LaTeX": "\\omega"
+        },
+        {
+            "name": "MIN_PERPENDICULAR_DISTANCE",
+            "query": "Minimum perpendicular distance between paths",
+            "LaTeX": "\\delta"
+        },
+        {
+            "name": "TOTAL_PATH_LENGTH",
+            "query": "Sum of lengths of all paths",
+            "LaTeX": "\\sum_{i=1}^{N} \\text{Length}_i"
+        },
+        {
+            "name": "TOTAL_TURN_COUNT",
+            "query": "Sum of turn counts of all paths",
+            "LaTeX": "\\sum_{i=1}^{N} \\text{TurnCount}_i"
+        }
+    ],
+    "VARIABLES": [
+        {
+            "name": "path_i_length",
+            "type": "Continuous",
+            "query": "Length units",
+            "LaTeX": "\\text{Length}_i"
+        },
+        {
+            "name": "path_i_turn_count",
+            "type": "Continuous",
+            "query": "Turn count",
+            "LaTeX": "\\text{TurnCount}_i"
+        },
+        {
+            "name": "t_i",
+            "type": "Binary",
+            "query": "0 or 1",
+            "LaTeX": "t_i"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Minimize path_i_length + W * path_i_turn_count",
+        "LaTeX": "\\min \\sum_{i=1}^{N} (\\text{Length}_i + \\omega \\cdot \\text{TurnCount}_i)"
+    },
+    "CONSTRAINTS": [
+        {
+            "name": "Path_Disjointness",
+            "query": "For all i, j: t_i + t_j <= 1",
+            "LaTeX": "\\forall i, j: t_i + t_j \\leq 1"
+        },
+        {
+            "name": "Non_Crossing",
+            "query": "For all i, j: t_i + t_j <= 1",
+            "LaTeX": "\\forall i, j: t_i + t_j \\leq 1"
+        },
+        {
+            "name": "Movement_Limitations",
+            "query": "For all i, j: l_i - l_j <= 45",
+            "LaTeX": "\\forall i, j: \\text{Length}_i - \\text{Length}_j \\leq 45"
+        },
+        {
+            "name": "Curvature_Constraint",
+            "query": "For all i: path_i_turn_count <= 1",
+            "LaTeX": "\\forall i: \\text{TurnCount}_i \\leq 1"
+        },
+        {
+            "name": "Minimum_Perpendicular_Distance",
+            "query": "For all i, j: path_i_length + path_j_length - MIN_PERPENDICULAR_DISTANCE >= 0",
+            "LaTeX": "\\forall i, j: \\text{Length}_i + \\text{Length}_j - \\delta \\geq 0"
+        }
+    ]
+}

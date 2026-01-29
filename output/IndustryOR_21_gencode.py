@@ -21,7 +21,7 @@ at_least_seven_orders = 7
 m = gp.Model("production_optimization")
 
 # 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
-x_A = m.addVar(vtype=GRB.BINARY, name="orders_A")
+x_A = m.addVar(vtype=GRB.INTEGER, name="orders_A")
 x_B = m.addVar(vtype=GRB.INTEGER, name="orders_B")
 x_C = m.addVar(vtype=GRB.INTEGER, name="orders_C")
 

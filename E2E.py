@@ -11,8 +11,8 @@ from experts.model_designer import ModelDesigner
 from custom_callback_qwen import get_llm, get_custom_callback
 
 #설정부분
-data_set='newset'
-problem_name='Optibench_82'
+data_set='LPWP'
+problem_name='prob_1'
 max_trial = 3
 confidence_standard=0.8
 

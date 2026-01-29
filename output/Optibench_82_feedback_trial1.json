@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. The queries do not match the LaTeX formulations, and some key parameters are missing.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 'EMPLOYEES_REQUIRED', 'MIN_DIFFERENCE', 'SUNDAY_MONDAY_PAIR') which are not present in the Problem Description. These placeholders should be replaced with actual numerical values.",
-    "DATA_FIDELITY_CHECK": "Numerical values in queries do not match the LaTeX formulations. For example, 'EMPLOYEES_REQUIRED' is defined but does not include actual numbers, and 'MIN_DIFFERENCE' and 'SUNDAY_MONDAY_PAIR' are placeholders.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the model, which is expected given the current formulation. However, the model lacks critical constraints such as the minimum batch and total production limit.",
-    "LINEARITY_VALIDATION": "The model appears linear, but it lacks essential constraints like the minimum batch and total production limit, which are crucial for ensuring linearity and feasibility.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed in the provided model.",
-    "CONSTRAINTS_FEEDBACK": "Constraints are poorly formulated and do not align with the problem description. For instance, the'sum(x_{d,i} for d in {Monday, Wednesday}) <= x_{d,i} + x_{d+1,i}' constraint is unclear and does not reflect the problem requirements. Similarly, the'sum(x_{d,i} for d in {Sunday, Monday}) >= y_{d,i}' constraint is also unclear and does not correctly link the binary and continuous variables."
+    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The 'query' for 'EMPLOYEES_REQUIRED', 'MIN_SUNDAY_MONDAY_PAIR', and 'DIFFERENCE_LIMIT' should contain actual numbers.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between 'query' and 'LaTeX' fields. Placeholder values like '0' are used instead of actual numbers.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly implemented based on the problem description. The 'SundayMondayPairConstraint' and 'DifferenceConstraint' need to be re-evaluated.",
+    "LINEARITY_VALIDATION": "The model does not strictly adhere to linear constraints. Variables are mixed with continuous and binary variables without proper Big-M linking.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed in the given model.",
+    "CONSTRAINTS_FEEDBACK": "Constraints 'EmploymentRequirement', 'SundayMondayPairConstraint', and 'DifferenceConstraint' need to be revised to align with the problem description. Specifically, the 'SundayMondayPairConstraint' and 'DifferenceConstraint' lack proper Big-M linking and logical coupling."
 }

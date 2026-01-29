@@ -1,0 +1,41 @@
+{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{verbatim}
+{
+    "SETS": {},
+    "PARAMETERS": [
+        { "name": "color_printer_production_limit", "query": "color_printer_production_limit", "LaTeX": "x_{\text{color\_printer}} \leq 20" },
+        { "name": "black_and_white_printer_production_limit", "query": "black_and_white_printer_production_limit", "LaTeX": "y_{\text{bw\_printer}} \leq 30" },
+        { "name": "paper_tray_installation_machine_limit", "query": "paper_tray_installation_machine_limit", "LaTeX": "x_{\text{color\_printer}} + y_{\text{bw\_printer}} \leq 35" },
+        { "name": "profit_color_printer", "query": "profit_color_printer", "LaTeX": "200" },
+        { "name": "profit_black_and_white_printer", "query": "profit_black_and_white_printer", "LaTeX": "70" }
+    ],
+    "VARIABLES": [
+        { "name": "num_color_printers", "type": "Continuous", "unit": "count", "query": "num_color_printers", "LaTeX": "x_{\text{color\_printer}}" },
+        { "name": "num_black_and_white_printers", "type": "Continuous", "unit": "count", "query": "num_black_and_white_printers", "LaTeX": "y_{\text{bw\_printer}}" }
+    ],
+    "OBJECTIVE": { "query": "Maximize 200*num_color_printers + 70*num_black_and_white_printers", "LaTeX": "\max 200 x_{\text{color\_printer}} + 70 y_{\text{bw\_printer}}" },
+    "CONSTRAINTS": [
+        { "name": "color_printer_production_limit", "constraint_type": "LessThan", "expression": "num_color_printers <= color_printer_production_limit", "query": "color_printer_production_limit", "LaTeX": "x_{\text{color\_printer}} \leq 20" },
+        { "name": "black_and_white_printer_production_limit", "constraint_type": "LessThan", "expression": "num_black_and_white_printers <= black_and_white_printer_production_limit", "query": "black_and_white_printer_production_limit", "LaTeX": "y_{\text{bw\_printer}} \leq 30" },
+        { "name": "paper_tray_installation_machine_limit", "constraint_type": "LessThan", "expression": "num_color_printers + num_black_and_white_printers <= paper_tray_installation_machine_limit", "query": "paper_tray_installation_machine_limit", "LaTeX": "x_{\text{color\_printer}} + y_{\text{bw\_printer}} \leq 35" }
+    ]
+}
+\end{verbatim}
+
+\section*{Model Formulation}
+
+The complete mathematical model in LaTeX format is as follows:
+
+\begin{align*}
+&\text{Maximize} && 200 x_{\text{color\_printer}} + 70 y_{\text{bw\_printer}} \\
+&\text{Subject to} && x_{\text{color\_printer}} \leq 20 \\
+& && y_{\text{bw\_printer}} \leq 30 \\
+& && x_{\text{color\_printer}} + y_{\text{bw\_printer}} \leq 35 \\
+& && x_{\text{color\_printer}}, y_{\text{bw\_printer}} \geq 0 \quad (\text{Continuous})
+\end{align*}
+
+\end{document}

@@ -1,55 +1,48 @@
 {
     "SETS": {
-        "STUDENTS": "5, 6",
-        "DAYS": "Monday, Tuesday, Wednesday, Thursday, Friday"
+        "STUDENTS": "\\{1, 2, 3, 4\\}", 
+        "DAYS": "\\{Monday, Tuesday, Wednesday, Thursday, Friday\\}"
     },
     "PARAMETERS": [
-        {
-            "name": "WAGE",
-            "query": "Wage (CNY/h) for each student",
-            "LaTeX": "\\begin{align*} WAGE_{1,\\text{Monday}} &= 6 \\\\ WAGE_{1,\\text{Tuesday}} &= 0 \\\\ WAGE_{1,\\text{Wednesday}} &= 6 \\\\ WAGE_{1,\\text{Thursday}} &= 0 \\\\ WAGE_{1,\\text{Friday}} &= 7 \\\\ WAGE_{2,\\text{Monday}} &= 0 \\\\ WAGE_{2,\\text{Tuesday}} &= 8 \\\\ WAGE_{2,\\text{Wednesday}} &= 9 \\\\ WAGE_{2,\\text{Thursday}} &= 5 \\\\ WAGE_{2,\\text{Friday}} &= 0 \\\\ WAGE_{3,\\text{Monday}} &= 4 \\\\ WAGE_{3,\\text{Tuesday}} &= 8 \\\\ WAGE_{3,\\text{Wednesday}} &= 3 \\\\ WAGE_{3,\\text{Thursday}} &= 0 \\\\ WAGE_{3,\\text{Friday}} &= 5 \\\\ WAGE_{4,\\text{Monday}} &= 5 \\\\ WAGE_{4,\\text{Tuesday}} &= 5 \\\\ WAGE_{4,\\text{Wednesday}} &= 6 \\\\ WAGE_{4,\\text{Thursday}} &= 0 \\\\ WAGE_{4,\\text{Friday}} &= 4 \\\\ WAGE_{5,\\text{Monday}} &= 3 \\\\ WAGE_{5,\\text{Tuesday}} &= 0 \\\\ WAGE_{5,\\text{Wednesday}} &= 5 \\\\ WAGE_{5,\\text{Thursday}} &= 8 \\\\ WAGE_{5,\\text{Friday}} &= 0 \\\\ WAGE_{6,\\text{Monday}} &= 0 \\\\ WAGE_{6,\\text{Tuesday}} &= 6 \\\\ WAGE_{6,\\text{Wednesday}} &= 0 \\\\ WAGE_{6,\\text{Thursday}} &= 6 \\\\ WAGE_{6,\\text{Friday}} &= 5 \\end{align*}"
-        },
-        {
-            "name": "MIN_HOURS_UNDERGRADUATES",
-            "query": "Minimum hours undergraduates must work per week",
-            "LaTeX": "8"
-        },
-        {
-            "name": "MIN_HOURS_GRADUATE_STUDENTS",
-            "query": "Minimum hours graduate students must work per week",
-            "LaTeX": "7"
-        },
-        {
-            "name": "MAX_HOURS_PER_STUDENT",
-            "query": "Maximum hours any student can work per week",
-            "LaTeX": "2"
-        },
-        {
-            "name": "MAX_STUDENTS_PER_DAY",
-            "query": "Maximum number of students that can be scheduled for duty each day",
-            "LaTeX": "3"
-        },
-        {
-            "name": "TOTAL_DUTY_HOURS",
-            "query": "Total duty hours for all students",
-            "LaTeX": "70"
-        },
-        {
-            "name": "MAX_HOURS_5_AND_6",
-            "query": "Maximum combined hours graduate students can work per week",
-            "LaTeX": "14"
-        },
-        {
-            "name": "THURSDAY_LIMIT_5",
-            "query": "Maximum hours student 5 can work on Thursday",
-            "LaTeX": "2"
-        }
+        { "name": "WAGE", "query": "WAGE[1][DAY]", "LaTeX": "WAGE_{1, \\text{DAY}}" },
+        { "name": "MIN_HOURS_UNDERGRADUATES", "query": "8", "LaTeX": "8" },
+        { "name": "MIN_HOURS_GRADUATE_STUDENTS", "query": "7", "LaTeX": "7" },
+        { "name": "MAX_HOURS_PER_STUDENT", "query": "2", "LaTeX": "2" },
+        { "name": "MAX_STUDENTS_PER_DAY", "query": "3", "LaTeX": "3" },
+        { "name": "TOTAL_DUTY_HOURS", "query": "70", "LaTeX": "70" },
+        { "name": "MAX_HOURS_5_AND_6", "query": "14", "LaTeX": "14" },
+        { "name": "THURSDAY_LIMIT_5", "query": "2", "LaTeX": "2" }
     ],
     "VARIABLES": [
+        { "name": "hours_student_1", "type": "Continuous", "query": "hours_student_1", "LaTeX": "x_{1}" },
+        { "name": "hours_student_2", "type": "Continuous", "query": "hours_student_2", "LaTeX": "x_{2}" },
+        { "name": "hours_student_3", "type": "Continuous", "query": "hours_student_3", "LaTeX": "x_{3}" },
+        { "name": "hours_student_4", "type": "Continuous", "query": "hours_student_4", "LaTeX": "x_{4}" },
+        { "name": "hours_student_5", "type": "Continuous", "query": "hours_student_5", "LaTeX": "x_{5}" },
+        { "name": "hours_student_6", "type": "Continuous", "query": "hours_student_6", "LaTeX": "x_{6}" }
+    ],
+    "OBJECTIVE": {
+        "query": "Minimize SUM(hours_student_1 * WAGE[1][DAY] + hours_student_2 * WAGE[2][DAY] + hours_student_3 * WAGE[3][DAY] + hours_student_4 * WAGE[4][DAY] + hours_student_5 * WAGE[5][DAY] + hours_student_6 * WAGE[6][DAY] | DAY in DAYS)",
+        "LaTeX": "\\min \\sum_{i=1}^{6} x_i \\cdot WAGE_{i, \\text{DAY}}"
+    },
+    "CONSTRAINTS": [
         {
-            "name": "hours_student1",
-            "type": "Continuous",
-            "unit": "hours",
-            "query": "Hours student 1 works per week",
-            "LaTeX": "\\begin{align*} x_{1,\\text{Monday}} &\\in [0, 2] \\\\ x_{1,\\text{Tuesday}} &\\in [0, 2] \\\\ x_{1,\\text{Wednesday}} &\\in [0, 2] \\\\ x_{1,\\text{Thursday}} &\\in [0, 2] \\\\ x_{1,\\text{Friday}} &\\in [0, 2] \\end{align*}"
+            "name": "Total_hours_undergraduates >= MIN_HOURS_UNDERGRADUATES",
+            "query": "SUM(hours_student_1, hours_student_2, hours_student_3, hours_student_4) >= 8",
+            "LaTeX": "\\sum_{i=1}^{4} x_i \\geq 8"
+        },
+        {
+            "name": "Total_hours_graduate_students >= MIN_HOURS_GRADUATE_STUDENTS",
+            "query": "hours_student_5 + hours_student_6 >= 7",
+            "LaTeX": "x_5 + x_6 \\geq 7"
+        },
+        {
+            "name": "SUM(hours_student_1, hours_student_2, hours_student_3, hours_student_4, hours_student_5, hours_student_6) <= TOTAL_DUTY_HOURS",
+            "query": "SUM(hours_student_1, hours_student_2, hours_student_3, hours_student_4, hours_student_5, hours_student_6) <= 70",
+            "LaTeX": "\\sum_{i=1}^{6} x_i \\leq 70"
+        },
+        {
+            "name": "SUM(hours_student_5, hours_student_6) <= MAX_HOURS_5_AND_6",
+            "query": "hours_student_5 + hours_student_6 <= 14",
+            "LaTeX": "x_5 + x_6 \\leq 14"
         }
