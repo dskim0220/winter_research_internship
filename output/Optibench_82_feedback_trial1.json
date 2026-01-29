@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The 'query' for 'EMPLOYEES_REQUIRED', 'MIN_SUNDAY_MONDAY_PAIR', and 'DIFFERENCE_LIMIT' should contain actual numbers.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between 'query' and 'LaTeX' fields. Placeholder values like '0' are used instead of actual numbers.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly implemented based on the problem description. The 'SundayMondayPairConstraint' and 'DifferenceConstraint' need to be re-evaluated.",
-    "LINEARITY_VALIDATION": "The model does not strictly adhere to linear constraints. Variables are mixed with continuous and binary variables without proper Big-M linking.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed in the given model.",
-    "CONSTRAINTS_FEEDBACK": "Constraints 'EmploymentRequirement', 'SundayMondayPairConstraint', and 'DifferenceConstraint' need to be revised to align with the problem description. Specifically, the 'SundayMondayPairConstraint' and 'DifferenceConstraint' lack proper Big-M linking and logical coupling."
+    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. The queries do not match the LaTeX formulations, and the mathematical integrity is compromised.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations as such, but the placeholders need to be replaced with actual numbers.",
+    "DATA_FIDELITY_CHECK": "Numerical data in queries is missing or set to 0. This leads to inconsistencies between the queries and the LaTeX formulations.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M links are provided based on the logic in the queries. The constraints related to the fixed costs and minimum batch requirements are missing.",
+    "LINEARITY_VALIDATION": "Variable-to-variable multiplication is observed in the objective function, violating the MILP standard. The objective function should be revised to ensure linearity.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. The units need to be consistent across the model.",
+    "CONSTRAINTS_FEEDBACK": "Missing constraints include 'Minimum Batch', 'Total Production Limit (Tons)', and 'Activation Time'. The constraints related to the fixed costs and minimum batch requirements are also missing. The Big-M links are not provided based on the logic in the queries."
 }

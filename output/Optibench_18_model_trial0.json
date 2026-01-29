@@ -1,19 +1,111 @@
 {
     "SETS": {
-        "LINES": "4",
-        "WORKERS": "50"
+        "query": "indices definition",
+        "LaTeX": "\\text{SET OF PRODUCTION LINES} = \\{1, 2, 3, 4\\}"
     },
-    "PARAMETERS": [
-        { "name": "LINE_PRODUCES", "query": "production line efficiency", "LaTeX": "\\begin{align*} \\text{line}_1 & : \\begin{pmatrix} 10 \\\\ 5 \\\\ 3 \\end{pmatrix}, & \\text{line}_2 & : \\begin{pmatrix} 8 \\\\ 6 \\\\ 4 \\end{pmatrix}, & \\text{line}_3 & : \\begin{pmatrix} 6 \\\\ 7 \\\\ 5 \\end{pmatrix}, & \\text{line}_4 & : \\begin{pmatrix} 5 \\\\ 8 \\\\ 6 \\end{pmatrix} \\end{align*}" },
-        { "name": "TARGET_DAILY_DEMAND", "query": "daily demand", "LaTeX": "\\begin{align*} \\text{smartphones} & : 1000, & \\text{tablets} & : 800, & \\text{laptops} & : 600 \\end{align*}" },
-        { "name": "WORKERS_PER_LINE", "query": "workers per line", "LaTeX": "\\begin{align*} \\text{line}_1 & : 20, & \\text{line}_2 & : 20, & \\text{line}_3 & : 20, & \\text{line}_4 & : 20 \\end{align*}" },
-        { "name": "MIN_WORKERS_ON_LINE", "query": "minimum workers on line", "LaTeX": "\\begin{align*} \\text{line}_1 & : 1, & \\text{line}_2 & : 1, & \\text{line}_3 & : 1, & \\text{line}_4 & : 1 \\end{align*}" },
-        { "name": "MAX_WORKERS_ON_LINE", "query": "maximum workers on line", "LaTeX": "\\begin{align*} \\text{line}_1 & : 20, & \\text{line}_2 & : 20, & \\text{line}_3 & : 20, & \\text{line}_4 & : 20 \\end{align*}" },
-        { "name": "FULL_LINE_MIN_WORKERS", "query": "full line minimum workers", "LaTeX": "\\begin{align*} \\text{line}_1 & : 20, & \\text{line}_2 & : 20, & \\text{line}_3 & : 20, & \\text{line}_4 & : 20 \\end{align*}" },
-        { "name": "OTHER_LINES_MAX_WORKERS", "query": "other lines max workers", "LaTeX": "\\begin{align*} \\text{line}_1 & : 30, & \\text{line}_2 & : 30, & \\text{line}_3 & : 30, & \\text{line}_4 & : 30 \\end{align*}" },
-        { "name": "SIMULTANEOUS_FULL_LINES", "query": "simultaneous full lines", "LaTeX": "\\begin{align*} \\text{line}_1 & : 1, & \\text{line}_2 & : 1, & \\text{line}_3 & : 1, & \\text{line}_4 & : 1 \\end{align*}" },
-        { "name": "EXCLUSIVE_FULL_LINES", "query": "exclusive full lines", "LaTeX": "\\begin{align*} \\text{line}_1 & : 1, & \\text{line}_2 & : 1, & \\text{line}_3 & : 1, & \\text{line}_4 & : 1 \\end{align*}" },
-        { "name": "LINE_3_MAX_WORKERS", "query": "line 3 max workers", "LaTeX": "\\begin{align*} \\text{line}_3 & : 10 \\end{align*}" }
-    ],
     "VARIABLES": [
-        { "name": "hours_line_1", "type": "Continuous", "unit": "hours", "query": "hours on line 1", "LaTeX": "\\begin{align*} x_1 & : \\text{hours on line 1} \\end{align*}" }
+        {
+            "name": "y_1",
+            "type": "Binary",
+            "LaTeX": "y_1 \\in \\{0, 1\\}",
+            "description": "Production line 1 is active"
+        },
+        {
+            "name": "y_2",
+            "type": "Binary",
+            "LaTeX": "y_2 \\in \\{0, 1\\}",
+            "description": "Production line 2 is active"
+        },
+        {
+            "name": "y_3",
+            "type": "Binary",
+            "LaTeX": "y_3 \\in \\{0, 1\\}",
+            "description": "Production line 3 is active"
+        },
+        {
+            "name": "y_4",
+            "type": "Binary",
+            "LaTeX": "y_4 \\in \\{0, 1\\}",
+            "description": "Production line 4 is active"
+        },
+        {
+            "name": "x_1",
+            "type": "Integer",
+            "LaTeX": "x_1 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours production line 1 operates"
+        },
+        {
+            "name": "x_2",
+            "type": "Integer",
+            "LaTeX": "x_2 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours production line 2 operates"
+        },
+        {
+            "name": "x_3",
+            "type": "Integer",
+            "LaTeX": "x_3 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours production line 3 operates"
+        },
+        {
+            "name": "x_4",
+            "type": "Integer",
+            "LaTeX": "x_4 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours production line 4 operates"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "smartphones_per_hour_1",
+            "LaTeX": "P_{1s} = 10",
+            "description": "Smartphones produced per hour by production line 1"
+        },
+        {
+            "name": "tablets_per_hour_1",
+            "LaTeX": "P_{1t} = 5",
+            "description": "Tablets produced per hour by production line 1"
+        },
+        {
+            "name": "laptops_per_hour_1",
+            "LaTeX": "P_{1l} = 3",
+            "description": "Laptops produced per hour by production line 1"
+        },
+        {
+            "name": "smartphones_per_hour_2",
+            "LaTeX": "P_{2s} = 8",
+            "description": "Smartphones produced per hour by production line 2"
+        },
+        {
+            "name": "tablets_per_hour_2",
+            "LaTeX": "P_{2t} = 6",
+            "description": "Tablets produced per hour by production line 2"
+        },
+        {
+            "name": "laptops_per_hour_2",
+            "LaTeX": "P_{2l} = 4",
+            "description": "Laptops produced per hour by production line 2"
+        },
+        {
+            "name": "smartphones_per_hour_3",
+            "LaTeX": "P_{3s} = 6",
+            "description": "Smartphones produced per hour by production line 3"
+        },
+        {
+            "name": "tablets_per_hour_3",
+            "LaTeX": "P_{3t} = 7",
+            "description": "Tablets produced per hour by production line 3"
+        },
+        {
+            "name": "laptops_per_hour_3",
+            "LaTeX": "P_{3l} = 5",
+            "description": "Laptops produced per hour by production line 3"
+        },
+        {
+            "name": "smartphones_per_hour_4",
+            "LaTeX": "P_{4s} = 5",
+            "description": "Smartphones produced per hour by production line 4"
+        },
+        {
+            "name": "tablets_per_hour_4",
+            "LaTeX": "P_{4t} = 8",
+            "description": "Tablets produced per hour by production line 4"
+        }

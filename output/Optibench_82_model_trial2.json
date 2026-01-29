@@ -1,26 +1,107 @@
 {
     "SETS": {
-        "DaysOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        "query": "indices definition",
+        "LaTeX": "I = \\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}"
     },
-    "PARAMETERS": [
-        { "name": "EMPLOYEES_REQUIRED", "query": "EMPLOYEES_REQUIRED", "LaTeX": "\\begin{align*} \\text{EMPLOYEES_REQUIRED}[\\text{Monday}] &= 15 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Tuesday}] &= 13 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Wednesday}] &= 15 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Thursday}] &= 18 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Friday}] &= 14 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Saturday}] &= 16 \\\\ \\text{EMPLOYEERS_REQUIRED}[\\text{Sunday}] &= 10 \\end{align*}" },
-        { "name": "MIN_SUNDAY_MONDAY_PAIR", "query": "MIN_SUNDAY_MONDAY_PAIR", "LaTeX": "\\begin{align*} \\text{MIN_SUNDAY_MONDAY_PAIR} &= 3 \\end{align*}" },
-        { "name": "DIFFERENCE_LIMIT", "query": "DIFFERENCE_LIMIT", "LaTeX": "\\begin{align*} \\text{DIFFERENCE_LIMIT} &= 7 \\end{align*}" }
-    ],
     "VARIABLES": [
-        { "name": "EmployeeSchedule", "type": "Binary", "query": "EmployeeSchedule", "LaTeX": "\\begin{align*} \\text{EmployeeSchedule}[\\text{Monday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Tuesday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Wednesday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Thursday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Friday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Saturday}] &\\in \\{0, 1\\} \\\\ \\text{EmployeeSchedule}[\\text{Sunday}] &\\in \\{0, 1\\} \\end{align*}" },
-        { "name": "ShiftStartDay", "type": "Continuous", "query": "ShiftStartDay", "LaTeX": "\\begin{align*} \\text{ShiftStartDay}[\\text{Monday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Tuesday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Wednesday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Thursday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Friday}] &\\in \\mathbb{R} \\\\ \\text{ShiftStartDay}[\\text{Saturday}] &\\in \\mathbb{R} \\end{align*}" }
-    ],
-    "OBJECTIVE": {
-        "query": "Objective Function", "LaTeX": "\\begin{align*} \\text{Minimize} \\quad \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek}] \\end{align*}"
-    },
-    "CONSTRAINTS": [
         {
-            "name": "EmploymentRequirement",
-            "query": "EmploymentRequirement",
-            "LaTeX": "\\begin{align*} \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek}] &= \\text{EMPLOYEERS_REQUIRED}[\\text{DayOfWeek}] \\quad \\forall \\text{DayOfWeek} \\in \\text{DaysOfWeek} \\end{align*}"
+            "name": "y_monday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Monday}} \\in \\{0, 1\\}",
+            "description": "1 if Monday team is formed, 0 otherwise"
         },
         {
-            "name": "SundayMondayPairConstraint",
-            "query": "SundayMondayPairConstraint",
-            "LaTeX": "\\begin{align*} \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek}] - \\sum_{\\text{DayOfWeek} \\in \\text{DaysOfWeek}} \\text{EmployeeSchedule}[\\text{DayOfWeek} + 1] &\\geq \\text{MIN_SUNDAY_MONDAY_PAIR} \\quad \\forall \\text{DayOfWeek} \\in \\text{DaysOfWeek}
+            "name": "y_tuesday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Tuesday}} \\in \\{0, 1\\}",
+            "description": "1 if Tuesday team is formed, 0 otherwise"
+        },
+        {
+            "name": "y_wednesday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Wednesday}} \\in \\{0, 1\\}",
+            "description": "1 if Wednesday team is formed, 0 otherwise"
+        },
+        {
+            "name": "y_thursday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Thursday}} \\in \\{0, 1\\}",
+            "description": "1 if Thursday team is formed, 0 otherwise"
+        },
+        {
+            "name": "y_friday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Friday}} \\in \\{0, 1\\}",
+            "description": "1 if Friday team is formed, 0 otherwise"
+        },
+        {
+            "name": "y_saturday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Saturday}} \\in \\{0, 1\\}",
+            "description": "1 if Saturday team is formed, 0 otherwise"
+        },
+        {
+            "name": "y_sunday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Sunday}} \\in \\{0, 1\\}",
+            "description": "1 if Sunday team is formed, 0 otherwise"
+        },
+        {
+            "name": "x_monday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Monday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees in Monday team"
+        },
+        {
+            "name": "x_tuesday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Tuesday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees in Tuesday team"
+        },
+        {
+            "name": "x_wednesday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Wednesday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees in Wednesday team"
+        },
+        {
+            "name": "x_thursday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Thursday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees in Thursday team"
+        },
+        {
+            "name": "x_friday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Friday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees in Friday team"
+        },
+        {
+            "name": "x_saturday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Saturday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees in Saturday team"
+        },
+        {
+            "name": "x_sunday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Sunday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees in Sunday team"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "employees_monday",
+            "LaTeX": "P_{\\text{Monday}} = 15",
+            "description": "Number of employees starting on Monday"
+        },
+        {
+            "name": "employees_tuesday",
+            "LaTeX": "P_{\\text{Tuesday}} = 13",
+            "description": "Number of employees starting on Tuesday"
+        },
+        {
+            "name": "employees_wednesday",
+            "LaTeX": "P_{\\text{Wednesday}} = 15",
+            "description": "Number of employees starting on Wednesday"
+        }

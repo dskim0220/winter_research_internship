@@ -1,36 +1,111 @@
 {
     "SETS": {
-        "LINES": "4",
-        "WORKERS": "50"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } i \\in \\{1, 2, 3, 4\\} \\text{ represent production lines; } j \\in \\{1, 2, 3\\} \\text{ represent devices (smartphones, tablets, laptops).}"
     },
-    "PARAMETERS": [
-        { "name": "PRODUCTIVITY.line1.smartphones", "query": "10", "LaTeX": "10" },
-        { "name": "PRODUCTIVITY.line1.tablets", "query": "5", "LaTeX": "5" },
-        { "name": "PRODUCTIVITY.line1.laptops", "query": "3", "LaTeX": "3" },
-        { "name": "PRODUCTIVITY.line2.smartphones", "query": "8", "LaTeX": "8" },
-        { "name": "PRODUCTIVITY.line2.tablets", "query": "6", "LaTeX": "6" },
-        { "name": "PRODUCTIVITY.line2.laptops", "query": "4", "LaTeX": "4" },
-        { "name": "PRODUCTIVITY.line3.smartphones", "query": "6", "LaTeX": "6" },
-        { "name": "PRODUCTIVITY.line3.tablets", "query": "7", "LaTeX": "7" },
-        { "name": "PRODUCTIVITY.line3.laptops", "query": "5", "LaTeX": "5" },
-        { "name": "PRODUCTIVITY.line4.smartphones", "query": "5", "LaTeX": "5" },
-        { "name": "PRODUCTIVITY.line4.tablets", "query": "8", "LaTeX": "8" },
-        { "name": "PRODUCTIVITY.line4.laptops", "query": "6", "LaTeX": "6" },
-        { "name": "DEMAND.smartphones", "query": "1000", "LaTeX": "1000" },
-        { "name": "DEMAND.tablets", "query": "800", "LaTeX": "800" },
-        { "name": "DEMAND.laptops", "query": "600", "LaTeX": "600" },
-        { "name": "MAX_WORKERS_PER_LINE", "query": "20", "LaTeX": "20" },
-        { "name": "FULL_LINE_MIN_WORKERS", "query": "20", "LaTeX": "20" },
-        { "name": "OTHER_LINES_MAX_WORKERS", "query": "30", "LaTeX": "30" },
-        { "name": "NO_THREE_FULL", "query": "2", "LaTeX": "2" },
-        { "name": "LINE_3_MAX_WORKERS", "query": "10", "LaTeX": "10" },
-        { "name": "WORKERS_AVAILABLE", "query": "50", "LaTeX": "50" }
-    ],
     "VARIABLES": [
-        { "name": "hours_smartphones", "type": "Continuous", "unit": "hours", "query": "...", "LaTeX": "\\text{hours}_{\\text{smartphones}}" },
-        { "name": "hours_tablets", "type": "Continuous", "unit": "hours", "query": "...", "LaTeX": "\\text{hours}_{\\text{tablets}}" },
-        { "name": "hours_laptops", "type": "Continuous", "unit": "hours", "query": "...", "LaTeX": "\\text{hours}_{\\text{laptops}}" }
+        {
+            "name": "y_1",
+            "type": "Binary",
+            "LaTeX": "y_1 \\in \\{0, 1\\}",
+            "description": "Production line 1 is active"
+        },
+        {
+            "name": "y_2",
+            "type": "Binary",
+            "LaTeX": "y_2 \\in \\{0, 1\\}",
+            "description": "Production line 2 is active"
+        },
+        {
+            "name": "y_3",
+            "type": "Binary",
+            "LaTeX": "y_3 \\in \\{0, 1\\}",
+            "description": "Production line 3 is active"
+        },
+        {
+            "name": "y_4",
+            "type": "Binary",
+            "LaTeX": "y_4 \\in \\{0, 1\\}",
+            "description": "Production line 4 is active"
+        },
+        {
+            "name": "x_{1j}",
+            "type": "Integer",
+            "LaTeX": "x_{1j} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of device $j$ produced by production line 1"
+        },
+        {
+            "name": "x_{2j}",
+            "type": "Integer",
+            "LaTeX": "x_{2j} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of device $j$ produced by production line 2"
+        },
+        {
+            "name": "x_{3j}",
+            "type": "Integer",
+            "LaTeX": "x_{3j} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of device $j$ produced by production line 3"
+        },
+        {
+            "name": "x_{4j}",
+            "type": "Integer",
+            "LaTeX": "x_{4j} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of device $j$ produced by production line 4"
+        }
     ],
-    "OBJECTIVE": { "query": "Minimize hours_smartphones + hours_tablets + hours_laptops", "LaTeX": "\\min \\quad \\text{hours}_{\\text{smartphones}} + \\text{hours}_{\\text{tablets}} + \\text{hours}_{\\text{laptops}}" },
-    "CONSTRAINTS": [
-        { "name": "Demand_Satisfaction", "constraint_type": "Equality", "expression": "PRODUCTIVITY.line1.smartphones * hours_smartphones + PRODUCTIVITY.line2.smartphones * hours_smartphones + PRODUCTIVITY.line3.smartphones * hours_smartphones + PRODUCTIVITY.line4.smartphones * hours_smartphones >= DEMAND.smartphones", "LaTeX": "\\begin{aligned} & \\sum_{i=1}^{4} \\text{PRODUCTIVITY}.linei.smartphones * \\text{hours}_{\\text{smartphones}} \\geq \\text{DEMAND}.smartphones \\\\ & \\sum_{i=1}^{4} \\text{PRODUCTIVITY}.linei.tablets * \\text{hours}_{\\text{tablets}} \\geq \\text{DEMAND}.tablets \\\\ & \\sum_{i=1}^{4} \\text{PRODUCTIVITY}
+    "PARAMETERS": [
+        {
+            "name": "smartphones_per_hour_1",
+            "LaTeX": "10",
+            "description": "Smartphones produced per hour by production line 1"
+        },
+        {
+            "name": "tablets_per_hour_1",
+            "LaTeX": "5",
+            "description": "Tablets produced per hour by production line 1"
+        },
+        {
+            "name": "laptops_per_hour_1",
+            "LaTeX": "3",
+            "description": "Laptops produced per hour by production line 1"
+        },
+        {
+            "name": "smartphones_per_hour_2",
+            "LaTeX": "8",
+            "description": "Smartphones produced per hour by production line 2"
+        },
+        {
+            "name": "tablets_per_hour_2",
+            "LaTeX": "6",
+            "description": "Tablets produced per hour by production line 2"
+        },
+        {
+            "name": "laptops_per_hour_2",
+            "LaTeX": "4",
+            "description": "Laptops produced per hour by production line 2"
+        },
+        {
+            "name": "smartphones_per_hour_3",
+            "LaTeX": "6",
+            "description": "Smartphones produced per hour by production line 3"
+        },
+        {
+            "name": "tablets_per_hour_3",
+            "LaTeX": "7",
+            "description": "Tablets produced per hour by production line 3"
+        },
+        {
+            "name": "laptops_per_hour_3",
+            "LaTeX": "5",
+            "description": "Laptops produced per hour by production line 3"
+        },
+        {
+            "name": "smartphones_per_hour_4",
+            "LaTeX": "5",
+            "description": "Smartphones produced per hour by production line 4"
+        },
+        {
+            "name": "tablets_per_hour_4",
+            "LaTeX": "8",
+            "description": "Tablets produced per hour by production line 4"
+        }

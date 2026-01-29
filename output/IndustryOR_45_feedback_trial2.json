@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. There are significant issues with the grounding check, data fidelity, and logical coupling.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The 'query' placeholders are not replaced with actual numbers.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies between 'query' and 'LaTeX' fields. Many numbers are missing or set to 0.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present, which is a requirement given the problem constraints.",
-    "LINEARITY_VALIDATION": "The model does not follow linear programming standards due to the presence of binary variables for continuous quantities.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed; the model assumes all quantities are in consistent units.",
-    "CONSTRAINTS_FEEDBACK": "Constraints are poorly defined and do not align with the problem description. For example, the 'Total Duty Hours' constraint is incorrect and redundant."
+    "OVERALL_FEEDBACK": "The model lacks essential details and logical consistency. Variables and constraints need significant refinement.",
+    "QUERY_GROUNDING_AUDIT": "No hallucinations detected, but some queries are incomplete or unclear.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between queries and LaTeX. Some queries contain placeholders (e.g., 0).",
+    "LOGICAL_COUPLING_CHECK": "Missing Big-M constraints for minimum batch and activation time requirements.",
+    "LINEARITY_VALIDATION": "Multiplication of variables (e.g., $x_i \\cdot y_j$) is present, violating linear programming standards.",
+    "DIMENSIONAL_ANALYSIS": "No unit inconsistencies identified, but conversion factors are needed for consistency.",
+    "CONSTRAINTS_FEEDBACK": "Constraints do not match the provided queries. Missing Big-M constraints and logical linking."
 }

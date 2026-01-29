@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. Placeholder values and missing constraints significantly impact the model's integrity.",
-    "QUERY_GROUNDING_AUDIT": "No hallucinations detected. However, some queries are placeholders and need to be replaced with actual numbers.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between queries and LaTeX representations. Placeholder values and missing actual numbers indicate poor data fidelity.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present, which is a requirement given the presence of minimum batch and total production limits.",
-    "LINEARITY_VALIDATION": "No variable-to-variable multiplication found, indicating linearity. However, the model is incomplete and lacks critical constraints.",
-    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies exist due to the absence of conversion factors. The model should include dimensional analysis to ensure consistency.",
-    "CONSTRAINTS_FEEDBACK": "Constraints are poorly defined and lack critical information. For example, the 'TotalCostReductionRequired' constraint is missing, and the 'InvestmentIncreasedSavings' condition is unclear without context."
+    "OVERALL_FEEDBACK": "The provided JSON contains several issues that need to be addressed for it to be considered accurate and grounded in the problem description.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The problem description mentions specific costs and constraints, but the JSON uses placeholders (e.g., 1000, 1200, 1500) without corresponding descriptions.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between 'query' and 'LaTeX'. For example, the initial costs and cost reductions are not aligned with the problem description. Additionally, some constraints lack specific numerical values.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the JSON, despite the problem description mentioning minimum batch requirements and total cost reduction limits. This indicates a logical coupling issue.",
+    "LINEARITY_VALIDATION": "The objective function is linear, but the constraints do not follow the same linearity rule. Some constraints involve binary variables directly, which is not allowed in a linear programming context.",
+    "DIMENSIONAL_ANALYSIS": "The dimensional consistency check is not applicable here since the problem involves discrete quantities (trucks) and continuous variables (cost reductions), but the overall structure is inconsistent.",
+    "CONSTRAINTS_FEEDBACK": "Constraints are poorly formulated and do not align with the problem description. For instance, the constraints should specify exact numerical values for the costs and quotas mentioned in the problem description. Additionally, the use of binary variables in constraints is incorrect in a linear programming context."
 }

@@ -1,93 +1,104 @@
 {
     "SETS": {
-        "WORKERS": "50",
-        "PRODUCTS": "3",
-        "LINES": "4"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } i \\in \\{\\text{smartphones, tablets, laptops}, \\text{production_line_1, production_line_2, production_line_3, production_line_4}\\}"
     },
-    "PARAMETERS": [
-        {
-            "name": "PRODUCTIVITY",
-            "query": "PRODUCTIVITY",
-            "LaTeX": "\\begin{bmatrix} 10 & 5 & 3 \\\\ 8 & 6 & 4 \\\\ 6 & 7 & 5 \\\\ 5 & 8 & 6 \\end{bmatrix}"
-        },
-        {
-            "name": "MINIMUM_DEMAND",
-            "query": "MINIMUM_DEMAND",
-            "LaTeX": "\\begin{bmatrix} 1000 \\\\ 800 \\\\ 600 \\end{bmatrix}"
-        },
-        {
-            "name": "WORKERS_PER_LINE",
-            "query": "WORKERS_PER_LINE",
-            "LaTeX": "\\begin{bmatrix} 20 \\\\ 20 \\\\ 20 \\\\ 20 \\end{bmatrix}"
-        },
-        {
-            "name": "MAX_WORKERS_OTHER_LINES",
-            "query": "MAX_WORKERS_OTHER_LINES",
-            "LaTeX": "30"
-        },
-        {
-            "name": "MAX_WORKERS_3",
-            "query": "MAX_WORKERS_3",
-            "LaTeX": "10"
-        },
-        {
-            "name": "FULL_LINE_MIN_WORKERS",
-            "query": "FULL_LINE_MIN_WORKERS",
-            "LaTeX": "20"
-        }
-    ],
     "VARIABLES": [
         {
-            "name": "hours",
-            "type": "Continuous",
-            "query": "hours",
-            "LaTeX": "x \\in \\mathbb{R}_{\\geq 0}"
+            "name": "y_smartphones",
+            "type": "Binary",
+            "LaTeX": "y_{\text{smartphones}} \\in \\{0, 1\\}",
+            "description": "Whether to produce smartphones"
+        },
+        {
+            "name": "y_tablets",
+            "type": "Binary",
+            "LaTeX": "y_{\text{tablets}} \\in \\{0, 1\\}",
+            "description": "Whether to produce tablets"
+        },
+        {
+            "name": "y_laptops",
+            "type": "Binary",
+            "LaTeX": "y_{\text{laptops}} \\in \\{0, 1\\}",
+            "description": "Whether to produce laptops"
+        },
+        {
+            "name": "y_production_line_1",
+            "type": "Binary",
+            "LaTeX": "y_{\text{production_line_1}} \\in \\{0, 1\\}",
+            "description": "Whether to operate production line 1"
+        },
+        {
+            "name": "y_production_line_2",
+            "type": "Binary",
+            "LaTeX": "y_{\text{production_line_2}} \\in \\{0, 1\\}",
+            "description": "Whether to operate production line 2"
+        },
+        {
+            "name": "y_production_line_3",
+            "type": "Binary",
+            "LaTeX": "y_{\text{production_line_3}} \\in \\{0, 1\\}",
+            "description": "Whether to operate production line 3"
+        },
+        {
+            "name": "y_production_line_4",
+            "type": "Binary",
+            "LaTeX": "y_{\text{production_line_4}} \\in \\{0, 1\\}",
+            "description": "Whether to operate production line 4"
+        },
+        {
+            "name": "x_production_line_1_hours",
+            "type": "Integer",
+            "LaTeX": "x_{\text{production_line_1_hours}} \\in \\mathbb{Z}^+",
+            "description": "Hours on production line 1"
+        },
+        {
+            "name": "x_production_line_2_hours",
+            "type": "Integer",
+            "LaTeX": "x_{\text{production_line_2_hours}} \\in \\mathbb{Z}^+",
+            "description": "Hours on production line 2"
+        },
+        {
+            "name": "x_production_line_3_hours",
+            "type": "Integer",
+            "LaTeX": "x_{\text{production_line_3_hours}} \\in \\mathbb{Z}^+",
+            "description": "Hours on production line 3"
+        },
+        {
+            "name": "x_production_line_4_hours",
+            "type": "Integer",
+            "LaTeX": "x_{\text{production_line_4_hours}} \\in \\mathbb{Z}^+",
+            "description": "Hours on production line 4"
         }
     ],
-    "OBJECTIVE": {
-        "query": "Minimize the total hours required to meet the demand",
-        "LaTeX": "\\min_{x} \\sum_{i=1}^{4} \\sum_{j=1}^{3} h_{ij} x_i"
-    },
-    "CONSTRAINTS": [
+    "PARAMETERS": [
         {
-            "name": "Demand_Satisfaction",
-            "query": "Ensure the total production meets the minimum demand",
-            "LaTeX": "\\sum_{i=1}^{4} \\sum_{j=1}^{3} p_{ij} x_i \\geq \\begin{bmatrix} 1000 \\\\ 800 \\\\ 600 \\end{bmatrix}"
+            "name": "p_total_workers",
+            "LaTeX": "P = 50",
+            "description": "Total available workers"
         },
         {
-            "name": "Worker_Limitation",
-            "query": "Total workers cannot exceed 50",
-            "LaTeX": "\\sum_{i=1}^{4} x_i \\leq 50"
+            "name": "p_max_workers_per_line",
+            "LaTeX": "M = 20",
+            "description": "Maximum workers per production line"
         },
         {
-            "name": "Line_Workers",
-            "query": "Each line can have at most 20 workers",
-            "LaTeX": "\\sum_{i=1}^{4} x_i \\leq 20 \\cdot \\mathbf{1}_i"
+            "name": "p_min_smartphones",
+            "LaTeX": "Q_{\text{smartphones}} = 1000",
+            "description": "Minimum smartphones required"
         },
         {
-            "name": "Other_Lines_Workers",
-            "query": "Workers on other lines cannot exceed 30 when one line is fully staffed",
-            "LaTeX": "\\sum_{i \\neq j} x_i \\leq 30 \\cdot \\mathbf{1}_j"
+            "name": "p_min_tablets",
+            "LaTeX": "Q_{\text{tablets}} = 800",
+            "description": "Minimum tablets required"
         },
         {
-            "name": "No_Three_Full",
-            "query": "No more than two lines can be fully staffed",
-            "LaTeX": "\\sum_{i \\neq j \\neq k} x_i + x_j + x_k \\leq 2 \\cdot \\mathbf{1}_l"
+            "name": "p_min_laptops",
+            "LaTeX": "Q_{\text{laptops}} = 600",
+            "description": "Minimum laptops required"
         },
         {
-            "name": "Line_3_Workers",
-            "query": "Production line 3 cannot have more than 10 workers",
-            "LaTeX": "x_3 \\leq 10"
-        },
-        {
-            "name": "Line_3_Max_Workers",
-            "query": "Maximum workers on production line 3 is 10",
-            "LaTeX": "x_3 \\leq 10 \\cdot \\mathbf{1}_3"
-        },
-        {
-            "name": "Full_Line_Min_Workers",
-            "query": "At least one line must be fully staffed",
-            "LaTeX": "\\sum_{i=1}^{4} x_i \\geq 20"
+            "name": "p_production_line_1_efficiency_smartphones",
+            "LaTeX": "E_{\text{production_line_1, smartphones}} = 10",
+            "description": "Smartphones produced per hour on production line 1"
         }
-    ]
-}

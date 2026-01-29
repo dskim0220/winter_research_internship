@@ -1,20 +1,98 @@
 {
     "SETS": {
-        "PRODUCTS": "I, II, III",
-        "EQUIPMENTS_A": "A1, A2",
-        "EQUIPMENTS_B": "B1, B2"
+        "query": "Set of 3 products (I, II, III), 2 processing stages (A, B), 2 equipment types for stage A (A1, A2), and 2 equipment types for stage B (B1, B2)",
+        "LaTeX": "I = \{I, II, III\}, A = \{A, B\}, E_A = \{A1, A2\}, E_B = \{B1, B2\}"
     },
+    "VARIABLES": [
+        {
+            "name": "x_I",
+            "type": "Binary",
+            "LaTeX": "x_{I} \in \{0, 1\}",
+            "description": "Indicator variable for producing Product I"
+        },
+        {
+            "name": "x_II",
+            "type": "Binary",
+            "LaTeX": "x_{II} \in \{0, 1\}",
+            "description": "Indicator variable for producing Product II"
+        },
+        {
+            "name": "x_III",
+            "type": "Binary",
+            "LaTeX": "x_{III} \in \{0, 1\}",
+            "description": "Indicator variable for producing Product III"
+        },
+        {
+            "name": "y_A1_I",
+            "type": "Binary",
+            "LaTeX": "y_{A1,I} \in \{0, 1\}",
+            "description": "Indicator variable for using A1 equipment for Product I"
+        },
+        {
+            "name": "y_A2_I",
+            "type": "Binary",
+            "LaTeX": "y_{A2,I} \in \{0, 1\}",
+            "description": "Indicator variable for using A2 equipment for Product I"
+        },
+        {
+            "name": "y_B1_I",
+            "type": "Binary",
+            "LaTeX": "y_{B1,I} \in \{0, 1\}",
+            "description": "Indicator variable for using B1 equipment for Product I"
+        },
+        {
+            "name": "y_B2_I",
+            "type": "Binary",
+            "LaTeX": "y_{B2,I} \in \{0, 1\}",
+            "description": "Indicator variable for using B2 equipment for Product I"
+        },
+        {
+            "name": "y_A1_III",
+            "type": "Binary",
+            "LaTeX": "y_{A1,III} \in \{0, 1\}",
+            "description": "Indicator variable for using A1 equipment for Product III"
+        },
+        {
+            "name": "y_A2_III",
+            "type": "Binary",
+            "LaTeX": "y_{A2,III} \in \{0, 1\}",
+            "description": "Indicator variable for using A2 equipment for Product III"
+        },
+        {
+            "name": "y_B2_III",
+            "type": "Binary",
+            "LaTeX": "y_{B2,III} \in \{0, 1\}",
+            "description": "Indicator variable for using B2 equipment for Product III"
+        }
+    ],
     "PARAMETERS": [
-        { "name": "PRODUCTION_TIME_I", "query": "PRODUCTION_TIME_I", "LaTeX": "\\begin{aligned} &\\text{PRODUCTION_TIME_I} = \\begin{cases} 5 & \\text{if } \\text{Equipment} = A1 \\\\ 7 & \\text{if } \\text{Equipment} = A2 \\end{cases} \\end{aligned}" },
-        { "name": "PRODUCTION_TIME_II", "query": "PRODUCTION_TIME_II", "LaTeX": "\\begin{aligned} &\\text{PRODUCTION_TIME_II} = \\begin{cases} 10 & \\text{if } \\text{Equipment} = A1 \\\\ 9 & \\text{if } \\text{Equipment} = A2 \\\\ 0 & \\text{if } \\text{Equipment} = B1 \\\\ 0 & \\text{if } \\text{Equipment} = B2 \\\\ 0 & \\text{if } \\text{Equipment} = B3 \\end{cases} \\end{aligned}" },
-        { "name": "PRODUCTION_TIME_III", "query": "PRODUCTION_TIME_III", "LaTeX": "\\begin{aligned} &\\text{PRODUCTION_TIME_III} = \\begin{cases} 12 & \\text{if } \\text{Equipment} = A2 \\\\ 0 & \\text{otherwise} \\end{cases} \\end{aligned}" },
-        { "name": "PRODUCTION_TIME_B1", "query": "PRODUCTION_TIME_B1", "LaTeX": "\\begin{aligned} &\\text{PRODUCTION_TIME_B1} = \\begin{cases} 6 & \\text{if } \\text{Equipment} = B1 \\\\ 0 & \\text{otherwise} \\end{cases} \\end{aligned}" },
-        { "name": "PRODUCTION_TIME_B2", "query": "PRODUCTION_TIME_B2", "LaTeX": "\\begin{aligned} &\\text{PRODUCTION_TIME_B2} = \\begin{cases} 4 & \\text{if } \\text{Equipment} = B2 \\\\ 7 & \\text{if } \\text{Equipment} = B3 \\\\ 0 & \\text{otherwise} \\end{cases} \\end{aligned}" },
-        { "name": "PRODUCTION_TIME_B3", "query": "PRODUCTION_TIME_B3", "LaTeX": "\\begin{aligned} &\\text{PRODUCTION_TIME_B3} = \\begin{cases} 11 & \\text{if } \\text{Equipment} = B3 \\\\ 0 & \\text{otherwise} \\end{cases} \\end{aligned}" },
-        { "name": "RAW_MATERIAL_COST_I", "query": "RAW_MATERIAL_COST_I", "LaTeX": "\\begin{aligned} &\\text{RAW_MATERIAL_COST_I} = 0.25 \\end{aligned}" },
-        { "name": "RAW_MATERIAL_COST_II", "query": "RAW_MATERIAL_COST_II", "LaTeX": "\\begin{aligned} &\\text{RAW_MATERIAL_COST_II} = 0.35 \\end{aligned}" },
-        { "name": "RAW_MATERIAL_COST_III", "query": "RAW_MATERIAL_COST_III", "LaTeX": "\\begin{aligned} &\\text{RAW_MATERIAL_COST_III} = 0.50 \\end{aligned}" },
-        { "name": "UNIT_PRICE_I", "query": "UNIT_PRICE_I", "LaTeX": "\\begin{aligned} &\\text{UNIT_PRICE_I} = 1.25 \\end{aligned}" },
-        { "name": "UNIT_PRICE_II", "query": "UNIT_PRICE_II", "LaTeX": "\\begin{aligned} &\\text{UNIT_PRICE_II} = 2.00 \\end{aligned}" },
-        { "name": "UNIT_PRICE_III", "query": "UNIT_PRICE_III", "LaTeX": "\\begin{aligned} &\\text{UNIT_PRICE_III} = 2.80 \\end{aligned}" },
-        { "name": "EFFECTIVE_MACHINE_HOURS_A1", "query": "EFFECTIVE_MACHINE_HOURS_A1", "LaTeX": "\\begin{aligned} &\\text{EFFECTIVE_MACHINE_HOURS_A1} = 10000 \\end{aligned}" }
+        {
+            "name": "raw_material_cost_I",
+            "LaTeX": "raw_material_cost_I = 0.25",
+            "description": "Raw material cost for Product I (Yuan/Piece)"
+        },
+        {
+            "name": "unit_price_I",
+            "LaTeX": "unit_price_I = 1.25",
+            "description": "Unit price for Product I (Yuan/Piece)"
+        },
+        {
+            "name": "raw_material_cost_II",
+            "LaTeX": "raw_material_cost_II = 0.35",
+            "description": "Raw material cost for Product II (Yuan/Piece)"
+        },
+        {
+            "name": "unit_price_II",
+            "LaTeX": "unit_price_II = 2.00",
+            "description": "Unit price for Product II (Yuan/Piece)"
+        },
+        {
+            "name": "raw_material_cost_III",
+            "LaTeX": "raw_material_cost_III = 0.50",
+            "description": "Raw material cost for Product III (Yuan/Piece)"
+        },
+        {
+            "name": "unit_price_III",
+            "LaTeX": "unit_price_III = 2.80",
+            "description": "Unit price for Product III (Yuan/Piece)"
+        }

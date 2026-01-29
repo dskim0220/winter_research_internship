@@ -1,34 +1,88 @@
 {
     "SETS": {
-        "PRODUCTS": "APPX, APPY, APPZ, APPW, APPV",
-        "TEAMS": "1 to 30"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } I \\text{ be the set of products} = \\{\\text{APPX}, \\text{APPY}, \\text{APPZ}, \\text{APPW}, \\text{APPV}\\}"
     },
-    "PARAMETERS": [
-        { "name": "REVENUE_PER_TEAM_APPX", "query": "100000", "LaTeX": "100000" },
-        { "name": "DEVELOPMENT_COST_PER_TEAM_APPX", "query": "60000", "LaTeX": "60000" },
-        { "name": "MARKETING_COST_PER_TEAM_APPX", "query": "20000", "LaTeX": "20000" },
-        { "name": "REVENUE_PER_TEAM_APPY", "query": "150000", "LaTeX": "150000" },
-        { "name": "DEVELOPMENT_COST_PER_TEAM_APPY", "query": "80000", "LaTeX": "80000" },
-        { "name": "MARKETING_COST_PER_TEAM_APPY", "query": "30000", "LaTeX": "30000" },
-        { "name": "REVENUE_PER_TEAM_APPZ", "query": "200000", "LaTeX": "200000" },
-        { "name": "DEVELOPMENT_COST_PER_TEAM_APPZ", "query": "100000", "LaTeX": "100000" },
-        { "name": "MARKETING_COST_PER_TEAM_APPZ", "query": "40000", "LaTeX": "40000" },
-        { "name": "REVENUE_PER_TEAM_APPW", "query": "120000", "LaTeX": "120000" },
-        { "name": "DEVELOPMENT_COST_PER_TEAM_APPW", "query": "70000", "LaTeX": "70000" },
-        { "name": "MARKETING_COST_PER_TEAM_APPW", "query": "25000", "LaTeX": "25000" },
-        { "name": "REVENUE_PER_TEAM_APPV", "query": "180000", "LaTeX": "180000" },
-        { "name": "DEVELOPMENT_COST_PER_TEAM_APPV", "query": "90000", "LaTeX": "90000" },
-        { "name": "MARKETING_COST_PER_TEAM_APPV", "query": "35000", "LaTeX": "35000" },
-        { "name": "TOTAL_DEVELOPMENT_TEAMS_AVAILABLE", "query": "30", "LaTeX": "30" },
-        { "name": "MARKETING_BUDGET", "query": "2500000", "LaTeX": "2500000" },
-        { "name": "MIN_APPX_APPY_RATIO", "query": "2", "LaTeX": "2" },
-        { "name": "MIN_APPX_TEAMS", "query": "2", "LaTeX": "2" },
-        { "name": "MAX_APPX_APPY_APPW_APPV_TEAMS", "query": "10", "LaTeX": "10" },
-        { "name": "MAX_APPZ_APPV_TEAMS", "query": "28", "LaTeX": "28" }
-    ],
     "VARIABLES": [
-        { "name": "teams_APPX", "type": "Continuous", "query": "teams_APPX", "LaTeX": "x_{APPX}" },
-        { "name": "teams_APPY", "type": "Continuous", "query": "teams_APPY", "LaTeX": "x_{APPY}" },
-        { "name": "teams_APPZ", "type": "Continuous", "query": "teams_APPZ", "LaTeX": "x_{APPZ}" },
-        { "name": "teams_APPW", "type": "Continuous", "query": "teams_APPW", "LaTeX": "x_{APPW}" },
-        { "name": "teams_APPV", "type": "Continuous", "query": "teams_APPV", "LaTeX": "x_{APPV}" }
+        {
+            "name": "y_{\text{APPX}}",
+            "type": "Binary",
+            "LaTeX": "y_{\text{APPX}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether AppX is developed (1 if yes, 0 if no)"
+        },
+        {
+            "name": "y_{\text{APPY}}",
+            "type": "Binary",
+            "LaTeX": "y_{\text{APPY}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether AppY is developed (1 if yes, 0 if no)"
+        },
+        {
+            "name": "y_{\text{APPZ}}",
+            "type": "Binary",
+            "LaTeX": "y_{\text{APPZ}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether AppZ is developed (1 if yes, 0 if no)"
+        },
+        {
+            "name": "y_{\text{APPW}}",
+            "type": "Binary",
+            "LaTeX": "y_{\text{APPW}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether AppW is developed (1 if yes, 0 if no)"
+        },
+        {
+            "name": "y_{\text{APPV}}",
+            "type": "Binary",
+            "LaTeX": "y_{\text{APPV}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether AppV is developed (1 if yes, 0 if no)"
+        },
+        {
+            "name": "x_{\text{APPX}}",
+            "type": "Integer",
+            "LaTeX": "x_{\text{APPX}} \\in \\mathbb{Z}_{\\geq 1}",
+            "description": "Number of development teams assigned to AppX"
+        },
+        {
+            "name": "x_{\text{APPY}}",
+            "type": "Integer",
+            "LaTeX": "x_{\text{APPY}} \\in \\mathbb{Z}_{\\geq 1}",
+            "description": "Number of development teams assigned to AppY"
+        },
+        {
+            "name": "x_{\text{APPZ}}",
+            "type": "Integer",
+            "LaTeX": "x_{\text{APPZ}} \\in \\mathbb{Z}_{\\geq 1}",
+            "description": "Number of development teams assigned to AppZ"
+        },
+        {
+            "name": "x_{\text{APPW}}",
+            "type": "Integer",
+            "LaTeX": "x_{\text{APPW}} \\in \\mathbb{Z}_{\\geq 1}",
+            "description": "Number of development teams assigned to AppW"
+        },
+        {
+            "name": "x_{\text{APPV}}",
+            "type": "Integer",
+            "LaTeX": "x_{\text{APPV}} \\in \\mathbb{Z}_{\\geq 1}",
+            "description": "Number of development teams assigned to AppV"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "EstimatedRevenue_{\text{APPX}}",
+            "LaTeX": "P_{\text{APPX}} = 100000",
+            "description": "Estimated revenue per team for AppX"
+        },
+        {
+            "name": "DevelopmentCost_{\text{APPX}}",
+            "LaTeX": "P_{\text{DevelopmentCost}_{\text{APPX}}} = 60000",
+            "description": "Development cost per team for AppX"
+        },
+        {
+            "name": "MarketingCost_{\text{APPX}}",
+            "LaTeX": "P_{\text{MarketingCost}_{\text{APPX}}} = 20000",
+            "description": "Marketing cost per team for AppX"
+        },
+        {
+            "name": "EstimatedRevenue_{\text{APPY}}",
+            "LaTeX": "P_{\text{APPY}} = 150000",
+            "description": "Estimated revenue per team for AppY"
+        }

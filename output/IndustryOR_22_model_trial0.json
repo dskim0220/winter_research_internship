@@ -1,98 +1,69 @@
 {
     "SETS": {
-        "query": "Sets not applicable for this problem.",
-        "LaTeX": ""
+        "query": "Set of 3 products (A1, A2, A3) and 22 time periods (t)",
+        "LaTeX": "I = \\{A1, A2, A3\\}, T = \\{1, 2,..., 22\\}"
     },
-    "PARAMETERS": [
-        {
-            "name": "Total_Demand_Tons",
-            "query": "Total_Demand_Tons",
-            "LaTeX": "$T = 1210$"
-        },
-        {
-            "name": "Activation_Costs",
-            "query": "Activation_Costs",
-            "LaTeX": "\\begin{align*}
-                C_{A1} &= 170000 \\\\
-                C_{A2} &= 150000 \\\\
-                C_{A3} &= 100000
-            \\end{align*}"
-        },
-        {
-            "name": "Minimum_Batch",
-            "query": "Minimum_Batch",
-            "LaTeX": "\\begin{align*}
-                M_{A1} &= 20 \\\\
-                M_{A2} &= 20 \\\\
-                M_{A3} &= 16
-            \\end{align*}"
-        },
-        {
-            "name": "Days",
-            "query": "Days",
-            "LaTeX": "$D = 22$"
-        },
-        {
-            "name": "Demand_Satisfaction",
-            "query": "Demand_Satisfaction",
-            "LaTeX": "\\begin{align*}
-                S_{A1} &= 5300 \\\\
-                S_{A2} &= 4500 \\\\
-                S_{A3} &= 5400
-            \\end{align*}"
-        },
-        {
-            "name": "Demand",
-            "query": "Demand",
-            "LaTeX": "\\begin{align*}
-                D_{A1} &= 5300 \\\\
-                D_{A2} &= 4500 \\\\
-                D_{A3} &= 5400
-            \\end{align*}"
-        },
-        {
-            "name": "Activation_Time_Minutes",
-            "query": "Activation_Time_Minutes",
-            "LaTeX": "$T_{act} = 57$"
-        }
-    ],
     "VARIABLES": [
         {
-            "name": "produce_A1",
+            "name": "x_t_p",
             "type": "Binary",
-            "query": "produce_A1",
-            "LaTeX": "\\begin{align*}
-                x_{A1} &= 1 \quad \text{if } A1 \text{ is produced} \\\\
-                x_{A1} &= 0 \quad \text{otherwise}
-            \\end{align*}"
+            "LaTeX": "x_{t,p} \\in \\{0, 1\\}, \\forall t \\in T, p \\in I",
+            "description": "Indicator variable: 1 if product p is produced in period t"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "demand",
+            "LaTeX": "\\text{demand} = 5300",
+            "description": "Maximum demand for each product"
         },
         {
-            "name": "produce_A2",
-            "type": "Binary",
-            "query": "produce_A2",
-            "LaTeX": "\\begin{align*}
-                x_{A2} &= 1 \quad \text{if } A2 \text{ is produced} \\\\
-                x_{A2} &= 0 \quad \text{otherwise}
-            \\end{align*}"
+            "name": "price",
+            "LaTeX": "\\text{price} = 124",
+            "description": "Selling price per 100 kg of product"
         },
         {
-            "name": "produce_A3",
-            "type": "Binary",
-            "query": "produce_A3",
-            "LaTeX": "\\begin{align*}
-                x_{A3} &= 1 \quad \text{if } A3 \text{ is produced} \\\\
-                x_{A3} &= 0 \quad \text{otherwise}
-            \\end{align*}"
+            "name": "cost",
+            "LaTeX": "\\text{cost} = 73.30",
+            "description": "Production cost per 100 kg of product"
+        },
+        {
+            "name": "quota",
+            "LaTeX": "\\text{quota} = 500",
+            "description": "Maximum daily production quota"
+        },
+        {
+            "name": "activation_cost",
+            "LaTeX": "\\text{activation_cost} = 170000",
+            "description": "Fixed activation cost"
+        },
+        {
+            "name": "min_batch",
+            "LaTeX": "\\text{min_batch} = 20",
+            "description": "Minimum production batch size"
+        },
+        {
+            "name": "time_period",
+            "LaTeX": "\\text{time_period} = 22",
+            "description": "Total production capacity in days"
         }
     ],
     "OBJECTIVE": {
-        "query": "Maximize Revenue - Fixed Costs",
-        "LaTeX": "\\begin{align*}
-            \text{Maximize } Z &= \sum_{i=A1,A2,A3} \left( p_i \cdot x_i - c_i \cdot x_i - a_i \cdot y_i \right) \\\\
-                                &\text{subject to } \sum_{i=A1,A2,A3} x_i \leq T \\\\
-                                &\sum_{i=A1,A2,A3} y_i \geq T_{act} \\\\
-                                &x_i \in \{0,1\} \quad \forall i \in \{A1,A2,A3\} \\\\
-                                &y_i \in \{0,1\} \quad \forall i \in \{A1,A2,A3\} \\\\
-                                &x_i + y_i \leq 1 \quad \forall i \in \{A1,A2,A3\}
-        \\end{align*}"
-    }
+        "query": "Maximize total revenue minus fixed activation cost",
+        "LaTeX": "\\max \\sum_{t \\in T} \\sum_{p \\in I} (\\text{price} \\cdot x_{t,p} - \\text{cost} \\cdot x_{t,p}) - \\text{activation_cost}"
+    },
+    "CONSTRAINTS": [
+        {
+            "rule_id": 1,
+            "name": "production_limit",
+            "query": "The total production of A1, A2, A3 does not exceed 1210 tons",
+            "LaTeX": "\\sum_{t \\in T} \\sum_{p \\in I} x_{t,p} \\leq 1210"
+        },
+        {
+            "rule_id": 2,
+            "name": "activation_constraint",
+            "query": "If A1 is produced, it must activate production lines at least 57 minutes",
+            "LaTeX": "\\sum_{t \\in T} x_{t,A1} \\geq 5300 + 500 \\cdot (t-1) - \\sum_{t \\in T} y_{t,A1}"
+        }
+    ]
+}

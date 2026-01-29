@@ -1,51 +1,108 @@
 {
     "SETS": {
-        "GOODS": "3",
-        "TRUCKS": "50"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } i \\in \\{X, Y, Z\\} \\text{ represent GoodsX, GoodsY, and GoodsZ respectively.}"
     },
-    "PARAMETERS": [
-        { "name": "PRICE_GOODS_X", "query": "PRICE_GOODS_X", "LaTeX": "1000" },
-        { "name": "PRICE_GOODS_Y", "query": "PRICE_GOODS_Y", "LaTeX": "1200" },
-        { "name": "PRICE_GOODS_Z", "query": "PRICE_GOODS_Z", "LaTeX": "1500" },
-        { "name": "OPTIMIZATION_COST_PER_100_GOODS_X", "query": "OPTIMIZATION_COST_PER_100[GOODS_X]", "LaTeX": "10" },
-        { "name": "OPTIMIZATION_COST_PER_100_GOODS_Y", "query": "OPTIMIZATION_COST_PER_100[GOODS_Y]", "LaTeX": "12" },
-        { "name": "OPTIMIZATION_COST_PER_100_GOODS_Z", "query": "OPTIMIZATION_COST_PER_100[GOODS_Z]", "LaTeX": "15" },
-        { "name": "TOTAL_TRUCKS_AVAILABLE", "query": "TOTAL_TRUCKS_AVAILABLE", "LaTeX": "50" },
-        { "name": "ROUTE_OPTIMIZATION_BUDGET", "query": "ROUTE_OPTIMIZATION_BUDGET", "LaTeX": "10000" },
-        { "name": "MIN_TRUCKS_GOODS_X", "query": "MIN_TRUCKS_GOODS_X", "LaTeX": "10" },
-        { "name": "MIN_TRUCKS_GOODS_Y", "query": "MIN_TRUCKS_GOODS_Y", "LaTeX": "15" },
-        { "name": "MAX_TRUCKS_GOODS_Z", "query": "MAX_TRUCKS_GOODS_Z", "LaTeX": "25" },
-        { "name": "MAX_COST_REDUCTION_GOODS_Z", "query": "MAX_COST_REDUCTION_GOODS_Z", "LaTeX": "3750" },
-        { "name": "TOTAL_COST_REDUCTION_REQUIRED", "query": "TOTAL_COST_REDUCTION_REQUIRED", "LaTeX": "0" },
-        { "name": "INVESTMENT_INCREASED_SAVINGS", "query": "INVESTMENT_INCREASED_SAVINGS", "LaTeX": "True" }
-    ],
     "VARIABLES": [
-        { "name": "Trucks_Goods_X", "type": "Integer", "query": "Trucks_Goods_X", "LaTeX": "x_{i}" },
-        { "name": "Trucks_Goods_Y", "type": "Integer", "query": "Trucks_Goods_Y", "LaTeX": "y_{i}" },
-        { "name": "Trucks_Goods_Z", "type": "Integer", "query": "Trucks_Goods_Z", "LaTeX": "z_{i}" }
+        {
+            "name": "y_X",
+            "type": "Binary",
+            "LaTeX": "y_X \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether GoodsX is produced (1) or not (0)"
+        },
+        {
+            "name": "y_Y",
+            "type": "Binary",
+            "LaTeX": "y_Y \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether GoodsY is produced (1) or not (0)"
+        },
+        {
+            "name": "y_Z",
+            "type": "Binary",
+            "LaTeX": "y_Z \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether GoodsZ is produced (1) or not (0)"
+        },
+        {
+            "name": "x_X",
+            "type": "Integer",
+            "LaTeX": "x_X \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of Trucks allocated for GoodsX"
+        },
+        {
+            "name": "x_Y",
+            "type": "Integer",
+            "LaTeX": "x_Y \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of Trucks allocated for GoodsY"
+        },
+        {
+            "name": "x_Z",
+            "type": "Integer",
+            "LaTeX": "x_Z \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of Trucks allocated for GoodsZ"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "Cost_X",
+            "LaTeX": "P_X = 1000",
+            "description": "Initial cost per truck for GoodsX"
+        },
+        {
+            "name": "Cost_Y",
+            "LaTeX": "P_Y = 1200",
+            "description": "Initial cost per truck for GoodsY"
+        },
+        {
+            "name": "Cost_Z",
+            "LaTeX": "P_Z = 1500",
+            "description": "Initial cost per truck for GoodsZ"
+        },
+        {
+            "name": "Optimization_Software_Budget",
+            "LaTeX": "P_{OS} = 10000",
+            "description": "Budget for route optimization software"
+        },
+        {
+            "name": "Total_Trucks_Available",
+            "LaTeX": "P_{Total} = 50",
+            "description": "Total number of trucks available for allocation"
+        },
+        {
+            "name": "Cost_Reduction_X",
+            "LaTeX": "P_{CR_X} = 10",
+            "description": "Cost reduction per $100 invested in optimization for GoodsX"
+        },
+        {
+            "name": "Cost_Reduction_Y",
+            "LaTeX": "P_{CR_Y} = 12",
+            "description": "Cost reduction per $100 invested in optimization for GoodsY"
+        },
+        {
+            "name": "Cost_Reduction_Z",
+            "LaTeX": "P_{CR_Z} = 15",
+            "description": "Cost reduction per $100 invested in optimization for GoodsZ"
+        }
     ],
     "OBJECTIVE": {
-        "query": "Minimize SUM(Price[Good] * Trucks[Good]) + SUM(OptimizationCost[Good] * InvestmentInOptimization / 100)",
-        "LaTeX": "\\min \\sum_{i=1}^{3} \\left( \\text{PRICE_GOODS}_i \\cdot x_i + \\text{OPTIMIZATION_COST_PER_100}_{\\text{GOODS}_i} \\cdot \\frac{\\text{InvestmentInOptimization}}{100} \\right)"
+        "query": "minimize the total delivery cost for all goods",
+        "LaTeX": "\\min \\left( P_X x_X + P_Y x_Y + P_Z x_Z \\right)"
     },
     "CONSTRAINTS": [
         {
-            "name": "TotalTrucksConstraint",
-            "query": "Trucks_Goods_X + Trucks_Goods_Y + Trucks_Goods_Z <= TOTAL_TRUCKS_AVAILABLE",
-            "LaTeX": "x_{i} + y_{i} + z_{i} \\leq 50"
+            "rule_id": 1,
+            "name": "Must allocate at least 10 trucks for GoodsX",
+            "query": ">=",
+            "LaTeX": "x_X \\geq 10 y_X"
         },
         {
-            "name": "GoodsXMinConstraint",
-            "query": "Trucks_Goods_X >= MIN_TRUCKS_GOODS_X",
-            "LaTeX": "x_{i} \\geq 10"
+            "rule_id": 2,
+            "name": "Must allocate at least 15 trucks for GoodsY",
+            "query": ">=",
+            "LaTeX": "x_Y \\geq 15 y_Y"
         },
         {
-            "name": "GoodsYMinConstraint",
-            "query": "Trucks_Goods_Y >= MIN_TRUCKS_GOODS_Y",
-            "LaTeX": "y_{i} \\geq 15"
-        },
-        {
-            "name": "GoodsZMaxConstraint",
-            "query": "Trucks_Goods_Z <= MAX_TRUCKS_GOODS_Z",
-            "LaTeX": "z_{i} \\leq 25"
+            "rule_id": 3,
+            "name": "Total number of trucks allocated for GoodsZ must not exceed 25 units",
+            "query": "<=",
+            "LaTeX": "x_Z \\leq 25 y_Z"
         }

@@ -1,71 +1,97 @@
 {
     "SETS": {
-        "Suppliers": "A, B, C"
+        "query": "Set of suppliers (A, B, C) and orders (O1, O2,..., ON)",
+        "LaTeX": "S = \\{A, B, C\\}, O = \\{O1, O2,..., ON\\}"
     },
-    "PARAMETERS": [
-        { "name": "Supplier_A_Price", "query": "Supplier_A_Price", "LaTeX": "120" },
-        { "name": "Supplier_B_Price", "query": "Supplier_B_Price", "LaTeX": "110" },
-        { "name": "Supplier_C_Price", "query": "Supplier_C_Price", "LaTeX": "100" },
-        { "name": "MinTables", "query": "MinTables", "LaTeX": "150" },
-        { "name": "MaxTables", "query": "MaxTables", "LaTeX": "600" },
-        { "name": "OrdersFromA", "query": "OrdersFromA", "LaTeX": "20" },
-        { "name": "OrdersFromB", "query": "OrdersFromB", "LaTeX": "15" },
-        { "name": "OrdersFromC", "query": "OrdersFromC", "LaTeX": "15" },
-        { "name": "OrdersFromAAndB", "query": "OrdersFromAAndB", "LaTeX": "25" },
-        { "name": "OrdersFromBAndC", "query": "OrdersFromBAndC", "LaTeX": "30" },
-        { "name": "OrdersFromAOrBOrC", "query": "OrdersFromAOrBOrC", "LaTeX": "7" }
-    ],
     "VARIABLES": [
-        { "name": "orders_A", "type": "Binary", "query": "orders_A", "LaTeX": "x_{A}" },
-        { "name": "orders_B", "type": "Integer", "query": "orders_B", "LaTeX": "x_{B}" },
-        { "name": "orders_C", "type": "Integer", "query": "orders_C", "LaTeX": "x_{C}" }
+        {
+            "name": "x_O",
+            "type": "Binary",
+            "LaTeX": "x_{O} \in \{0, 1\}, \forall O \in O",
+            "description": "Indicator variable: 1 if order O is placed, 0 otherwise"
+        }
     ],
-    "OBJECTIVE": { "query": "Objective", "LaTeX": "120 x_{A} + 110 x_{B} + 100 x_{C}" },
+    "PARAMETERS": [
+        {
+            "name": "cost_A",
+            "LaTeX": "C_{A} = 120",
+            "description": "Cost of ordering each dining table from Supplier A"
+        },
+        {
+            "name": "cost_B",
+            "LaTeX": "C_{B} = 110",
+            "description": "Cost of ordering each dining table from Supplier B"
+        },
+        {
+            "name": "cost_C",
+            "LaTeX": "C_{C} = 100",
+            "description": "Cost of ordering each dining table from Supplier C"
+        },
+        {
+            "name": "tables_A",
+            "LaTeX": "T_{A} = 20",
+            "description": "Number of tables included in each order from Supplier A"
+        },
+        {
+            "name": "tables_B",
+            "LaTeX": "T_{B} = 15",
+            "description": "Number of tables included in each order from Suppliers B and C"
+        },
+        {
+            "name": "min_tables",
+            "LaTeX": "Min_{tables} = 150",
+            "description": "Minimum number of tables to be ordered"
+        },
+        {
+            "name": "max_tables",
+            "LaTeX": "Max_{tables} = 600",
+            "description": "Maximum number of tables to be ordered"
+        },
+        {
+            "name": "min_orders_A",
+            "LaTeX": "Min_{orders_A} = 30",
+            "description": "Minimum number of orders from Supplier A"
+        },
+        {
+            "name": "min_orders_B",
+            "LaTeX": "Min_{orders_B} = 30",
+            "description": "Minimum number of orders from Supplier B"
+        },
+        {
+            "name": "sum_A_B",
+            "LaTeX": "Sum_{A_B} = 25",
+            "description": "Sum of tables supplied from Supplier A and B must be at least 25"
+        },
+        {
+            "name": "sum_B_C",
+            "LaTeX": "Sum_{B_C} = 30",
+            "description": "Sum of tables supplied from Supplier B and C must be at least 30"
+        },
+        {
+            "name": "min_orders_total",
+            "LaTeX": "Min_{orders_total} = 7",
+            "description": "At least 7 orders must be placed from Supplier A, B, or C"
+        },
+        {
+            "name": "max_tables_A",
+            "LaTeX": "Max_{tables_A} = 60",
+            "description": "Maximum number of tables that can be supplied from Supplier A"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "Minimize total cost of the order",
+        "LaTeX": "\\min \\sum_{O \in O} (C_A \\cdot x_A + C_B \\cdot x_B + C_C \\cdot x_C)"
+    },
     "CONSTRAINTS": [
         {
-            "name": "MinTablesConstraint",
-            "query": "MinTablesConstraint",
-            "LaTeX": "20 x_{A} + 15 x_{B} + 15 x_{C} \geq 150"
+            "rule_id": 1,
+            "name": "Order_Count",
+            "query": "The restaurant needs to order at least 150 tables.",
+            "LaTeX": "\\sum_{O \in O} (T_A \\cdot x_A + T_B \\cdot x_B + T_C \\cdot x_C) \\geq Min_{tables}"
         },
         {
-            "name": "MaxTablesConstraint",
-            "query": "MaxTablesConstraint",
-            "LaTeX": "20 x_{A} + 15 x_{B} + 15 x_{C} \leq 600"
-        },
-        {
-            "name": "AtLeastThreeOrdersFromB",
-            "query": "AtLeastThreeOrdersFromB",
-            "LaTeX": "x_{B} \geq 3"
-        },
-        {
-            "name": "SupplierABDependent",
-            "query": "SupplierABDependent",
-            "LaTeX": "x_{B} \geq 3"
-        },
-        {
-            "name": "SupplierBCDependent",
-            "query": "SupplierBCDependent",
-            "LaTeX": "x_{C} \geq 3"
-        },
-        {
-            "name": "SumOfOrdersFromAAndB",
-            "query": "SumOfOrdersFromAAndB",
-            "LaTeX": "20 x_{A} + 15 x_{B} \geq 25"
-        },
-        {
-            "name": "SumOfOrdersFromBAndC",
-            "query": "SumOfOrdersFromBAndC",
-            "LaTeX": "15 x_{B} + 15 x_{C} \geq 30"
-        },
-        {
-            "name": "AtLeastSevenOrders",
-            "query": "AtLeastSevenOrders",
-            "LaTeX": "x_{A} + x_{B} + x_{C} \geq 7"
-        },
-        {
-            "name": "MaxTablesFromA",
-            "query": "MaxTablesFromA",
-            "LaTeX": "x_{A} \leq 60"
+            "rule_id": 2,
+            "name": "Order_Max",
+            "query": "The restaurant needs to order no more than 600 tables.",
+            "LaTeX": "\\sum_{O \in O} (T_A \\cdot x_A + T_B \\cdot x_B + T_C \\cdot x_C) \\leq Max_{tables}"
         }
-    ]
-}

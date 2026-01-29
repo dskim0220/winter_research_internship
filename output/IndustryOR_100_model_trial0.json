@@ -1,33 +1,117 @@
 {
     "SETS": {
-        "NODES": "5",
-        "LINKS": "10"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } I = \\{A, B, C, D, E\\}"
     },
-    "PARAMETERS": [
-        { "name": "bandwidth_AB", "query": "bandwidth_AB", "LaTeX": "90" },
-        { "name": "bandwidth_AC", "query": "bandwidth_AC", "LaTeX": "85" },
-        { "name": "bandwidth_AD", "query": "bandwidth_AD", "LaTeX": "67" },
-        { "name": "bandwidth_AE", "query": "bandwidth_AE", "LaTeX": "65" },
-        { "name": "bandwidth_BC", "query": "bandwidth_BC", "LaTeX": "70" },
-        { "name": "bandwidth_BD", "query": "bandwidth_BD", "LaTeX": "30" },
-        { "name": "bandwidth_BE", "query": "bandwidth_BE", "LaTeX": "51" },
-        { "name": "bandwidth_CD", "query": "bandwidth_CD", "LaTeX": "25" },
-        { "name": "bandwidth_CE", "query": "bandwidth_CE", "LaTeX": "80" },
-        { "name": "bandwidth_DE", "query": "bandwidth_DE", "LaTeX": "84" },
-        { "name": "transmission_efficiency_AE_direct", "query": "transmission_efficiency_AE_direct", "LaTeX": "0.9" },
-        { "name": "transmission_efficiency_AE_indirect", "query": "transmission_efficiency_AE_indirect", "LaTeX": "1" },
-        { "name": "transmission_efficiency_AB", "query": "transmission_efficiency_AB", "LaTeX": "0.9" },
-        { "name": "transmission_efficiency_BD", "query": "transmission_efficiency_BD", "LaTeX": "0.96" },
-        { "name": "min_bandwidth_AE_indirect", "query": "min_bandwidth_AE_indirect", "LaTeX": "65" },
-        { "name": "min_bandwidth_AE_direct", "query": "min_bandwidth_AE_direct", "LaTeX": "0" }
-    ],
     "VARIABLES": [
-        { "name": "link_AE_indirect", "type": "Continuous", "unit": "bandwidth", "query": "link_AE_indirect", "LaTeX": "x_{AE}" },
-        { "name": "link_AE_direct", "type": "Binary", "query": "link_AE_direct", "LaTeX": "y_{AE}" }
+        {
+            "name": "y_AE_direct",
+            "type": "Binary",
+            "LaTeX": "y_{AE} \\in \\{0, 1\\}",
+            "description": "Indicator variable for direct link between A and E"
+        },
+        {
+            "name": "y_AE_path",
+            "type": "Binary",
+            "LaTeX": "y_{AE} \\in \\{0, 1\\}",
+            "description": "Indicator variable for path link between A and E"
+        },
+        {
+            "name": "x_AE_direct",
+            "type": "Integer",
+            "LaTeX": "x_{AE} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of the direct link between A and E"
+        },
+        {
+            "name": "x_AE_path",
+            "type": "Integer",
+            "LaTeX": "x_{AE} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of the path link between A and E"
+        }
     ],
-    "OBJECTIVE": { "query": "maximize link_AE_indirect", "LaTeX": "\\max x_{AE}" },
+    "PARAMETERS": [
+        {
+            "name": "P",
+            "LaTeX": "P = 100",
+            "description": "Minimum total bandwidth requirement"
+        },
+        {
+            "name": "Bandwidth_A_B",
+            "value": "90",
+            "unit": "Mbps",
+            "context": "Bandwidth between A and B"
+        },
+        {
+            "name": "Bandwidth_A_C",
+            "value": "85",
+            "unit": "Mbps",
+            "context": "Bandwidth between A and C"
+        },
+        {
+            "name": "Bandwidth_A_D",
+            "value": "65",
+            "unit": "Mbps",
+            "context": "Bandwidth between A and D"
+        },
+        {
+            "name": "Bandwidth_A_E_direct",
+            "value": "0",
+            "unit": "Mbps",
+            "context": "Direct bandwidth between A and E"
+        },
+        {
+            "name": "Bandwidth_A_E_path",
+            "value": "65",
+            "unit": "Mbps",
+            "context": "Path bandwidth between A and E"
+        },
+        {
+            "name": "Bandwidth_D_E_path",
+            "value": "84",
+            "unit": "Mbps",
+            "context": "Path bandwidth between D and E"
+        },
+        {
+            "name": "Bandwidth_A_B_path",
+            "value": "90",
+            "unit": "Mbps",
+            "context": "Path bandwidth between A and B"
+        },
+        {
+            "name": "TransmissionEfficiency_A_E_direct",
+            "value": "1",
+            "context": "Transmission efficiency of the direct link between A and E"
+        },
+        {
+            "name": "TransmissionEfficiency_A_E_path",
+            "value": "0.9",
+            "context": "Transmission efficiency of the path link between A and E"
+        },
+        {
+            "name": "TransmissionEfficiency_D_E_path",
+            "value": "0.96",
+            "context": "Transmission efficiency of the path link between D and E"
+        },
+        {
+            "name": "TransmissionEfficiency_A_B_path",
+            "value": "0.9",
+            "context": "Transmission efficiency of the path link between A and B"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "maximize the bandwidth of the link between A and E",
+        "LaTeX": "\\max x_{AE} \\cdot P"
+    },
     "CONSTRAINTS": [
-        { "constraint_name": "min_bandwidth_constraint", "type": "GreaterThan", "expression": "x_{AE} + y_{AE} \\cdot 0 \\geq 65", "LaTeX": "x_{AE} + y_{AE} \\cdot 0 \\geq 65" },
-        { "constraint_name": "efficiency_constraint", "type": "Equal", "expression": "x_{AE} \\cdot 1 + y_{AE} \\cdot 0.9 = 100", "LaTeX": "x_{AE} \\cdot 1 + y_{AE} \\cdot 0.9 = 100" },
-        { "constraint_name": "efficiency_AB_constraint", "type": "Equal", "expression": "x_{AC} \\cdot 85 + x_{AD} \\cdot 67 + x_{AE} \\cdot 1 = 100 \\cdot 0.9", "LaTeX": "x_{AC} \\cdot 85 + x_{AD} \\cdot 67 + x_{AE} \\cdot 1 = 100 \\cdot 0.9" },
-        { "constraint_name": "efficiency_BD_constraint", "type": "Equal", "expression": "x_{BC} \\cdot 70 + x_{BD} \\cdot 30 + x_{AE} \\cdot 1 = 100 \\cdot 0.96", "LaTeX": "x_{BC} \\cdot 70 + x_{BD} \\cdot 30 + x_{AE} \\cdot 1 = 100 \\cdot 0.96" }
+        {
+            "rule_id": 1,
+            "name": "sum_of_bandwidth_at_least_100",
+            "query": "The sum of bandwith is at least 100.",
+            "LaTeX": "x_{AE} \\geq 100"
+        },
+        {
+            "rule_id": 2,
+            "name": "transmission_efficiency_A_E_decreases_by_10_percent",
+            "query": "If the direct link between A and E is selected, the transmission efficiency of the path decreases by 10% due to the long distance between the two nodes.",
+            "LaTeX": "x_{AE} \\leq 100 \\cdot y_{AE_direct}"
+        }

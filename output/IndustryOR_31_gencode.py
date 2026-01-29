@@ -8,39 +8,40 @@ price_III = 2.80
 raw_material_cost_I = 0.25
 raw_material_cost_II = 0.35
 raw_material_cost_III = 0.50
-machine_hours_A1 = 10000
-machine_hours_A2 = 4000
-machine_hours_B1 = 7000
-machine_hours_B2 = 4000
-machine_hours_B3 = 0
-full_capacity_cost_A1 = 321
-full_capacity_cost_A2 = 250
-full_capacity_cost_B1 = 783
-full_capacity_cost_B2 = 200
-total_production_limit = 1509
-production_limit_I = 1200
-production_limit_III = 1510
-production_limit_II = 800
+fixed_cost_A1 = 321
+fixed_cost_A2 = 250
+fixed_cost_B1 = 783
+fixed_cost_B2 = 200
+total_production_I_limit = 1210
+total_production_I_and_III_limit = 1510
+total_production_II_limit = 800
+total_production_I_II_III_limit = 1509
 
 # 2. Model Initialization
 m = gp.Model("production_optimization")
 
 # 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
-x1 = m.addVar(name="Production_I", obj=price_I, vtype=GRB.CONTINUOUS, lb=0, ub=production_limit_I)
-x2 = m.addVar(name="Production_II", obj=price_II, vtype=GRB.CONTINUOUS, lb=0, ub=production_limit_II)
-x3 = m.addVar(name="Production_III", obj=price_III, vtype=GRB.CONTINUOUS, lb=0, ub=production_limit_III)
+x1 = m.addVar(vtype=GRB.BINARY, name="x1")
+x2 = m.addVar(vtype=GRB.BINARY, name="x2")
+x3 = m.addVar(vtype=GRB.BINARY, name="x3")
 
 # 4. Objective (Use 'LaTeX' logic + 'query' numbers)
-m.setObjective(x1 * price_I + x2 * price_II + x3 * price_III, GRB.MAXIMIZE)
+m.setObjective(
+    price_I * x1 + price_II * x2 + price_III * x3 - 
+    raw_material_cost_I * x1 - raw_material_cost_II * x2 - raw_material_cost_III * x3 - 
+    fixed_cost_A1 * x1 + fixed_cost_A2 * x1 - 
+    fixed_cost_B1 * x2 + fixed_cost_B2 * x2,
+    GRB.MAXIMIZE)
 
 # 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
-m.addConstr(x1 + x2 + x3 <= total_production_limit, "Total_Production_Limit")
-m.addConstr(x1 <= production_limit_I, "Production_I_Limit")
-m.addConstr(x3 <= production_limit_III, "Production_III_Limit")
+m.addConstr(x1 + x3 <= total_production_I_and_III_limit, "Constraint1")
+m.addConstr(x1 + x2 <= total_production_I_II_III_limit, "Constraint2")
+m.addConstr(x2 <= total_production_II_limit, "Constraint3")
+m.addConstr(x1 <= total_production_I_limit, "Constraint4")
+m.addConstr(x3 <= total_production_I_limit, "Constraint5")
 
 # 6. Optimization and Output
 m.optimize()
-print(f"Optimal Solution:")
+print(f"Optimal Objective Value: {m.objVal}")
 for v in m.getVars():
     print(f"{v.varName}: {v.x}")
-print(f"Optimal Objective Value: {m.objVal}")

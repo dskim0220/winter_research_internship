@@ -1,37 +1,84 @@
 {
     "SETS": {
-        "PRODUCTS": {"I", "II", "III"},
-        "EQUIPMENTS_A": {"A1", "A2"},
-        "EQUIPMENTS_B": {"B1", "B2"}
+        "query": "Set of 3 product types (Product_I, Product_II, Product_III), 2 processing stages (Stage_A, Stage_B), and 4 equipment types (Equipment_A1, Equipment_A2, Equipment_B1, Equipment_B2)",
+        "LaTeX": "Product = \{Product_I, Product_II, Product_III\}, Stage = \{Stage_A, Stage_B\}, Equipment = \{Equipment_A1, Equipment_A2, Equipment_B1, Equipment_B2\}"
     },
-    "PARAMETERS": [
-        { "name": "PRODUCTION_LIMIT_I", "query": "1200", "LaTeX": "1200" },
-        { "name": "PRODUCTION_LIMIT_III", "query": "1510", "LaTeX": "1510" },
-        { "name": "PRODUCTION_LIMIT_II", "query": "800", "LaTeX": "800" },
-        { "name": "PRODUCTION_LIMIT_TOTAL", "query": "1509", "LaTeX": "1509" },
-        { "name": "PRICE_I", "query": "1.25", "LaTeX": "1.25" },
-        { "name": "PRICE_II", "query": "2.00", "LaTeX": "2.00" },
-        { "name": "PRICE_III", "query": "2.80", "LaTeX": "2.80" },
-        { "name": "RAW_MATERIAL_COST_I", "query": "0.25", "LaTeX": "0.25" },
-        { "name": "RAW_MATERIAL_COST_II", "query": "0.35", "LaTeX": "0.35" },
-        { "name": "RAW_MATERIAL_COST_III", "query": "0.50", "LaTeX": "0.50" },
-        { "name": "MACHINE_HOURS_A1", "query": "10000", "LaTeX": "10000" },
-        { "name": "MACHINE_HOURS_A2", "query": "4000", "LaTeX": "4000" },
-        { "name": "MACHINE_HOURS_B1", "query": "7000", "LaTeX": "7000" },
-        { "name": "MACHINE_HOURS_B2", "query": "4000", "LaTeX": "4000" },
-        { "name": "MACHINE_HOURS_B3", "query": "0", "LaTeX": "0" },
-        { "name": "FULL_CAPACITY_COST_A1", "query": "321", "LaTeX": "321" },
-        { "name": "FULL_CAPACITY_COST_A2", "query": "250", "LaTeX": "250" },
-        { "name": "FULL_CAPACITY_COST_B1", "query": "783", "LaTeX": "783" },
-        { "name": "FULL_CAPACITY_COST_B2", "query": "200", "LaTeX": "200" }
-    ],
     "VARIABLES": [
-        { "name": "Production_I", "type": "Continuous", "Unit": "pieces", "query": "Production_I", "LaTeX": "x_{I}" },
-        { "name": "Production_II", "type": "Continuous", "Unit": "pieces", "query": "Production_II", "LaTeX": "x_{II}" },
-        { "name": "Production_III", "type": "Continuous", "Unit": "pieces", "query": "Production_III", "LaTeX": "x_{III}" }
+        {
+            "name": "x_product_stage_equipment",
+            "type": "Binary",
+            "LaTeX": "x_{p,s,e} \in \{0, 1\}, \forall p \in Product, s \in Stage, e \in Equipment",
+            "description": "Indicator variable indicating whether product p is processed on equipment e during stage s"
+        }
     ],
-    "OBJECTIVE": { "query": "Maximize Profit", "LaTeX": "\\text{Maximize } z = \\sum_{i \\in \\text{PRODUCTS}} p_i x_i" },
-    "CONSTRAINTS": [
-        { "name": "Total_Production_Limit", "Type": "Less_Than_Equal", "Value": "1509", "query": "Total_Production_Limit", "LaTeX": "x_{I} + x_{II} + x_{III} \leq 1509" },
-        { "name": "Production_I_Limit", "Type": "Less_Than_Equal", "Value": "1200", "query": "Production_I_Limit", "LaTeX": "x_{I} \leq 1200" },
-        { "name": "Production_III_Limit", "Type": "Less_Than_Equal", "Value": "1510", "query": "Production_III_Limit", "LaTeX": "x_{III} \leq 1510" }
+    "PARAMETERS": [
+        {
+            "name": "raw_material_cost_I",
+            "LaTeX": "raw_material_cost_{Product_I} = 0.25",
+            "description": "Raw material cost for Product I (Yuan/Piece)"
+        },
+        {
+            "name": "raw_material_cost_II",
+            "LaTeX": "raw_material_cost_{Product_II} = 0.35",
+            "description": "Raw material cost for Product II (Yuan/Piece)"
+        },
+        {
+            "name": "raw_material_cost_III",
+            "LaTeX": "raw_material_cost_{Product_III} = 0.50",
+            "description": "Raw material cost for Product III (Yuan/Piece)"
+        },
+        {
+            "name": "unit_price_I",
+            "LaTeX": "unit_price_{Product_I} = 1.25",
+            "description": "Unit price for Product I (Yuan/Piece)"
+        },
+        {
+            "name": "unit_price_II",
+            "LaTeX": "unit_price_{Product_II} = 2.00",
+            "description": "Unit price for Product II (Yuan/Piece)"
+        },
+        {
+            "name": "unit_price_III",
+            "LaTeX": "unit_price_{Product_III} = 2.80",
+            "description": "Unit price for Product III (Yuan/Piece)"
+        },
+        {
+            "name": "processing_time_I_A1",
+            "LaTeX": "processing_time_{Product_I, Stage_A, Equipment_A1} = 5",
+            "description": "Processing time for Product I on Equipment A1 during Stage A (pieces)"
+        },
+        {
+            "name": "processing_time_I_A2",
+            "LaTeX": "processing_time_{Product_I, Stage_A, Equipment_A2} = 7",
+            "description": "Processing time for Product I on Equipment A2 during Stage A (pieces)"
+        },
+        {
+            "name": "processing_time_I_B1",
+            "LaTeX": "processing_time_{Product_I, Stage_B, Equipment_B1} = 6",
+            "description": "Processing time for Product I on Equipment B1 during Stage B (pieces)"
+        },
+        {
+            "name": "processing_time_I_B2",
+            "LaTeX": "processing_time_{Product_I, Stage_B, Equipment_B2} = 4",
+            "description": "Processing time for Product I on Equipment B2 during Stage B (pieces)"
+        },
+        {
+            "name": "processing_time_II_A1",
+            "LaTeX": "processing_time_{Product_II, Stage_A, Equipment_A1} = 10",
+            "description": "Processing time for Product II on Equipment A1 during Stage A (pieces)"
+        },
+        {
+            "name": "processing_time_II_A2",
+            "LaTeX": "processing_time_{Product_II, Stage_A, Equipment_A2} = 9",
+            "description": "Processing time for Product II on Equipment A2 during Stage A (pieces)"
+        },
+        {
+            "name": "processing_time_II_B1",
+            "LaTeX": "processing_time_{Product_II, Stage_B, Equipment_B1} = 8",
+            "description": "Processing time for Product II on Equipment B1 during Stage B (pieces)"
+        },
+        {
+            "name": "processing_time_II_B2",
+            "LaTeX": "processing_time_{Product_II, Stage_B, Equipment_B2} = 0",
+            "description": "Processing time for Product II on Equipment B2 during Stage B (pieces)"
+        }

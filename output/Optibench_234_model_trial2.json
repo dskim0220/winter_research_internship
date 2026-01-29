@@ -1,46 +1,105 @@
 {
     "SETS": {
-        "GOODS": "X, Y, Z",
-        "TRUCK_TYPES": "X, Y, Z"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } i \\in \\{X, Y, Z\\} \\text{ represent the types of goods.}"
     },
-    "PARAMETERS": [
-        { "name": "initial_cost_per_truck_X", "query": "initial_cost_per_truck_X", "LaTeX": "1000" },
-        { "name": "initial_cost_per_truck_Y", "query": "initial_cost_per_truck_Y", "LaTeX": "1200" },
-        { "name": "initial_cost_per_truck_Z", "query": "initial_cost_per_truck_Z", "LaTeX": "1500" },
-        { "name": "cost_reduction_per_100_investment_X", "query": "cost_reduction_per_100_investment_X", "LaTeX": "10" },
-        { "name": "cost_reduction_per_100_investment_Y", "query": "cost_reduction_per_100_investment_Y", "LaTeX": "12" },
-        { "name": "cost_reduction_per_100_investment_Z", "query": "cost_reduction_per_100_investment_Z", "LaTeX": "15" },
-        { "name": "total_trucks_available", "query": "total_trucks_available", "LaTeX": "50" },
-        { "name": "budget_for_optimization_software", "query": "budget_for_optimization_software", "LaTeX": "10000" },
-        { "name": "minimum_trucks_X", "query": "minimum_trucks_X", "LaTeX": "10" },
-        { "name": "minimum_trucks_Y", "query": "minimum_trucks_Y", "LaTeX": "15" },
-        { "name": "maximum_trucks_Z", "query": "maximum_trucks_Z", "LaTeX": "25" },
-        { "name": "max_cost_reduction_Z", "query": "max_cost_reduction_Z", "LaTeX": "37500" },
-        { "name": "total_cost_reduction_required", "query": "total_cost_reduction_required", "LaTeX": "0" },
-        { "name": "investment_to_savings_ratio", "query": "investment_to_savings_ratio", "LaTeX": "100 / 75" }
-    ],
     "VARIABLES": [
-        { "name": "trucks_X", "type": "Continuous", "unit": "count", "query": "trucks_X", "LaTeX": "x_{X}" },
-        { "name": "trucks_Y", "type": "Continuous", "unit": "count", "query": "trucks_Y", "LaTeX": "x_{Y}" },
-        { "name": "trucks_Z", "type": "Continuous", "unit": "count", "query": "trucks_Z", "LaTeX": "x_{Z}" }
+        {
+            "name": "y_X",
+            "type": "Binary",
+            "LaTeX": "y_X \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether GoodsX is produced (1) or not (0)"
+        },
+        {
+            "name": "x_X",
+            "type": "Integer",
+            "LaTeX": "x_X \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of GoodsX to produce"
+        },
+        {
+            "name": "y_Y",
+            "type": "Binary",
+            "LaTeX": "y_Y \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether GoodsY is produced (1) or not (0)"
+        },
+        {
+            "name": "x_Y",
+            "type": "Integer",
+            "LaTeX": "x_Y \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of GoodsY to produce"
+        },
+        {
+            "name": "y_Z",
+            "type": "Binary",
+            "LaTeX": "y_Z \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether GoodsZ is produced (1) or not (0)"
+        },
+        {
+            "name": "x_Z",
+            "type": "Integer",
+            "LaTeX": "x_Z \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Quantity of GoodsZ to produce"
+        },
+        {
+            "name": "z_Optimization",
+            "type": "Continuous",
+            "LaTeX": "z_Optimization \\in \\mathbb{R}_{\\geq 0}",
+            "description": "Investment in route optimization software"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "p_Budget",
+            "LaTeX": "P = 10000",
+            "description": "Budget for route optimization software"
+        },
+        {
+            "name": "p_CostX",
+            "LaTeX": "C_X = 1000",
+            "description": "Initial cost per truck for GoodsX"
+        },
+        {
+            "name": "p_CostY",
+            "LaTeX": "C_Y = 1200",
+            "description": "Initial cost per truck for GoodsY"
+        },
+        {
+            "name": "p_CostZ",
+            "LaTeX": "C_Z = 1500",
+            "description": "Initial cost per truck for GoodsZ"
+        },
+        {
+            "name": "p_ReductionX",
+            "LaTeX": "R_X = 10",
+            "description": "Reduction in cost per $100 invested in optimization for GoodsX"
+        },
+        {
+            "name": "p_ReductionY",
+            "LaTeX": "R_Y = 12",
+            "description": "Reduction in cost per $100 invested in optimization for GoodsY"
+        },
+        {
+            "name": "p_ReductionZ",
+            "LaTeX": "R_Z = 15",
+            "description": "Reduction in cost per $100 invested in optimization for GoodsZ"
+        },
+        {
+            "name": "p_TotalReduction",
+            "LaTeX": "T_R = 37500",
+            "description": "Total cost reduction required for GoodsZ"
+        },
+        {
+            "name": "p_TotalCostReduction",
+            "LaTeX": "T_CR = 0",
+            "description": "Combined cost reduction for GoodsX, GoodsY, and GoodsZ must be positive"
+        },
+        {
+            "name": "p_InvestmentConstraint",
+            "LaTeX": "I = 10000",
+            "description": "Total investment in optimization does not exceed the total cost savings from using the software"
+        }
     ],
     "OBJECTIVE": {
-        "query": "minimize 1000*trucks_X + 1200*trucks_Y + 1500*trucks_Z - 10*trucks_X*(trucks_X/100) - 12*trucks_Y*(trucks_Y/100) - 15*trucks_Z*(trucks_Z/100)",
-        "LaTeX": "\\min \\left( 1000 x_{X} + 1200 x_{Y} + 1500 x_{Z} - 10 x_{X} \\frac{x_{X}}{100} - 12 x_{Y} \\frac{x_{Y}}{100} - 15 x_{Z} \\frac{x_{Z}}{100} \\right)"
-    },
-    "CONSTRAINTS": [
-        {
-            "name": "total_trucks_constraint",
-            "query": "trucks_X + trucks_Y + trucks_Z <= total_trucks_available",
-            "LaTeX": "x_{X} + x_{Y} + x_{Z} \\leq 50"
-        },
-        {
-            "name": "minimum_trucks_X_constraint",
-            "query": "trucks_X >= minimum_trucks_X",
-            "LaTeX": "x_{X} \\geq 10"
-        },
-        {
-            "name": "minimum_trucks_Y_constraint",
-            "query": "trucks_Y >= minimum_trucks_Y",
-            "LaTeX": "x_{Y} \\geq 15"
-        }
+        "query": "Minimize the total delivery cost for all goods.",
+        "LaTeX": "\\min z_{TotalCost} = C_X x_X + C_Y x_Y + C_Z x_Z - z_Optimization \\cdot (R_X y_X + R_Y y_Y + R_Z y_Z)"
+    }

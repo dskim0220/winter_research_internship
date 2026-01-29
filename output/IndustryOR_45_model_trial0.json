@@ -1,48 +1,110 @@
 {
     "SETS": {
-        "STUDENTS": "\\{1, 2, 3, 4\\}", 
-        "DAYS": "\\{Monday, Tuesday, Wednesday, Thursday, Friday\\}"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } i \\in \\{1, 2, 3, 4\\} \\text{ represent undergraduates, and } j \\in \\{5, 6\\} \\text{ represent graduate students.}"
     },
-    "PARAMETERS": [
-        { "name": "WAGE", "query": "WAGE[1][DAY]", "LaTeX": "WAGE_{1, \\text{DAY}}" },
-        { "name": "MIN_HOURS_UNDERGRADUATES", "query": "8", "LaTeX": "8" },
-        { "name": "MIN_HOURS_GRADUATE_STUDENTS", "query": "7", "LaTeX": "7" },
-        { "name": "MAX_HOURS_PER_STUDENT", "query": "2", "LaTeX": "2" },
-        { "name": "MAX_STUDENTS_PER_DAY", "query": "3", "LaTeX": "3" },
-        { "name": "TOTAL_DUTY_HOURS", "query": "70", "LaTeX": "70" },
-        { "name": "MAX_HOURS_5_AND_6", "query": "14", "LaTeX": "14" },
-        { "name": "THURSDAY_LIMIT_5", "query": "2", "LaTeX": "2" }
-    ],
     "VARIABLES": [
-        { "name": "hours_student_1", "type": "Continuous", "query": "hours_student_1", "LaTeX": "x_{1}" },
-        { "name": "hours_student_2", "type": "Continuous", "query": "hours_student_2", "LaTeX": "x_{2}" },
-        { "name": "hours_student_3", "type": "Continuous", "query": "hours_student_3", "LaTeX": "x_{3}" },
-        { "name": "hours_student_4", "type": "Continuous", "query": "hours_student_4", "LaTeX": "x_{4}" },
-        { "name": "hours_student_5", "type": "Continuous", "query": "hours_student_5", "LaTeX": "x_{5}" },
-        { "name": "hours_student_6", "type": "Continuous", "query": "hours_student_6", "LaTeX": "x_{6}" }
+        {
+            "name": "y_1",
+            "type": "Binary",
+            "LaTeX": "y_1 \\in \\{0, 1\\}",
+            "description": "1 if undergraduate 1 works, 0 otherwise"
+        },
+        {
+            "name": "x_1",
+            "type": "Integer",
+            "LaTeX": "x_1 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours undergraduate 1 works"
+        },
+        {
+            "name": "y_2",
+            "type": "Binary",
+            "LaTeX": "y_2 \\in \\{0, 1\\}",
+            "description": "1 if undergraduate 2 works, 0 otherwise"
+        },
+        {
+            "name": "x_2",
+            "type": "Integer",
+            "LaTeX": "x_2 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours undergraduate 2 works"
+        },
+        {
+            "name": "y_3",
+            "type": "Binary",
+            "LaTeX": "y_3 \\in \\{0, 1\\}",
+            "description": "1 if undergraduate 3 works, 0 otherwise"
+        },
+        {
+            "name": "x_3",
+            "type": "Integer",
+            "LaTeX": "x_3 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours undergraduate 3 works"
+        },
+        {
+            "name": "y_4",
+            "type": "Binary",
+            "LaTeX": "y_4 \\in \\{0, 1\\}",
+            "description": "1 if undergraduate 4 works, 0 otherwise"
+        },
+        {
+            "name": "x_4",
+            "type": "Integer",
+            "LaTeX": "x_4 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours undergraduate 4 works"
+        },
+        {
+            "name": "y_5",
+            "type": "Binary",
+            "LaTeX": "y_5 \\in \\{0, 1\\}",
+            "description": "1 if graduate student 5 works, 0 otherwise"
+        },
+        {
+            "name": "x_5",
+            "type": "Integer",
+            "LaTeX": "x_5 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours graduate student 5 works"
+        },
+        {
+            "name": "y_6",
+            "type": "Binary",
+            "LaTeX": "y_6 \\in \\{0, 1\\}",
+            "description": "1 if graduate student 6 works, 0 otherwise"
+        },
+        {
+            "name": "x_6",
+            "type": "Integer",
+            "LaTeX": "x_6 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of hours graduate student 6 works"
+        }
     ],
-    "OBJECTIVE": {
-        "query": "Minimize SUM(hours_student_1 * WAGE[1][DAY] + hours_student_2 * WAGE[2][DAY] + hours_student_3 * WAGE[3][DAY] + hours_student_4 * WAGE[4][DAY] + hours_student_5 * WAGE[5][DAY] + hours_student_6 * WAGE[6][DAY] | DAY in DAYS)",
-        "LaTeX": "\\min \\sum_{i=1}^{6} x_i \\cdot WAGE_{i, \\text{DAY}}"
-    },
-    "CONSTRAINTS": [
+    "PARAMETERS": [
         {
-            "name": "Total_hours_undergraduates >= MIN_HOURS_UNDERGRADUATES",
-            "query": "SUM(hours_student_1, hours_student_2, hours_student_3, hours_student_4) >= 8",
-            "LaTeX": "\\sum_{i=1}^{4} x_i \\geq 8"
+            "name": "Wage_1",
+            "LaTeX": "Wage_1 = 10.0",
+            "description": "Hourly wage for undergraduate 1"
         },
         {
-            "name": "Total_hours_graduate_students >= MIN_HOURS_GRADUATE_STUDENTS",
-            "query": "hours_student_5 + hours_student_6 >= 7",
-            "LaTeX": "x_5 + x_6 \\geq 7"
+            "name": "Wage_2",
+            "LaTeX": "Wage_2 = 10.0",
+            "description": "Hourly wage for undergraduate 2"
         },
         {
-            "name": "SUM(hours_student_1, hours_student_2, hours_student_3, hours_student_4, hours_student_5, hours_student_6) <= TOTAL_DUTY_HOURS",
-            "query": "SUM(hours_student_1, hours_student_2, hours_student_3, hours_student_4, hours_student_5, hours_student_6) <= 70",
-            "LaTeX": "\\sum_{i=1}^{6} x_i \\leq 70"
+            "name": "Wage_3",
+            "LaTeX": "Wage_3 = 9.9",
+            "description": "Hourly wage for undergraduate 3"
         },
         {
-            "name": "SUM(hours_student_5, hours_student_6) <= MAX_HOURS_5_AND_6",
-            "query": "hours_student_5 + hours_student_6 <= 14",
-            "LaTeX": "x_5 + x_6 \\leq 14"
+            "name": "Wage_4",
+            "LaTeX": "Wage_4 = 9.8",
+            "description": "Hourly wage for undergraduate 4"
+        },
+        {
+            "name": "Wage_5",
+            "LaTeX": "Wage_5 = 10.8",
+            "description": "Hourly wage for graduate student 5"
+        },
+        {
+            "name": "Wage_6",
+            "LaTeX": "Wage_6 = 11.3",
+            "description": "Hourly wage for graduate student 6"
         }

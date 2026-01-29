@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON lacks critical details and logical consistency checks.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The 'query' fields are placeholders and do not reflect the actual problem requirements.",
-    "DATA_FIDELITY_CHECK": "No numeric values from the query are present in the LaTeX formulation.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are defined based on the provided logic.",
-    "LINEARITY_VALIDATION": "The model does not include any variable-to-variable multiplication, but this check cannot be performed without complete information.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is provided.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the provided queries and LaTeX formulations. Many constraints are missing or incorrectly formulated."
+    "OVERALL_FEEDBACK": "The provided JSON contains numerous issues including incorrect variable types, logical errors, and missing constraints. The queries do not accurately reflect the problem description, and the mathematical formulation lacks integrity.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations listed as the queries are not faithfully extracted from the problem description.",
+    "DATA_FIDELITY_CHECK": "Numerous numeric values in the 'query' fields are placeholders (e.g., 1000, 800, 600) and do not match the LaTeX representations. For example, the query for 'Total Production Limit (Tons)' is 1000 but the LaTeX does not specify this limit.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided to link binary variables with continuous quantities. The logic for ensuring at least one production line is fully staffed and the constraints related to the number of workers are not correctly formulated.",
+    "LINEARITY_VALIDATION": "The objective function does not follow the MILP standard. It should include (Price - Cost) * Quantity - Fixed_Costs, but the provided JSON does not specify prices or costs.",
+    "DIMENSIONAL_ANALYSIS": "The dimensional analysis is inconsistent. For instance, the production rates are given in units per hour, but the total production limits are specified in tons without conversion factors.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are poorly defined and do not accurately reflect the problem description. For example, the constraint for the total number of workers is not correctly formulated, and the constraints related to the number of workers on each line are missing or incorrectly stated."
 }

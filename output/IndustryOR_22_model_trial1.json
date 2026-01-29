@@ -1,89 +1,100 @@
 {
     "SETS": {
-        "PRODUCTS": "A1, A2, A3",
-        "ACTIVATION_LINES": "A1, A2, A3"
+        "query": "Set of 3 products (A1, A2, A3) and 22 time periods (t1, t2,..., t22)",
+        "LaTeX": "I = \\{A1, A2, A3\\}, T = \\{t1, t2,..., t22\\}"
     },
-    "PARAMETERS": [
-        {
-            "name": "MAX_DEMAND",
-            "query": "MAX_DEMAND[A1]",
-            "LaTeX": "\\maxdemand{A1}"
-        },
-        {
-            "name": "PRICE",
-            "query": "PRICE[A1]",
-            "LaTeX": "\\price{A1}"
-        },
-        {
-            "name": "COST",
-            "query": "COST[A1]",
-            "LaTeX": "\\cost{A1}"
-        },
-        {
-            "name": "ACTIVATION_COST",
-            "query": "ACTIVATION_COST[A1]",
-            "LaTeX": "\\activationcost{A1}"
-        },
-        {
-            "name": "MINIMUM_BATCH",
-            "query": "MINIMUM_BATCH[A1]",
-            "LaTeX": "\\minimumbatch{A1}"
-        },
-        {
-            "name": "TOTAL_PRODUCTION_LIMIT",
-            "query": "TOTAL_PRODUCTION_LIMIT",
-            "LaTeX": "\\totalproductionlimit"
-        },
-        {
-            "name": "ACTIVATION_TIME",
-            "query": "ACTIVATION_TIME[A1]",
-            "LaTeX": "\\activationtime{A1}"
-        }
-    ],
     "VARIABLES": [
         {
-            "name": "produce_A1",
+            "name": "x_it",
             "type": "Binary",
-            "query": "produce_A1",
-            "LaTeX": "\\text{produce}_A1"
+            "LaTeX": "x_{i,t} \in \{0, 1\}, \forall i \in I, t \in T",
+            "description": "Indicator variable: 1 if product i is produced in period t"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "Price_A1",
+            "LaTeX": "P_{A1} = 124",
+            "description": "Selling price of product A1"
         },
         {
-            "name": "produce_A2",
-            "type": "Binary",
-            "query": "produce_A2",
-            "LaTeX": "\\text{produce}_A2"
+            "name": "Price_A2",
+            "LaTeX": "P_{A2} = 109",
+            "description": "Selling price of product A2"
         },
         {
-            "name": "produce_A3",
-            "type": "Binary",
-            "query": "produce_A3",
-            "LaTeX": "\\text{produce}_A3"
+            "name": "Price_A3",
+            "LaTeX": "P_{A3} = 115",
+            "description": "Selling price of product A3"
+        },
+        {
+            "name": "Demand_A1",
+            "LaTeX": "D_{A1} = 5300",
+            "description": "Maximum demand for product A1"
+        },
+        {
+            "name": "Demand_A2",
+            "LaTeX": "D_{A2} = 4500",
+            "description": "Maximum demand for product A2"
+        },
+        {
+            "name": "Demand_A3",
+            "LaTeX": "D_{A3} = 5400",
+            "description": "Maximum demand for product A3"
+        },
+        {
+            "name": "Cost_A1",
+            "LaTeX": "C_{A1} = 73.30",
+            "description": "Production cost per 100 kg for product A1"
+        },
+        {
+            "name": "Cost_A2",
+            "LaTeX": "C_{A2} = 52.90",
+            "description": "Production cost per 100 kg for product A2"
+        },
+        {
+            "name": "Cost_A3",
+            "LaTeX": "C_{A3} = 65.40",
+            "description": "Production cost per 100 kg for product A3"
+        },
+        {
+            "name": "Quota_A1",
+            "LaTeX": "Q_{A1} = 500",
+            "description": "Daily production quota for product A1"
+        },
+        {
+            "name": "Quota_A2",
+            "LaTeX": "Q_{A2} = 450",
+            "description": "Daily production quota for product A2"
+        },
+        {
+            "name": "Quota_A3",
+            "LaTeX": "Q_{A3} = 550",
+            "description": "Daily production quota for product A3"
+        },
+        {
+            "name": "Activation_Cost_A1",
+            "LaTeX": "AC_{A1} = 170000",
+            "description": "Activation cost for product A1"
+        },
+        {
+            "name": "Minimum_Batch_A1",
+            "LaTeX": "MB_{A1} = 20",
+            "description": "Minimum batch for product A1"
+        },
+        {
+            "name": "Production_Limit",
+            "LaTeX": "PL = 1210",
+            "description": "Total production limit in tons"
+        },
+        {
+            "name": "Activation_Time",
+            "LaTeX": "AT = 57",
+            "description": "Activation time constraint in minutes"
         }
     ],
     "OBJECTIVE": {
-        "query": "Maximize Revenue - Fixed Costs",
-        "LaTeX": "\\max \\left( \\sum_{i=A1}^{A3} \\price{i} \\cdot \\produce{i} - \\sum_{i=A1}^{A3} \\activationcost{i} \\cdot \\produce{i} \\right)"
-    },
-    "CONSTRAINTS": [
-        {
-            "name": "Total Production Limit",
-            "query": "produce_A1 * MAX_DEMAND[A1] + produce_A2 * MAX_DEMAND[A2] + produce_A3 * MAX_DEMAND[A3] <= TOTAL_PRODUCTION_LIMIT",
-            "LaTeX": "\\sum_{i=A1}^{A3} \\maxdemand{i} \\cdot \\produce{i} \\leq \\totalproductionlimit"
-        },
-        {
-            "name": "Activation Time Constraint",
-            "query": "produce_A1 * ACTIVATION_TIME[A1] >= 57",
-            "LaTeX": "\\activationtime{A1} \\cdot \\produce{A1} \\geq 57"
-        },
-        {
-            "name": "Fixed Activation Costs",
-            "query": "ACTIVATION_COST[A1] * produce_A1 + ACTIVATION_COST[A2] * produce_A2 + ACTIVATION_COST[A3] * produce_A3 >= 0",
-            "LaTeX": "\\activationcost{A1} \\cdot \\produce{A1} + \\activationcost{A2} \\cdot \\produce{A2} + \\activationcost{A3} \\cdot \\produce{A3} \\geq 0"
-        },
-        {
-            "name": "Minimum Batch Constraints",
-            "query": "produce_A1 >= MINIMUM_BATCH[A1], produce_A2 >= MINIMUM_BATCH[A2], produce_A3 >= MINIMUM_BATCH[A3]",
-            "LaTeX": "\\minimumbatch{A1} \\leq \\produce{A1}, \\minimumbatch{A2} \\leq \\produce{A2}, \\minimumbatch{A3} \\leq \\produce{A3}"
-        }
-    ]
-}
+        "query": "Maximize total revenue",
+        "LaTeX": "\\max \\sum_{i \\in I} \\sum_{t \\in T} (P_i \\cdot x_{i,t} - C_i \\cdot x_{i,t} \\cdot t_{i,t} - AC_i \\cdot y_{i,t} - MB_i \\cdot z_{i,t})",
+        "description": "Revenue from selling products minus production cost and activation cost, with binary variables to enforce minimum batch and activation time."
+    }

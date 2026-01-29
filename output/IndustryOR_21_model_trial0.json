@@ -1,138 +1,57 @@
-{
-    "SETS": {
-        "Suppliers": "A, B, C"
-    },
-    "PARAMETERS": [
-        {
-            "name": "Supplier_A_Price",
-            "query": "Supplier_A_Price",
-            "LaTeX": "120"
-        },
-        {
-            "name": "Supplier_B_Price",
-            "query": "Supplier_B_Price",
-            "LaTeX": "110"
-        },
-        {
-            "name": "Supplier_C_Price",
-            "query": "Supplier_C_Price",
-            "LaTeX": "100"
-        },
-        {
-            "name": "MinTables",
-            "query": "MinTables",
-            "LaTeX": "150"
-        },
-        {
-            "name": "MaxTables",
-            "query": "MaxTables",
-            "LaTeX": "600"
-        },
-        {
-            "name": "OrdersFromA",
-            "query": "OrdersFromA",
-            "LaTeX": "20"
-        },
-        {
-            "name": "OrdersFromB",
-            "query": "OrdersFromB",
-            "LaTeX": "15"
-        },
-        {
-            "name": "OrdersFromC",
-            "query": "OrdersFromC",
-            "LaTeX": "15"
-        },
-        {
-            "name": "OrdersFromAAndB",
-            "query": "OrdersFromAAndB",
-            "LaTeX": "25"
-        },
-        {
-            "name": "OrdersFromBAndC",
-            "query": "OrdersFromBAndC",
-            "LaTeX": "30"
-        },
-        {
-            "name": "OrdersFromAOrBOrC",
-            "query": "OrdersFromAOrBOrC",
-            "LaTeX": "7"
-        }
-    ],
-    "VARIABLES": [
-        {
-            "name": "orders_A",
-            "type": "Integer",
-            "query": "orders_A",
-            "LaTeX": "\\text{Let } x_{A} \\text{ be the number of orders from Supplier A}"
-        },
-        {
-            "name": "orders_B",
-            "type": "Integer",
-            "query": "orders_B",
-            "LaTeX": "\\text{Let } x_{B} \\text{ be the number of orders from Supplier B}"
-        },
-        {
-            "name": "orders_C",
-            "type": "Integer",
-            "query": "orders_C",
-            "LaTeX": "\\text{Let } x_{C} \\text{ be the number of orders from Supplier C}"
-        }
-    ],
-    "OBJECTIVE": {
-        "query": "Objective",
-        "LaTeX": "\\text{Minimize } 120x_{A} + 110x_{B} + 100x_{C}"
-    },
-    "CONSTRAINTS": [
-        {
-            "name": "MinTablesConstraint",
-            "query": "MinTablesConstraint",
-            "LaTeX": "20x_{A} + 15x_{B} + 15x_{C} \\geq 150"
-        },
-        {
-            "name": "MaxTablesConstraint",
-            "query": "MaxTablesConstraint",
-            "LaTeX": "20x_{A} + 15x_{B} + 15x_{C} \\leq 600"
-        },
-        {
-            "name": "AtLeastOneOrderFromA",
-            "query": "AtLeastOneOrderFromA",
-            "LaTeX": "x_{A} \\geq 1"
-        },
-        {
-            "name": "AtLeastThreeOrdersFromB",
-            "query": "AtLeastThreeOrdersFromB",
-            "LaTeX": "x_{B} \\geq 3"
-        },
-        {
-            "name": "SupplierABDependent",
-            "query": "SupplierABDependent",
-            "LaTeX": "x_{B} \\geq M(1 - x_{A})"
-        },
-        {
-            "name": "SupplierBCDependent",
-            "query": "SupplierBCDependent",
-            "LaTeX": "x_{C} \\geq M(1 - x_{B})"
-        },
-        {
-            "name": "SumOfOrdersFromAAndB",
-            "query": "SumOfOrdersFromAAndB",
-            "LaTeX": "20x_{A} + 15x_{B} \\geq 25"
-        },
-        {
-            "name": "SumOfOrdersFromBAndC",
-            "query": "SumOfOrdersFromBAndC",
-            "LaTeX": "15x_{B} + 15x_{C} \\geq 30"
-        },
-        {
-            "name": "AtLeastSevenOrders",
-            "query": "AtLeastSevenOrders",
-            "LaTeX": "x_{A} + x_{B} + x_{C} \\geq 7"
-        },
-        {
-            "name": "MaxTablesFromA",
-            "query": "MaxTablesFromA",
-            "LaTeX": "x_{A} \\leq 60"
-        }
-    ]
-}
+{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Mathematical Model}
+
+\subsection*{Sets}
+\[
+I = \{A, B, C\}, \quad J = \{1, 2, \ldots, M\}
+\]
+
+\subsection*{Variables}
+\[
+\begin{aligned}
+&x_{i,j} \in \{0, 1\}, && \text{for } i \in I, j \in J \\
+&y_{i,j} \in \{0, 1\}, && \text{for } i \in I, j \in J \\
+&z_{i,j} \in \{0, 1\}, && \text{for } i \in I, j \in J
+\end{aligned}
+\]
+
+\subsection*{Parameters}
+\[
+\begin{aligned}
+&P_{A} = 120, && \text{(cost of ordering each dining table from Supplier A)} \\
+&P_{B} = 110, && \text{(cost of ordering each dining table from Supplier B)} \\
+&P_{C} = 100, && \text{(cost of ordering each dining table from Supplier C)} \\
+&T_{A} = 20, && \text{(number of tables per order from Supplier A)} \\
+&T_{B} = 15, && \text{(number of tables per order from Supplier B)} \\
+&T_{C} = 15, && \text{(number of tables per order from Supplier C)} \\
+&M_{\text{min}} = 7, && \text{(minimum number of orders from Supplier A or B or C)} \\
+&M_{\text{max}} = 600, && \text{(maximum number of tables)} \\
+&M_{\text{min\_A}} = 150, && \text{(minimum number of tables from Supplier A)} \\
+&M_{\text{max\_A}} = 60, && \text{(maximum number of tables from Supplier A)} \\
+&M_{\text{min\_AB}} = 30, && \text{(minimum number of tables from Supplier B if Supplier A is ordered)} \\
+&M_{\text{min\_BC}} = 30, && \text{(minimum number of tables from Supplier C if Supplier B is ordered)} \\
+&M_{\text{min\_AC}} = 25, && \text{(minimum number of tables from Supplier A and B)} \\
+&M_{\text{min\_B}} = 30, && \text{(minimum number of tables from Supplier B and C)}
+\end{aligned}
+\]
+
+\subsection*{Objective Function}
+\[
+\min \sum_{i \in I} \sum_{j \in J} P_i \cdot x_{i,j}
+\]
+
+\subsection*{Constraints}
+\begin{align*}
+\sum_{i \in I} x_{i,j} &= 1, && \text{for all } j \in J \quad (\text{exactly one supplier per order}) \\
+\sum_{j \in J} x_{i,j} &\leq M_{\text{max}}, && \text{for all } i \in I \quad (\text{total tables cannot exceed 600}) \\
+\sum_{j \in J} y_{i,j} &= 1, && \text{for all } i \in I \quad (\text{exactly one order per supplier}) \\
+\sum_{j \in J} z_{i,j} &= 1, && \text{for all } i \in I \quad (\text{exactly one supplier per order}) \\
+\sum_{j \in J} x_{A,j} &\geq M_{\text{min\_A}}, && \text{(at least 150 tables from Supplier A)} \\
+\sum_{j \in J} x_{A,j} &\leq M_{\text{max\_A}}, && \text{(no more than 60 tables from Supplier A)} \\
+\sum_{j \in J} x_{A,j} + \sum_{j \in J} x_{B,j} &\geq M_{\text{min\_AC}}, && \text{(at least 25 tables from Supplier A and B)} \\
+\sum_{j \in J} x_{B,j} + \sum_{j \in J} x_{C,j} &\geq M_{\text{min\_BC}}, && \text{(at least 30 tables from Supplier B and C)} \\
+\sum_{j \in J}

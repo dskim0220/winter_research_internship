@@ -1,58 +1,107 @@
 {
     "SETS": {
-        "WORK_DAYS": "\\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}",
-        "EMPLOYEES": "\\{\\text{Employee}_1, \\text{Employee}_2, \\text{Employee}_3, \\text{Employee}_4, \\text{Employee}_5, \\text{Employee}_6, \\text{Employee}_7, \\text{Employee}_8, \\text{Employee}_9, \\text{Employee}_{10}\\}"
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } i \\in \\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}"
     },
-    "PARAMETERS": [
-        {
-            "name": "EMPLOYEES_REQUIRED",
-            "query": "EMPLOYEES_REQUIRED",
-            "LaTeX": "\\{15, 13, 15, 18, 14, 16, 10\\}"
-        },
-        {
-            "name": "MIN_SUNDAY_MONDAY_PAIR",
-            "query": "MIN_SUNDAY_MONDAY_PAIR",
-            "LaTeX": "3"
-        },
-        {
-            "name": "DIFFERENCE_LIMIT",
-            "query": "DIFFERENCE_LIMIT",
-            "LaTeX": "7"
-        }
-    ],
     "VARIABLES": [
         {
-            "name": "shift_assignment",
+            "name": "y_monday",
             "type": "Binary",
-            "query": "shift_assignment",
-            "LaTeX": "\\forall \\text{Employee} \\in \\text{EMPLOYEES}, \\forall \\text{Day} \\in \\text{WORK_DAYS}: x_{\\text{Employee}, \\text{Day}} \\in \\{0, 1\\}"
+            "LaTeX": "y_{\\text{Monday}} \\in \\{0, 1\\}",
+            "description": "1 if Monday is selected, 0 otherwise"
         },
         {
-            "name": "employee_schedule",
-            "type": "Continuous",
-            "query": "employee_schedule",
-            "LaTeX": "\\forall \\text{Employee} \\in \\text{EMPLOYEES}, \\forall \\text{Day} \\in \\text{WORK_DAYS}: y_{\\text{Employee}, \\text{Day}} \\in [0, 1]"
+            "name": "y_tuesday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Tuesday}} \\in \\{0, 1\\}",
+            "description": "1 if Tuesday is selected, 0 otherwise"
+        },
+        {
+            "name": "y_wednesday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Wednesday}} \\in \\{0, 1\\}",
+            "description": "1 if Wednesday is selected, 0 otherwise"
+        },
+        {
+            "name": "y_thursday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Thursday}} \\in \\{0, 1\\}",
+            "description": "1 if Thursday is selected, 0 otherwise"
+        },
+        {
+            "name": "y_friday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Friday}} \\in \\{0, 1\\}",
+            "description": "1 if Friday is selected, 0 otherwise"
+        },
+        {
+            "name": "y_saturday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Saturday}} \\in \\{0, 1\\}",
+            "description": "1 if Saturday is selected, 0 otherwise"
+        },
+        {
+            "name": "y_sunday",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Sunday}} \\in \\{0, 1\\}",
+            "description": "1 if Sunday is selected, 0 otherwise"
+        },
+        {
+            "name": "x_monday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Monday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees working on Monday"
+        },
+        {
+            "name": "x_tuesday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Tuesday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees working on Tuesday"
+        },
+        {
+            "name": "x_wednesday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Wednesday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees working on Wednesday"
+        },
+        {
+            "name": "x_thursday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Thursday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees working on Thursday"
+        },
+        {
+            "name": "x_friday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Friday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees working on Friday"
+        },
+        {
+            "name": "x_saturday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Saturday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees working on Saturday"
+        },
+        {
+            "name": "x_sunday",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Sunday}} \\in \\mathbb{Z}^+",
+            "description": "Number of employees working on Sunday"
         }
     ],
-    "OBJECTIVE": {
-        "query": "minimize sum(shift_assignment[Employee] for Employee in EMPLOYEES)",
-        "LaTeX": "\\min \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Day}}"
-    },
-    "CONSTRAINTS": [
+    "PARAMETERS": [
         {
-            "name": "EmploymentRequirement",
-            "query": "EmploymentRequirement",
-            "LaTeX": "\\forall \\text{Day} \\in \\text{WORK_DAYS}: \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Day}} \\cdot y_{\\text{Employee}, \\text{Day}} = \\text{EMPLOYEES_REQUIRED}[\\text{Day}]"
+            "name": "employees_monday",
+            "LaTeX": "P_{\\text{Monday}} = 15",
+            "description": "Number of employees needed on Monday"
         },
         {
-            "name": "SundayMondayPairConstraint",
-            "query": "SundayMondayPairConstraint",
-            "LaTeX": "\\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Sunday}} \\cdot x_{\\text{Employee}, \\text{Monday}} \\geq \\text{MIN_SUNDAY_MONDAY_PAIR}"
+            "name": "employees_tuesday",
+            "LaTeX": "P_{\\text{Tuesday}} = 13",
+            "description": "Number of employees needed on Tuesday"
         },
         {
-            "name": "DifferenceConstraint",
-            "query": "DifferenceConstraint",
-            "LaTeX": "\\left| \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Monday}} - \\sum_{\\text{Employee} \\in \\text{EMPLOYEES}} x_{\\text{Employee}, \\text{Wednesday}} \\right| \\leq \\text{DIFFERENCE_LIMIT}"
+            "name": "employees_wednesday",
+            "LaTeX": "P_{\\text{Wednesday}} = 15",
+            "description": "Number of employees needed on Wednesday"
         }
-    ]
-}

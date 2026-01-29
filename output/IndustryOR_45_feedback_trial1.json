@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model lacks essential details and logical consistency. Key issues include incorrect variable types, missing constraints, and logical errors.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The 'query' for 'hours' and 'wages' should be replaced with actual numerical values.",
-    "DATA_FIDELITY_CHECK": "Numerical values in 'query' do not align with 'LaTeX'. Placeholder values like 0 should be replaced with actual numbers.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided, which is a critical oversight given the problem constraints.",
-    "LINEARITY_VALIDATION": "The model does not ensure linearity due to the presence of binary variables and non-linear relationships.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed; the model assumes all quantities are in the same units without conversion.",
-    "CONSTRAINTS_FEEDBACK": "Missing constraints include 'Minimum Batch', 'Total Production Limit (Tons)', and 'Activation Time'. The model does not enforce the weekly minimum hours requirement for each student, nor does it limit the number of students on duty per day."
+    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. Variables and constraints need significant refinement.",
+    "QUERY_GROUNDING_AUDIT": "No hallucinations detected, but some queries are incomplete or unclear.",
+    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between queries and LaTeX. Some queries contain placeholders (e.g., 0).",
+    "LOGICAL_COUPLING_CHECK": "Missing Big-M constraints for minimum batch and activation time requirements.",
+    "LINEARITY_VALIDATION": "Multiplication of variables (e.g., $x_i \\cdot y_j$) is present, violating linear programming standards.",
+    "DIMENSIONAL_ANALYSIS": "No unit inconsistencies identified, but conversion factors are needed for dimensional consistency.",
+    "CONSTRAINTS_FEEDBACK": "Constraints do not accurately map to the provided queries. Missing logical links and numerical precision issues."
 }

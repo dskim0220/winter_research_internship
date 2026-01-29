@@ -8,53 +8,44 @@ price_APPZ = 200000
 price_APPW = 120000
 price_APPV = 180000
 cost_APPX = 60000
-cost_APPY = 80000
-cost_APPZ = 100000
-cost_APPW = 70000
-cost_APPV = 90000
-marketing_cost_APPX = 20000
-marketing_cost_APPY = 30000
-marketing_cost_APPZ = 40000
-marketing_cost_APPW = 25000
-marketing_cost_APPV = 35000
-min_ratio_APPX_APPY = 2
-total_teams_available = 30
-marketing_budget = 2500000
-min_APPX_teams = 2
-max_APPX_APPY_APPW_APPV_teams = 10
-max_APPZ_APPV_teams = 28
+cost_APPY = 70000
+cost_APPZ = 80000
+cost_APPW = 90000
+cost_APPV = 110000
+demand_APPX = 1210
+demand_APPY = 1090
+demand_APPZ = 1700
+demand_APPW = 1500
+demand_APPV = 1300
 
 # 2. Model Initialization
 m = gp.Model("production_optimization")
 
 # 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
-teams_APPX = m.addVar(vtype=GRB.CONTINUOUS, name="teams_APPX")
-teams_APPY = m.addVar(vtype=GRB.CONTINUOUS, name="teams_APPY")
-teams_APPZ = m.addVar(vtype=GRB.CONTINUOUS, name="teams_APPZ")
-teams_APPW = m.addVar(vtype=GRB.CONTINUOUS, name="teams_APPW")
-teams_APPV = m.addVar(vtype=GRB.CONTINUOUS, name="teams_APPV")
+y_APPX = m.addVar(vtype=GRB.BINARY, name="y_APPX")
+y_APPY = m.addVar(vtype=GRB.BINARY, name="y_APPY")
+y_APPZ = m.addVar(vtype=GRB.BINARY, name="y_APPZ")
+y_APPW = m.addVar(vtype=GRB.BINARY, name="y_APPW")
+y_APPV = m.addVar(vtype=GRB.BINARY, name="y_APPV")
+x_APPX = m.addVar(vtype=GRB.INTEGER, name="x_APPX")
+x_APPY = m.addVar(vtype=GRB.INTEGER, name="x_APPY")
+x_APPZ = m.addVar(vtype=GRB.INTEGER, name="x_APPZ")
+x_APPW = m.addVar(vtype=GRB.INTEGER, name="x_APPW")
+x_APPV = m.addVar(vtype=GRB.INTEGER, name="x_APPV")
 
 # 4. Objective (Use 'LaTeX' logic + 'query' numbers)
-m.setObjective(
-    price_APPX * teams_APPX +
-    price_APPY * teams_APPY +
-    price_APPZ * teams_APPZ +
-    price_APPW * teams_APPW +
-    price_APPV * teams_APPV,
-    GRB.MAXIMIZE
-)
+m.setObjective(price_APPX * x_APPX + price_APPY * x_APPY + price_APPZ * x_APPZ + price_APPW * x_APPW + price_APPV * x_APPV, GRB.MAXIMIZE)
 
 # 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
-m.addConstr(teams_APPX + teams_APPY + teams_APPZ + teams_APPW + teams_APPV <= total_teams_available, "total_teams_constraint")
-m.addConstr(teams_APPX / teams_APPY >= min_ratio_APPX_APPY, "ratio_constraint")
-m.addConstr(teams_APPX + teams_APPY + teams_APPW + teams_APPV <= max_APPX_APPY_APPW_APPV_teams, "max_APPX_APPY_APPW_APPV_teams_constraint")
-m.addConstr(teams_APPZ + teams_APPV <= max_APPZ_APPV_teams, "max_APPZ_APPV_teams_constraint")
-m.addConstr(teams_APPX + teams_APPY + teams_APPZ + teams_APPW + teams_APPV >= min_APPX_teams, "min_APPX_teams_constraint")
-m.addConstr(teams_APPX * marketing_cost_APPX + teams_APPY * marketing_cost_APPY + teams_APPZ * marketing_cost_APPZ + teams_APPW * marketing_cost_APPW + teams_APPV * marketing_cost_APPV <= marketing_budget, "marketing_budget_constraint")
+m.addConstr(x_APPX == y_APPX * demand_APPX, "Constraint1")
+m.addConstr(x_APPY == y_APPY * demand_APPY, "Constraint2")
+m.addConstr(x_APPZ == y_APPZ * demand_APPZ, "Constraint3")
+m.addConstr(x_APPW == y_APPW * demand_APPW, "Constraint4")
+m.addConstr(x_APPV == y_APPV * demand_APPV, "Constraint5")
 
 # 6. Optimization and Output
 m.optimize()
 # Print results for each variable
 for v in m.getVars():
     print(f'{v.varName} = {v.x}')
-print(f'Maximum Revenue: {m.objVal}')
+print(f'Optimal Objective Value = {m.objVal}')

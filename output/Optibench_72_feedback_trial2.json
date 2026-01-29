@@ -1,10 +1,10 @@
 {
-    "CONFIDENCE_SCORE": 0.5,
-    "OVERALL_FEEDBACK": "The model is mostly grounded but lacks some critical details and logical consistency.",
-    "QUERY_GROUNDING_AUDIT": "No hallucinations found. All 'query' fields are faithful extracts from the problem description.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies found in the 'LaTeX' fields. Some numbers do not match the corresponding 'query' values. For example, 'REVENUE_PER_TEAM_APPX' should be 100000, but 'LaTeX' shows 100000. Similarly, 'MARKETING_COST_PER_TEAM_APPX' should be 20000, but 'LaTeX' shows 20000. This indicates potential data precision issues.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the current formulation. The logic for minimum batch and activation time is not explicitly linked in the constraints.",
-    "LINEARITY_VALIDATION": "The model appears linear with no variable-to-variable multiplication. However, the objective function needs to be checked for linearity.",
-    "DIMENSIONAL_ANALYSIS": "Unit consistency is maintained throughout the model. All quantities are expressed in terms of teams.",
-    "CONSTRAINTS_FEEDBACK": "Constraints are generally well-mapped to the problem description. However, the following constraints need further verification:\\n- 'MIN_APPX_APPY_RATIO': This constraint is correctly formulated but requires a Big-M link.\\n- 'MAX_APPX_APPY_APPW_APPV_TEAMS': This constraint is correctly formulated but requires a Big-M link.\\n- 'MAX_APPZ_APPV_TEAMS': This constraint is correctly formulated but requires a Big-M link.\\n- 'MIN_APPX_TEAMS': This constraint is correctly formulated but requires a Big-M link.\\n- 'MARKETING_BUDGET': This constraint is correctly formulated but requires a Big-M link.\\n- 'TOTAL_TEAMS_AVAILABLE': This constraint is correctly formulated but requires a Big-M link."
+    "CONFIDENCE_SCORE": 0.0,
+    "OVERALL_FEEDBACK": "The provided JSON contains several issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the 'LaTeX' formulations, and the mathematical integrity is compromised.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations listed as the 'query' fields are not faithfully extracted from the problem description.",
+    "DATA_FIDELITY_CHECK": "Numerical data is missing or set to 0. For example, the estimated revenue and cost values are not provided in the 'query' fields.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided to link binary and continuous variables based on the logic in the queries.",
+    "LINEARITY_VALIDATION": "Variable-to-variable multiplication is present, violating the MILP standard. For instance, the objective function includes terms like (Price - Cost) * Quantity, which is not linear.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. The units of the parameters and variables are not consistent.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are poorly formulated and do not align with the problem description. For example, the minimum batch constraint is missing, and the total production limit is not correctly specified."
 }

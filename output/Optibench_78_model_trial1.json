@@ -1,17 +1,94 @@
 {
     "SETS": {
-        "CITIES": ["New York", "Los Angeles", "Chicago", "Atlanta"],
-        "REGIONS": ["Region 1", "Region 2", "Region 3"]
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } I \\text{ be the set of regions; } J \\text{ be the set of warehouses.}"
     },
-    "PARAMETERS": [
-        { "name": "Fixed_Costs", "query": "Fixed Costs", "LaTeX": "\\begin{align*} \\text{Fixed_Costs}[\\text{New York}] &= 400 \\\\ \\text{Fixed_Costs}[\\text{Los Angeles}] &= 500 \\\\ \\text{Fixed_Costs}[\\text{Chicago}] &= 300 \\\\ \\text{Fixed_Costs}[\\text{Atlanta}] &= 150 \\end{align*}" },
-        { "name": "Shipment_Costs", "query": "Shipment Costs", "LaTeX": "\\begin{align*} \\text{Shipment_Costs}[\\text{New York}][\\text{Region 1}] &= 20 \\\\ \\text{Shipment_Costs}[\\text{New York}][\\text{Region 2}] &= 40 \\\\ \\text{Shipment_Costs}[\\text{New York}][\\text{Region 3}] &= 50 \\\\ \\text{Shipment_Costs}[\\text{Los Angeles}][\\text{Region 1}] &= 48 \\\\ \\text{Shipment_Costs}[\\text{Los Angeles}][\\text{Region 2}] &= 15 \\\\ \\text{Shipment_Costs}[\\text{Los Angeles}][\\text{Region 3}] &= 26 \\\\ \\text{Shipment_Costs}[\\text{Chicago}][\\text{Region 1}] &= 26 \\\\ \\text{Shipment_Costs}[\\text{Chicago}][\\text{Region 2}] &= 35 \\\\ \\text{Shipment_Costs}[\\text{Chicago}][\\text{Region 3}] &= 18 \\\\ \\text{Shipment_Costs}[\\text{Atlanta}][\\text{Region 1}] &= 24 \\\\ \\text{Shipment_Costs}[\\text{Atlanta}][\\text{Region 2}] &= 50 \\\\ \\text{Shipment_Costs}[\\text{Atlanta}][\\text{Region 3}] &= 35 \\end{align*}" },
-        { "name": "Demand", "query": "Weekly Demands", "LaTeX": "\\begin{align*} \\text{Demand}[\\text{Region 1}] &= 80 \\\\ \\text{Demand}[\\text{Region 2}] &= 70 \\\\ \\text{Demand}[\\text{Region 3}] &= 40 \\end{align*}" }
-    ],
     "VARIABLES": [
-        { "name": "Open_New_York", "type": "Binary", "query": "Open New York Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{New York}} &\\in \\{0, 1\\} \\end{align*}" },
-        { "name": "Open_Los_Angeles", "type": "Binary", "query": "Open Los Angeles Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{Los Angeles}} &\\in \\{0, 1\\} \\end{align*}" },
-        { "name": "Open_Chicago", "type": "Binary", "query": "Open Chicago Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{Chicago}} &\\in \\{0, 1\\} \\end{align*}" },
-        { "name": "Open_Atlanta", "type": "Binary", "query": "Open Atlanta Warehouse", "LaTeX": "\\begin{align*} \\text{Open}_{\\text{Atlanta}} &\\in \\{0, 1\\} \\end{align*}" },
-        { "name": "Supply_New_York", "type": "Continuous", "query": "Supply from New York Warehouse", "LaTeX": "\\begin{align*} \\text{Supply}_{\\text{New York}} &\\in [0, 100] \\end{align*}" },
-        { "name": "Supply_Los_Angeles", "type": "Continuous", "query": "Supply from Los Angeles Warehouse", "LaTeX": "\\begin{align*} \\text{Supply}_{\\text{Los Angeles}}
+        {
+            "name": "y_NewYork",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{NewYork}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether the New York warehouse is opened."
+        },
+        {
+            "name": "y_LosAngeles",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{LosAngeles}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether the Los Angeles warehouse is opened."
+        },
+        {
+            "name": "y_Chicago",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Chicago}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether the Chicago warehouse is opened."
+        },
+        {
+            "name": "y_Atlanta",
+            "type": "Binary",
+            "LaTeX": "y_{\\text{Atlanta}} \\in \\{0, 1\\}",
+            "description": "Binary variable indicating whether the Atlanta warehouse is opened."
+        },
+        {
+            "name": "x_NewYork",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{NewYork}} \\in \\mathbb{Z}^+",
+            "description": "Number of units shipped from New York warehouse."
+        },
+        {
+            "name": "x_LosAngeles",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{LosAngeles}} \\in \\mathbb{Z}^+",
+            "description": "Number of units shipped from Los Angeles warehouse."
+        },
+        {
+            "name": "x_Chicago",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Chicago}} \\in \\mathbb{Z}^+",
+            "description": "Number of units shipped from Chicago warehouse."
+        },
+        {
+            "name": "x_Atlanta",
+            "type": "Integer",
+            "LaTeX": "x_{\\text{Atlanta}} \\in \\mathbb{Z}^+",
+            "description": "Number of units shipped from Atlanta warehouse."
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "p_Name",
+            "LaTeX": "P = 100",
+            "description": "Each warehouse can ship 100 units per week."
+        },
+        {
+            "name": "p_FixedCost_NewYork",
+            "LaTeX": "P_{\\text{FixedCost}, \\text{NewYork}} = 400",
+            "description": "Weekly fixed cost of keeping the New York warehouse open."
+        },
+        {
+            "name": "p_FixedCost_LosAngeles",
+            "LaTeX": "P_{\\text{FixedCost}, \\text{LosAngeles}} = 500",
+            "description": "Weekly fixed cost of keeping the Los Angeles warehouse open."
+        },
+        {
+            "name": "p_FixedCost_Chicago",
+            "LaTeX": "P_{\\text{FixedCost}, \\text{Chicago}} = 300",
+            "description": "Weekly fixed cost of keeping the Chicago warehouse open."
+        },
+        {
+            "name": "p_FixedCost_Atlanta",
+            "LaTeX": "P_{\\text{FixedCost}, \\text{Atlanta}} = 150",
+            "description": "Weekly fixed cost of keeping the Atlanta warehouse open."
+        },
+        {
+            "name": "p_ShippingCost_NewYork_Region1",
+            "LaTeX": "P_{\\text{ShippingCost}, \\text{NewYork}, \\text{Region1}} = 20",
+            "description": "Cost of shipping one unit from New York to Region 1."
+        },
+        {
+            "name": "p_ShippingCost_NewYork_Region2",
+            "LaTeX": "P_{\\text{ShippingCost}, \\text{NewYork}, \\text{Region2}} = 40",
+            "description": "Cost of shipping one unit from New York to Region 2."
+        },
+        {
+            "name": "p_ShippingCost_NewYork_Region3",
+            "LaTeX": "P_{\\text{ShippingCost}, \\text{NewYork}, \\text{Region3}}

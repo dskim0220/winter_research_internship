@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains significant issues with grounding, mapping, and logical integrity.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The problem description specifies specific employee requirements and constraints, but the 'query' fields contain placeholder values (e.g., 'EMPLOYEERS_REQUIRED', 'MIN_SUNDAY_MONDAY_PAIR', 'DIFFERENCE_LIMIT'). These placeholders should be replaced with actual numerical values.",
-    "DATA_FIDELITY_CHECK": "Numerous numeric values are missing or set to 0. For example, 'EMPLOYEERS_REQUIRED' and 'MIN_SUNDAY_MONDAY_PAIR' should have actual numerical values, not placeholders. Similarly, 'DIFFERENCE_LIMIT' should be set to 7, not 0.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the model. The problem requires ensuring the difference between Monday and Wednesday employees is less than 7, which should be enforced with Big-M constraints. Additionally, the requirement for at least 3 employees with Sunday and Monday off should also be enforced with Big-M constraints.",
-    "LINEARITY_VALIDATION": "The model appears linear, as there are no variable-to-variable multiplications.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed in the given model. The problem involves continuous quantities (employee schedules), but the model uses continuous variables without specifying units.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are poorly defined and do not align with the problem description. For example, the 'EmploymentRequirement' constraint does not specify the units for 'EmployeeSchedule' and 'EMPLOYEERS_REQUIRED'. The 'SundayMondayPairConstraint' is missing the Big-M formulation for the Sunday and Monday pair requirement."
+    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the 'LaTeX' formulations, and the objective function is flawed.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations as such, but the placeholders need to be replaced with actual numbers.",
+    "DATA_FIDELITY_CHECK": "Numerical data is missing or set to 0. The 'employees_monday', 'employees_tuesday', and 'employees_wednesday' parameters should be replaced with actual numbers.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M links are provided based on the logic in the queries. The constraints related to the number of employees starting on Monday and Wednesday and the requirement for Sunday and Monday off are not correctly formulated.",
+    "LINEARITY_VALIDATION": "The model does not strictly adhere to linear constraints due to the presence of binary variables and the lack of proper coupling between continuous and binary variables.",
+    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. The units need to be consistent.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the 'LaTeX' formulations. For example, the constraint regarding the difference in the number of employees starting on Monday and Wednesday is not properly represented. Additionally, the constraints for the minimum batch and activation time are missing."
 }

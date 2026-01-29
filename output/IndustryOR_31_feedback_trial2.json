@@ -1,10 +1,10 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model lacks essential details and logical consistency. Key issues include incorrect variable types, missing constraints, and logical errors.",
-    "QUERY_GROUNDING_AUDIT": "No hallucinations detected. However, some queries do not match the problem description.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies found. Some queries contain placeholders (e.g., 0) which should be replaced with actual values.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M links identified. This suggests potential logical errors in the formulation.",
-    "LINEARITY_VALIDATION": "Potential non-linearities due to the continuous nature of production quantities and the absence of explicit linear terms.",
-    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies exist. For example, the fixed costs are in Yuan, but the production limits are in pieces.",
-    "CONSTRAINTS_FEEDBACK": "Missing constraints such as minimum batch requirements, total production limit (tons), and activation time. Also, the objective function does not correctly reflect the profit calculation."
+    "OVERALL_FEEDBACK": "The provided JSON contains several issues that need to be addressed, including incorrect variable types, logical errors, and missing constraints.",
+    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The problem description mentions specific constraints and limits, which are not reflected in the 'query' fields.",
+    "DATA_FIDELITY_CHECK": "Numerical values in the 'query' fields do not match those in the 'LaTeX' fields. For example, the fixed costs and production limits are placeholders (0) instead of actual numbers.",
+    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the provided JSON, which is required for the logical linking between binary and continuous variables.",
+    "LINEARITY_VALIDATION": "The objective function does not follow the standard linear form due to the presence of binary variables. Additionally, the constraints are not linear.",
+    "DIMENSIONAL_ANALYSIS": "There is no dimensional analysis performed in the provided JSON. The units of the parameters and constraints need to be consistent.",
+    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the 'LaTeX' formulation. For instance, the total production limits and minimum batch requirements are not properly represented."
 }

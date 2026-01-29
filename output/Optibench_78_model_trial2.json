@@ -1,31 +1,106 @@
 {
     "SETS": {
-        "Warehouses": ["New_York", "Los_Angeles", "Chicago", "Atlanta"],
-        "Regions": ["Region_1", "Region_2", "Region_3"]
+        "query": "indices definition",
+        "LaTeX": "\\text{Let } I \\text{ be the set of warehouses (NY, LA, CH, ATL)}; \\text{ let } R \\text{ be the set of regions (1, 2, 3)}"
     },
-    "PARAMETERS": [
-        { "name": "Fixed_Costs", "query": "Fixed_Costs(New_York)", "LaTeX": "$400$" },
-        { "name": "Fixed_Costs", "query": "Fixed_Costs(Los_Angeles)", "LaTeX": "$500$" },
-        { "name": "Fixed_Costs", "query": "Fixed_Costs(Chicago)", "LaTeX": "$300$" },
-        { "name": "Fixed_Costs", "query": "Fixed_Costs(Atlanta)", "LaTeX": "$150$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(New_York, Region_1)", "LaTeX": "$20$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(New_York, Region_2)", "LaTeX": "$40$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(New_York, Region_3)", "LaTeX": "$50$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Los_Angeles, Region_1)", "LaTeX": "$48$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Los_Angeles, Region_2)", "LaTeX": "$15$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Los_Angeles, Region_3)", "LaTeX": "$26$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Chicago, Region_1)", "LaTeX": "$26$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Chicago, Region_2)", "LaTeX": "$35$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Chicago, Region_3)", "LaTeX": "$18$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Atlanta, Region_1)", "LaTeX": "$24$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Atlanta, Region_2)", "LaTeX": "$50$" },
-        { "name": "Shipping_Costs", "query": "Shipping_Costs(Atlanta, Region_3)", "LaTeX": "$35$" },
-        { "name": "Demand", "query": "Demand(Region_1)", "LaTeX": "$80$" },
-        { "name": "Demand", "query": "Demand(Region_2)", "LaTeX": "$70$" },
-        { "name": "Demand", "query": "Demand(Region_3)", "LaTeX": "$40$" }
-    ],
     "VARIABLES": [
-        { "name": "Open_New_York", "type": "Binary", "query": "Open_New_York", "LaTeX": "$x_{New_York}$" },
-        { "name": "Open_Los_Angeles", "type": "Binary", "query": "Open_Los_Angeles", "LaTeX": "$x_{Los_Angeles}$" },
-        { "name": "Open_Chicago", "type": "Binary", "query": "Open_Chicago", "LaTeX": "$x_{Chicago}$" },
-        { "name": "Open_Atlanta", "type": "Binary", "query": "Open_Atlanta", "LaTeX": "$x_{Atlanta}$" }
+        {
+            "name": "y_NY",
+            "type": "Binary",
+            "LaTeX": "y_{NY} \\in \\{0, 1\\}",
+            "description": "1 if New York warehouse is opened, 0 otherwise"
+        },
+        {
+            "name": "y_LA",
+            "type": "Binary",
+            "LaTeX": "y_{LA} \\in \\{0, 1\\}",
+            "description": "1 if Los Angeles warehouse is opened, 0 otherwise"
+        },
+        {
+            "name": "y_CH",
+            "type": "Binary",
+            "LaTeX": "y_{CH} \\in \\{0, 1\\}",
+            "description": "1 if Chicago warehouse is opened, 0 otherwise"
+        },
+        {
+            "name": "y_ATL",
+            "type": "Binary",
+            "LaTeX": "y_{ATL} \\in \\{0, 1\\}",
+            "description": "1 if Atlanta warehouse is opened, 0 otherwise"
+        },
+        {
+            "name": "x_NY",
+            "type": "Integer",
+            "LaTeX": "x_{NY} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of units shipped from New York warehouse"
+        },
+        {
+            "name": "x_LA",
+            "type": "Integer",
+            "LaTeX": "x_{LA} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of units shipped from Los Angeles warehouse"
+        },
+        {
+            "name": "x_CH",
+            "type": "Integer",
+            "LaTeX": "x_{CH} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of units shipped from Chicago warehouse"
+        },
+        {
+            "name": "x_ATL",
+            "type": "Integer",
+            "LaTeX": "x_{ATL} \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Number of units shipped from Atlanta warehouse"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "p_Name",
+            "LaTeX": "P = 100",
+            "description": "Each warehouse can ship 100 units per week"
+        },
+        {
+            "name": "Fixed_Cost_NY",
+            "LaTeX": "F_{NY} = 400",
+            "description": "Weekly fixed cost of keeping New York warehouse open"
+        },
+        {
+            "name": "Fixed_Cost_LA",
+            "LaTeX": "F_{LA} = 500",
+            "description": "Weekly fixed cost of keeping Los Angeles warehouse open"
+        },
+        {
+            "name": "Fixed_Cost_CH",
+            "LaTeX": "F_{CH} = 300",
+            "description": "Weekly fixed cost of keeping Chicago warehouse open"
+        },
+        {
+            "name": "Fixed_Cost_ATL",
+            "LaTeX": "F_{ATL} = 150",
+            "description": "Weekly fixed cost of keeping Atlanta warehouse open"
+        },
+        {
+            "name": "Demand_Region_1",
+            "LaTeX": "D_{1} = 80",
+            "description": "Region 1 requires 80 units per week"
+        },
+        {
+            "name": "Demand_Region_2",
+            "LaTeX": "D_{2} = 70",
+            "description": "Region 2 requires 70 units per week"
+        },
+        {
+            "name": "Demand_Region_3",
+            "LaTeX": "D_{3} = 40",
+            "description": "Region 3 requires 40 units per week"
+        },
+        {
+            "name": "Cost_NY_to_Region_1",
+            "LaTeX": "C_{NY,1} = 20",
+            "description": "Cost of sending one unit from New York to Region 1"
+        },
+        {
+            "name": "Cost_NY_to_Region_2",
+            "LaTeX": "C_{NY,2} = 40",
+            "description": "Cost of sending one unit from New York to Region 2"
+        }

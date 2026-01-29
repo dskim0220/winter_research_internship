@@ -1,14 +1,113 @@
 {
     "SETS": {
-        "STUDENTS": {"1", "2", "3", "4", "5", "6"},
-        "DAYS": {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"}
+        "query": "indices definition",
+        "LaTeX": "\\text{SET OF STUDENTS} = \\{1, 2, 3, 4, 5, 6\\}; \\text{SET OF DAYS} = \\{1, 2, 3, 4, 5\\}"
     },
-    "PARAMETERS": [
-        { "name": "wages", "query": "wages", "LaTeX": "\\begin{aligned} &\\text{wages} = \\begin{cases} 10.0 & \\text{if student is 1} \\\\ 10.0 & \\text{if student is 2} \\\\ 9.9 & \\text{if student is 3} \\\\ 9.8 & \\text{if student is 4} \\\\ 10.8 & \\text{if student is 5} \\\\ 11.3 & \\text{if student is 6} \\end{cases} \\end{aligned}" },
-        { "name": "hours", "query": "hours", "LaTeX": "\\begin{aligned} &\\text{hours} = \\begin{cases} 6 & \\text{if student is 1} \\\\ 0 & \\text{if student is 2} \\\\ 6 & \\text{if student is 3} \\\\ 4 & \\text{if student is 4} \\\\ 3 & \\text{if student is 5} \\\\ 0 & \\text{if student is 6} \\end{cases} \\end{aligned}" }
-    ],
     "VARIABLES": [
-        { "name": "hours_1", "type": "Continuous", "query": "hours_1", "LaTeX": "\\begin{aligned} &\\text{hours}_1 = \\begin{cases} h_{1,\\text{Monday}} & \\text{if student is 1} \\\\ h_{2,\\text{Monday}} & \\text{if student is 2} \\\\ h_{3,\\text{Monday}} & \\text{if student is 3} \\\\ h_{4,\\text{Monday}} & \\text{if student is 4} \\\\ h_{5,\\text{Monday}} & \\text{if student is 5} \\\\ h_{6,\\text{Monday}} & \\text{if student is 6} \\end{cases} \\end{aligned}" },
-        { "name": "hours_2", "type": "Continuous", "query": "hours_2", "LaTeX": "\\begin{aligned} &\\text{hours}_2 = \\begin{cases} h_{1,\\text{Tuesday}} & \\text{if student is 1} \\\\ h_{2,\\text{Tuesday}} & \\text{if student is 2} \\\\ h_{3,\\text{Tuesday}} & \\text{if student is 3} \\\\ h_{4,\\text{Tuesday}} & \\text{if student is 4} \\\\ h_{5,\\text{Tuesday}} & \\text{if student is 5} \\\\ h_{6,\\text{Tuesday}} & \\text{if student is 6} \\end{cases} \\end{aligned}" },
-        { "name": "hours_3", "type": "Continuous", "query": "hours_3", "LaTeX": "\\begin{aligned} &\\text{hours}_3 = \\begin{cases} h_{1,\\text{Wednesday}} & \\text{if student is 1} \\\\ h_{2,\\text{Wednesday}} & \\text{if student is 2} \\\\ h_{3,\\text{Wednesday}} & \\text{if student is 3} \\\\ h_{4,\\text{Wednesday}} & \\text{if student is 4} \\\\ h_{5,\\text{Wednesday}} & \\text{if student is 5} \\\\ h_{6,\\text{Wednesday}} & \\text{if student is 6} \\end{cases} \\end{aligned}" },
-        { "name": "hours_4", "type": "Continuous", "query": "hours_4", "LaTeX": "\\begin{aligned} &\\text{hours}_4 = \\begin{cases} h_{1,\\text{Thursday}} & \\text{if student is 1} \\\\ h_{2,\\text{Thursday}} & \\text{if student is 2} \\\\ h_{3,\\text{Thursday}} & \\text{if student is 3} \\\\ h_{4,\\text{Thursday}} & \\text{if student is 4}
+        {
+            "name": "y_1",
+            "type": "Binary",
+            "LaTeX": "y_1 \\in \\{0, 1\\}",
+            "description": "Student 1 works on Monday"
+        },
+        {
+            "name": "y_2",
+            "type": "Binary",
+            "LaTeX": "y_2 \\in \\{0, 1\\}",
+            "description": "Student 2 works on Tuesday"
+        },
+        {
+            "name": "y_3",
+            "type": "Binary",
+            "LaTeX": "y_3 \\in \\{0, 1\\}",
+            "description": "Student 3 works on Wednesday"
+        },
+        {
+            "name": "y_4",
+            "type": "Binary",
+            "LaTeX": "y_4 \\in \\{0, 1\\}",
+            "description": "Student 4 works on Thursday"
+        },
+        {
+            "name": "y_5",
+            "type": "Binary",
+            "LaTeX": "y_5 \\in \\{0, 1\\}",
+            "description": "Student 5 works on Friday"
+        },
+        {
+            "name": "y_6",
+            "type": "Binary",
+            "LaTeX": "y_6 \\in \\{0, 1\\}",
+            "description": "Student 6 works on Friday"
+        },
+        {
+            "name": "x_1",
+            "type": "Integer",
+            "LaTeX": "x_1 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Hours worked by Student 1"
+        },
+        {
+            "name": "x_2",
+            "type": "Integer",
+            "LaTeX": "x_2 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Hours worked by Student 2"
+        },
+        {
+            "name": "x_3",
+            "type": "Integer",
+            "LaTeX": "x_3 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Hours worked by Student 3"
+        },
+        {
+            "name": "x_4",
+            "type": "Integer",
+            "LaTeX": "x_4 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Hours worked by Student 4"
+        },
+        {
+            "name": "x_5",
+            "type": "Integer",
+            "LaTeX": "x_5 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Hours worked by Student 5"
+        },
+        {
+            "name": "x_6",
+            "type": "Integer",
+            "LaTeX": "x_6 \\in \\mathbb{Z}_{\\geq 0}",
+            "description": "Hours worked by Student 6"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "Wage_1",
+            "LaTeX": "P_{1} = 10.0",
+            "description": "Hourly wage for Student 1"
+        },
+        {
+            "name": "Wage_2",
+            "LaTeX": "P_{2} = 10.0",
+            "description": "Hourly wage for Student 2"
+        },
+        {
+            "name": "Wage_3",
+            "LaTeX": "P_{3} = 9.9",
+            "description": "Hourly wage for Student 3"
+        },
+        {
+            "name": "Wage_4",
+            "LaTeX": "P_{4} = 9.8",
+            "description": "Hourly wage for Student 4"
+        },
+        {
+            "name": "Wage_5",
+            "LaTeX": "P_{5} = 10.8",
+            "description": "Hourly wage for Student 5"
+        },
+        {
+            "name": "Wage_6",
+            "LaTeX": "P_{6} = 11.3",
+            "description": "Hourly wage for Student 6"
+        },
+        {
+            "name": "Monday_hours_1",
+            "LaTeX": "P_{1,1}
