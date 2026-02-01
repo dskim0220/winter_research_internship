@@ -16,49 +16,34 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class ModelEvaluatorV2(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are an expert Mathematical Optimization Auditor. Your role is to perform a three-way cross-verification between the Problem Description, extracted Queries, and generated LaTeX formulations.'
+    ROLE_DESCRIPTION = 'Mathematical Optimization Auditor (Triple-Verification)'
     FORWARD_TASK = '''
-Perform a rigorous triple-audit of the provided modeling JSON:
-1) Grounding Check: Is the "query" content actually present in the Problem Description? (Detect fabricated queries).
-2) Mapping Check: Does the "LaTeX" accurately represent the numerical values and logic within its paired "query"?
-3) Mathematical Integrity: Check for Big-M validity, Linearity, and Dimensional consistency.
+Cross-verify (1) Problem Description, (2) Extracted Queries, and (3) LaTeX Formulations.
 
-[SPECIFIC AUDIT GUIDELINES]
-1. Variable Property Audit: 
-   - Check if production amounts are incorrectly set as 'Binary'. 
-   - Production quantity MUST be Continuous/Integer, while 'Decision to produce' MUST be Binary.
-2. Objective Logic Audit:
-   - Ensure the Objective Function includes: (Price - Cost) * Quantity - Fixed_Costs.
-   - Flag if Fixed Costs are wrongly placed in CONSTRAINTS instead of the OBJECTIVE.
-3. Logical Linking (Big-M) Audit:
-   - If a Fixed Cost or Minimum Batch exists, there MUST be a linking constraint (e.g., x <= M * y) between the quantity (x) and the binary activation variable (y).
-4. Numerical Precision:
-   - Every number in the 'query' (e.g., 170000) must appear in the 'LaTeX'. 
-   - Flag "Numeric Forcing": creating meaningless equations just to use a number.
-5. Missing Constraints:
-   - Check if "Minimum Batch", "Total Production Limit (Tons)", and "Activation Time" are all modeled.
+[AUDIT PRIORITIES]
+1. GROUNDING: Identify any "hallucinated" queries or constraints not in the original text.
+2. DATA FIDELITY: Ensure exact numerical values (Price, Cost, Quota) are mapped 1:1. Zero-filling or placeholders = Failure.
+3. LOGICAL COUPLING: Verify Big-M linking ($x \le M \cdot y$) between Decision (Binary) and Quantity (Int/Cont) variables.
+4. MATH INTEGRITY: Check for MILP linearity (no $var \times var$) and dimensional/unit consistency.
+5. OBJECTIVE STRUCTURE: Confirm Profit = (Revenue - Variable Cost) - Fixed Cost.
 
-Problem Description:
-{problem_description}
+[SCORING RULE]
+- Penalty: Drop Confidence Score below 0.5 if major numerical data is missing or Fixed Costs are treated as constraints instead of objective terms.
 
-modeling(v3 JSON):
-{model_json}
+[INPUT]
+1. Original Problem: {problem_description}
+2. Model JSON: {model_json}
 
-IMPORTANT OUTPUT RULES:
-1) Return ONLY a valid JSON. NO PREAMBLE, NO POSTSCRIPT.
-2) Be merciless in "DATA_FIDELITY_CHECK" if the model used placeholders (e.g., 0) instead of actual numbers.
-3) Confidence Score Penalty: Automatically drop the score below 0.5 if major numerical data (Price, Cost, Quota) is missing or set to 0.
-
-JSON Format:
+Return ONLY JSON:
 {{
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "General assessment of grounding and accuracy.",
-    "QUERY_GROUNDING_AUDIT": "Is every 'query' field a faithful extract from the problem? List hallucinations.",
-    "DATA_FIDELITY_CHECK": "Compare Query numbers vs LaTeX numbers. Identify any mismatches or zero-filling.",
-    "LOGICAL_COUPLING_CHECK": "Check Big-M links between Binary/Continuous variables based on the logic in the queries.",
-    "LINEARITY_VALIDATION": "Confirm no variable-to-variable multiplication (MILP standard).",
-    "DIMENSIONAL_ANALYSIS": "Check unit consistency (e.g., converting tons to 100kg units if necessary).",
-    "CONSTRAINTS_FEEDBACK": "Detailed critique of each constraint's query-to-LaTeX mapping."
+    "OVERALL_FEEDBACK": "Summary of accuracy and grounding.",
+    "QUERY_GROUNDING_AUDIT": "List any fabricated or missing information.",
+    "DATA_FIDELITY_CHECK": "Identify mismatches between Query numbers and LaTeX numbers.",
+    "LOGICAL_COUPLING_CHECK": "Check Big-M links and Binary/Continuous separation.",
+    "LINEARITY_VALIDATION": "Confirm no non-linear terms (MILP compliance).",
+    "DIMENSIONAL_ANALYSIS": "Verify unit consistency across equations.",
+    "CONSTRAINTS_FEEDBACK": "Detailed mapping critique for each rule_id."
 }}
 '''
 

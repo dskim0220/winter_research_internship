@@ -16,54 +16,46 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class ModelDesigner(BaseExpert):
 
-    ROLE_DESCRIPTION_EXTRACTOR = 'Your role is to perform a "Full-Sentence-Extraction" to ensure zero information loss for mathematical modeling.'
+    ROLE_DESCRIPTION_EXTRACTOR = 'Your role is to perform a "Full-Sentence-Extraction" to ensure no information loss for mathematical modeling.'
     
-    FORWARD_TASK_EXTRACTOR = '''Extract ALL numerical values and constraints from the problem. 
-[STRICT RULE: Variable Type] 
-- Quantity/Amount = Integer or Continuous.
-- Decision/Activation = Binary (0/1). 
-Failure to distinguish these will result in an infeasible model.
+    FORWARD_TASK_EXTRACTOR = '''Extract ALL numerical values and constraints into a structured JSON format. 
+[STRICT RULES]
+1. VARIABLE TYPE: Clearly distinguish between QUANTITY(Integer/Continuous) and SELECTION(Binary 0/1).
+2. PARAMETERS: List all values with their specific units.
+3. CONSTRAINTS: Assign a unique 'rule_id' to every sentence containing a limit or requirement.
+4. FORMAT: Return ONLY the JSON object.
+5. You MUST strictly adhere to the provided feedback reference for all extraction logic.
 
-[EXTRACTION STEPS]
-1. List all parameters with Units (e.g., 1,210 (tons)).
-2. Assign a unique "rule_id" to every constraint sentence.
-3. Strictly adhere to the provided 'feedback' for all subsequent responses.
+[INPUT DATA]
+1. Problem: {problem_description}
+2. Feedback Reference: {feedback}
 
-Problem: {problem_description}
-Feedback: {feedback}
-
-Return ONLY JSON:
+JSON Format:
 {{
     "PROBLEM_TYPE": "MIP/LP/etc",
     "PARAMETERS": [{{ "name": "p1", "value": "val", "unit": "unit", "context": "original sentence" }}],
     "CONSTRAINTS_RAW": [{{ "rule_id": 1, "logic": "ASCII_logic", "original_text": "sentence" }}],
     "OBJECTIVE_RAW": "goal sentence"
-}}'''
+}}
+'''
 
     ROLE_DESCRIPTION_FORMULATOR = 'Your role is to translate extracted raw data into a rigorous LaTeX optimization model with 1:1 mapping.'
-    FORWARD_TASK_FORMULATOR = '''Formulate a complete mathematical model in JSON format based on the "Extracted Query Data".
+    FORWARD_TASK_FORMULATOR = '''Convert extracted data into a rigorous optimization model. Ensure 1:1 mapping with rule_ids.".
 
 [STRICT MODELING RULES]
-1. VARIABLE TYPE: Strictly distinguish between Binary (y) for decisions and Integer/Continuous (x) for quantities. NEVER USE BINARY FOR AMOUNTS > 1.
-2. BIG-M LINKING: If a fixed cost or activation exists, you MUST use x <= M * y to link quantity (x) and binary (y).
-3. ATOMIC MAPPING: Every "rule_id" from Extractor MUST have a 1:1 corresponding LaTeX constraint.
-4. NO PLACEHOLDERS: USE EXACT NUMBERS (e.g., 1210, 170000) from the parameters.
-5. You MUST follow the FEW-SHOT EXAMPLE below.
+1. VARIABLE TYPE: x (Integer/Continuous) for quantities, y (Binary) for decisions.
+2. LOGICAL LINKING: Use Big-M ($x \le M \cdot y$) for fixed costs or activation logic.
+3. ATOMICITY: Every rule_id from the Extractor must have exactly one corresponding LaTeX constraint.
+4. LITERAL VALUES: Do not use symbolic placeholders; use exact numerical values from the parameters.
 
-[FEW-SHOT EXAMPLE: LOGICAL LINKING]
-Input Query: "Product A1 has a fixed cost of 170000 and min batch 20. Max demand 5300."
-Output LaTeX Variables:
-- y_A1: Binary (1 if produced)
-- x_A1: Integer (Quantity)
-Output LaTeX Constraints:
-- x_A1 >= 20 * y_A1 (Min Batch)
-- x_A1 <= 5300 * y_A1 (Max Demand / Big-M Linking)
+[LOGICAL EXAMPLE]
+Input: "Fixed cost 170,000, Min batch 20, Max demand 5,300"
+LaTeX Variables: $y_{A1} \in {{0, 1}}$, $x_{A1} \in \mathbb{{Z}}^+$
+LaTeX Constraints: $x_{A1} \ge 20 \cdot y_{A1}$ (Min Batch), $x_{A1} \le 5300 \cdot y_{A1}$ (Big-M Link)
 
-Extracted Query Data:
-{extracted_queries}
-
-Problem Description:
-{problem_description}
+[INPUT DATA]
+1. Extracted Query: {extracted_queries}
+2. Original Problem: {problem_description}
 
 Return ONLY a valid JSON:
 {{
