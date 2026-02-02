@@ -1,88 +1,95 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } I \\text{ be the set of products} = \\{\\text{APPX}, \\text{APPY}, \\text{APPZ}, \\text{APPW}, \\text{APPV}\\}"
-    },
     "VARIABLES": [
-        {
-            "name": "y_{\text{APPX}}",
-            "type": "Binary",
-            "LaTeX": "y_{\text{APPX}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether AppX is developed (1 if yes, 0 if no)"
+        { 
+          "name": "x_AppX", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{\text{AppX}} \in \mathbb{Z}^+$", 
+          "description": "Number of development teams allocated to AppX"
         },
-        {
-            "name": "y_{\text{APPY}}",
-            "type": "Binary",
-            "LaTeX": "y_{\text{APPY}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether AppY is developed (1 if yes, 0 if no)"
+        { 
+          "name": "x_AppY", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{\text{AppY}} \in \mathbb{Z}^+$", 
+          "description": "Number of development teams allocated to AppY"
         },
-        {
-            "name": "y_{\text{APPZ}}",
-            "type": "Binary",
-            "LaTeX": "y_{\text{APPZ}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether AppZ is developed (1 if yes, 0 if no)"
+        { 
+          "name": "x_AppZ", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{\text{AppZ}} \in \mathbb{Z}^+$", 
+          "description": "Number of development teams allocated to AppZ"
         },
-        {
-            "name": "y_{\text{APPW}}",
-            "type": "Binary",
-            "LaTeX": "y_{\text{APPW}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether AppW is developed (1 if yes, 0 if no)"
+        { 
+          "name": "x_AppW", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{\text{AppW}} \in \mathbb{Z}^+$", 
+          "description": "Number of development teams allocated to AppW"
         },
-        {
-            "name": "y_{\text{APPV}}",
-            "type": "Binary",
-            "LaTeX": "y_{\text{APPV}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether AppV is developed (1 if yes, 0 if no)"
-        },
-        {
-            "name": "x_{\text{APPX}}",
-            "type": "Integer",
-            "LaTeX": "x_{\text{APPX}} \\in \\mathbb{Z}_{\\geq 1}",
-            "description": "Number of development teams assigned to AppX"
-        },
-        {
-            "name": "x_{\text{APPY}}",
-            "type": "Integer",
-            "LaTeX": "x_{\text{APPY}} \\in \\mathbb{Z}_{\\geq 1}",
-            "description": "Number of development teams assigned to AppY"
-        },
-        {
-            "name": "x_{\text{APPZ}}",
-            "type": "Integer",
-            "LaTeX": "x_{\text{APPZ}} \\in \\mathbb{Z}_{\\geq 1}",
-            "description": "Number of development teams assigned to AppZ"
-        },
-        {
-            "name": "x_{\text{APPW}}",
-            "type": "Integer",
-            "LaTeX": "x_{\text{APPW}} \\in \\mathbb{Z}_{\\geq 1}",
-            "description": "Number of development teams assigned to AppW"
-        },
-        {
-            "name": "x_{\text{APPV}}",
-            "type": "Integer",
-            "LaTeX": "x_{\text{APPV}} \\in \\mathbb{Z}_{\\geq 1}",
-            "description": "Number of development teams assigned to AppV"
+        { 
+          "name": "x_AppV", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{\text{AppV}} \in \mathbb{Z}^+$", 
+          "description": "Number of development teams allocated to AppV"
         }
     ],
-    "PARAMETERS": [
-        {
-            "name": "EstimatedRevenue_{\text{APPX}}",
-            "LaTeX": "P_{\text{APPX}} = 100000",
-            "description": "Estimated revenue per team for AppX"
+    "OBJECTIVE": { 
+      "query": "The specific part of extracted_queries used for objective",
+      "goal": "MAX", 
+      "LaTeX": "\max Z = \sum_{i \in \{\text{AppX, AppY, AppW, AppV}\}} p_i \cdot x_i - \sum_{i \in \{\text{AppX, AppY, AppW, AppV}\}} c_i \cdot x_i - \sum_{i \in \{\text{AppX, AppY, AppW, AppV}\}} m_i \cdot x_i"
+    },
+    "CONSTRAINTS": [
+        { 
+          "rule_id": "R1",
+          "query": "x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV <= T",
+          "LaTeX": "x_{\text{AppX}} + x_{\text{AppY}} + x_{\text{AppZ}} + x_{\text{AppW}} + x_{\text{AppV}} \leq T",
+          "description": "Total number of development teams assigned to AppX, AppY, AppW, and AppV combined must not exceed 10 teams."
         },
-        {
-            "name": "DevelopmentCost_{\text{APPX}}",
-            "LaTeX": "P_{\text{DevelopmentCost}_{\text{APPX}}} = 60000",
-            "description": "Development cost per team for AppX"
+        { 
+          "rule_id": "R2",
+          "query": "x_AppZ + x_AppV <= B",
+          "LaTeX": "x_{\text{AppZ}} + x_{\text{AppV}} \leq B",
+          "description": "Total number of development teams assigned to AppZ and AppV combined must not exceed 28 teams."
         },
-        {
-            "name": "MarketingCost_{\text{APPX}}",
-            "LaTeX": "P_{\text{MarketingCost}_{\text{APPX}}} = 20000",
-            "description": "Marketing cost per team for AppX"
+        { 
+          "rule_id": "R3",
+          "query": "x_AppX >= 2 * x_AppY",
+          "LaTeX": "x_{\text{AppX}} \geq 2 \cdot x_{\text{AppY}}",
+          "description": "AppX must have at least twice as many development teams as AppY."
         },
-        {
-            "name": "EstimatedRevenue_{\text{APPY}}",
-            "LaTeX": "P_{\text{APPY}} = 150000",
-            "description": "Estimated revenue per team for AppY"
+        { 
+          "rule_id": "R4",
+          "query": "x_AppX + x_AppY + x_AppW + x_AppV >= 2",
+          "LaTeX": "x_{\text{AppX}} + x_{\text{AppY}} + x_{\text{AppW}} + x_{\text{AppV}} \geq 2",
+          "description": "At least two teams are required to be assigned to the AppX development project."
+        },
+        { 
+          "rule_id": "R5",
+          "query": "x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV <= 10",
+          "LaTeX": "x_{\text{AppX}} + x_{\text{AppY}} + x_{\text{AppZ}} + x_{\text{AppW}} + x_{\text{AppV}} \leq 10",
+          "description": "The total number of development teams assigned to AppX, AppY, AppW, and AppV combined must not exceed 10 teams."
+        },
+        { 
+          "rule_id": "R6",
+          "query": "x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV <= 10",
+          "LaTeX": "x_{\text{AppX}} + x_{\text{AppY}} + x_{\text{AppZ}} + x_{\text{AppW}} + x_{\text{AppV}} \leq 10",
+          "description": "The total number of development teams assigned to AppX, AppY, AppW, and AppV combined must not exceed 10 teams."
+        },
+        { 
+          "rule_id": "R7",
+          "query": "x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV <= 10",
+          "LaTeX": "x_{\text{AppX}} + x_{\text{AppY}} + x_{\text{AppZ}} + x_{\text{AppW}} + x_{\text{AppV}} \leq 10",
+          "description": "The total number of development teams assigned to AppX, AppY, AppW, and AppV combined must not exceed 10 teams."
+        },
+        { 
+          "rule_id": "R8",
+          "query": "x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV <= 10",
+          "LaTeX": "x_{\text{AppX}} + x_{\text{AppY}} + x_{\text{AppZ}} + x_{\text{AppW}} + x_{\text{AppV}} \leq 10",
+          "description": "The total number of development teams assigned to AppX, AppY, AppW, and AppV combined must not exceed 10 teams."
+        },
+        { 
+          "rule_id": "R9",
+          "query": "x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV <= 10",
+          "LaTeX": "x_{\text{AppX}} + x_{\text{AppY}} + x_{\text{AppZ}} + x_{\text{AppW}} + x_{\text{AppV}} \leq 10",
+          "description": "The total number of development teams assigned to AppX, AppY, AppW, and AppV combined must not exceed 10 teams."
         }
+    ]
+}

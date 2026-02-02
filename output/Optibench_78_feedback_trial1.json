@@ -1,10 +1,27 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains several issues that need to be addressed. The queries do not match the problem description, and the logical coupling and dimensional analysis are also problematic.",
-    "QUERY_GROUNDING_AUDIT": "The queries do not align with the problem description. Specifically, the queries mention 'indices definition', which is not present in the problem description. Additionally, the queries do not specify the exact costs and quantities involved.",
-    "DATA_FIDELITY_CHECK": "Numerical data is missing or set to 0. For example, the fixed costs and shipping costs are not specified in the JSON. This leads to potential misinterpretation of the problem.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided, which is required based on the problem description. There is no indication of how the binary variables are linked to the continuous ones.",
-    "LINEARITY_VALIDATION": "The problem description does not explicitly state that the objective function should include only linear terms. However, given the context, it is assumed that the formulation should be linear.",
-    "DIMENSIONAL_ANALYSIS": "There is no explicit dimensional analysis provided in the JSON. The units of cost and quantity need to be consistent.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the provided queries. For instance, the constraint about the New York and Los Angeles warehouses being opened together is not reflected in the JSON. Similarly, the constraints about the total production limit and activation time are missing."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            80,
+            70,
+            40
+        ],
+        "latex_numbers": [
+            80,
+            70,
+            40
+        ],
+        "mismatch": "Numbers in the problem description do not match those in the LaTeX formulation."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "PASS/FAIL",
+            "reason": "Detailed critique"
+        }
+    ],
+    "FINAL_VERDICT": "There is a critical mismatch between the problem description and the LaTeX formulation. Additionally, the confidence score is low due to the missing verification of other checks such as unit mismatch, binary bridge, objective purity, and dimensional consistency. Please ensure that the numbers in the problem description align with those in the LaTeX formulation and verify all critical checks."
 }

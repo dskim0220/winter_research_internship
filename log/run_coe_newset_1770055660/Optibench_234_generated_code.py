@@ -1,0 +1,41 @@
+import pulp
+
+# Define the problem
+problem = pulp.LpProblem("Logistics_Distribution_Problem", pulp.LpMinimize)
+
+# Define the decision variables
+x = pulp.LpVariable('x', lowBound=10, cat='Continuous')  # Trucks for GoodsX
+y = pulp.LpVariable('y', lowBound=15, cat='Continuous')  # Trucks for GoodsY
+z = pulp.LpVariable('z', lowBound=0, upBound=25, cat='Continuous')  # Trucks for GoodsZ
+o_x = pulp.LpVariable('o_x', lowBound=0, cat='Continuous')  # Optimization investment for GoodsX
+o_y = pulp.LpVariable('o_y', lowBound=0, cat='Continuous')  # Optimization investment for GoodsY
+o_z = pulp.LpVariable('o_z', lowBound=0, upBound=25, cat='Continuous')  # Optimization investment for GoodsZ
+
+# Objective function
+problem += 1000*x + 1200*y + 1500*z + 10*o_x + 12*o_y + 15*o_z, "Total_Delivery_Cost"
+
+# Constraints
+problem += x + y + z <= 50, "Total_Trucks_Constraint"
+problem += 15*o_z + 12*o_y + 10*o_x >= 0, "Cost_Reduction_GoodsZ_Constraint"
+problem += o_x + o_y + o_z <= 100, "Optimization_Investment_Constraint"
+problem += 15*o_z + 12*o_y + 10*o_x >= 1000 - (1000*x + 1200*y + 1500*z), "Combined_Cost_Reduction_Constraint"
+problem += 15*o_z + 12*o_y + 10*o_x <= 1000 - (1000*x + 1200*y + 1500*z), "Investment_To_Cost_Savings_Constraint"
+problem += x >= 0, "Non_Negative_TrucksX_Constraint"
+problem += y >= 0, "Non_Negative_TrucksY_Constraint"
+problem += z >= 0, "Non_Negative_TrucksZ_Constraint"
+problem += o_x >= 0, "Non_Negative_OptimizationX_Constraint"
+problem += o_y >= 0, "Non_Negative_OptimizationY_Constraint"
+problem += o_z >= 0, "Non_Negative_OptimizationZ_Constraint"
+
+# Solve the problem
+status = problem.solve()
+
+# Print the results
+print(f"Status: {pulp.LpStatus[status]}")
+print(f"x: {pulp.value(x)}")
+print(f"y: {pulp.value(y)}")
+print(f"z: {pulp.value(z)}")
+print(f"o_x: {pulp.value(o_x)}")
+print(f"o_y: {pulp.value(o_y)}")
+print(f"o_z: {pulp.value(o_z)}")
+print(f"Total Delivery Cost: {pulp.value(problem.objective)}")

@@ -1,117 +1,125 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } I = \\{A, B, C, D, E\\}"
-    },
     "VARIABLES": [
         {
-            "name": "y_AE_direct",
-            "type": "Binary",
+            "name": "y_{AB}",
+            "type": "BINARY",
+            "LaTeX": "y_{AB} \\in \\{0, 1\\}",
+            "description": "Whether there is a link between A and B"
+        },
+        {
+            "name": "y_{AC}",
+            "type": "BINARY",
+            "LaTeX": "y_{AC} \\in \\{0, 1\\}",
+            "description": "Whether there is a link between A and C"
+        },
+        {
+            "name": "y_{AE}",
+            "type": "BINARY",
             "LaTeX": "y_{AE} \\in \\{0, 1\\}",
-            "description": "Indicator variable for direct link between A and E"
+            "description": "Whether there is a link between A and E"
         },
         {
-            "name": "y_AE_path",
-            "type": "Binary",
-            "LaTeX": "y_{AE} \\in \\{0, 1\\}",
-            "description": "Indicator variable for path link between A and E"
+            "name": "y_{BC}",
+            "type": "BINARY",
+            "LaTeX": "y_{BC} \\in \\{0, 1\\}",
+            "description": "Whether there is a link between B and C"
         },
         {
-            "name": "x_AE_direct",
-            "type": "Integer",
-            "LaTeX": "x_{AE} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of the direct link between A and E"
+            "name": "y_{BD}",
+            "type": "BINARY",
+            "LaTeX": "y_{BD} \\in \\{0, 1\\}",
+            "description": "Whether there is a link between B and D"
         },
         {
-            "name": "x_AE_path",
-            "type": "Integer",
-            "LaTeX": "x_{AE} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of the path link between A and E"
-        }
-    ],
-    "PARAMETERS": [
-        {
-            "name": "P",
-            "LaTeX": "P = 100",
-            "description": "Minimum total bandwidth requirement"
+            "name": "y_{CD}",
+            "type": "BINARY",
+            "LaTeX": "y_{CD} \\in \\{0, 1\\}",
+            "description": "Whether there is a link between C and D"
         },
         {
-            "name": "Bandwidth_A_B",
-            "value": "90",
-            "unit": "Mbps",
-            "context": "Bandwidth between A and B"
+            "name": "y_{CE}",
+            "type": "BINARY",
+            "LaTeX": "y_{CE} \\in \\{0, 1\\}",
+            "description": "Whether there is a link between C and E"
         },
         {
-            "name": "Bandwidth_A_C",
-            "value": "85",
-            "unit": "Mbps",
-            "context": "Bandwidth between A and C"
+            "name": "y_{DE}",
+            "type": "BINARY",
+            "LaTeX": "y_{DE} \\in \\{0, 1\\}",
+            "description": "Whether there is a link between D and E"
         },
         {
-            "name": "Bandwidth_A_D",
-            "value": "65",
-            "unit": "Mbps",
-            "context": "Bandwidth between A and D"
+            "name": "x_{AB}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{AB} \\ge 0",
+            "description": "Bandwidth of the link between A and B"
         },
         {
-            "name": "Bandwidth_A_E_direct",
-            "value": "0",
-            "unit": "Mbps",
-            "context": "Direct bandwidth between A and E"
+            "name": "x_{AC}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{AC} \\ge 0",
+            "description": "Bandwidth of the link between A and C"
         },
         {
-            "name": "Bandwidth_A_E_path",
-            "value": "65",
-            "unit": "Mbps",
-            "context": "Path bandwidth between A and E"
+            "name": "x_{AE}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{AE} \\ge 0",
+            "description": "Bandwidth of the link between A and E"
         },
         {
-            "name": "Bandwidth_D_E_path",
-            "value": "84",
-            "unit": "Mbps",
-            "context": "Path bandwidth between D and E"
+            "name": "x_{BC}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{BC} \\ge 0",
+            "description": "Bandwidth of the link between B and C"
         },
         {
-            "name": "Bandwidth_A_B_path",
-            "value": "90",
-            "unit": "Mbps",
-            "context": "Path bandwidth between A and B"
+            "name": "x_{BD}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{BD} \\ge 0",
+            "description": "Bandwidth of the link between B and D"
         },
         {
-            "name": "TransmissionEfficiency_A_E_direct",
-            "value": "1",
-            "context": "Transmission efficiency of the direct link between A and E"
+            "name": "x_{CD}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{CD} \\ge 0",
+            "description": "Bandwidth of the link between C and D"
         },
         {
-            "name": "TransmissionEfficiency_A_E_path",
-            "value": "0.9",
-            "context": "Transmission efficiency of the path link between A and E"
+            "name": "x_{CE}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{CE} \\ge 0",
+            "description": "Bandwidth of the link between C and E"
         },
         {
-            "name": "TransmissionEfficiency_D_E_path",
-            "value": "0.96",
-            "context": "Transmission efficiency of the path link between D and E"
-        },
-        {
-            "name": "TransmissionEfficiency_A_B_path",
-            "value": "0.9",
-            "context": "Transmission efficiency of the path link between A and B"
+            "name": "x_{DE}",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{DE} \\ge 0",
+            "description": "Bandwidth of the link between D and E"
         }
     ],
     "OBJECTIVE": {
-        "query": "maximize the bandwidth of the link between A and E",
-        "LaTeX": "\\max x_{AE} \\cdot P"
+        "query": "The specific part of extracted_queries used for objective",
+        "goal": "MAX",
+        "LaTeX": "\\max Z = x_{AE}"
     },
     "CONSTRAINTS": [
         {
-            "rule_id": 1,
-            "name": "sum_of_bandwidth_at_least_100",
-            "query": "The sum of bandwith is at least 100.",
-            "LaTeX": "x_{AE} \\geq 100"
+            "rule_id": "R1",
+            "query": "y_{AB} + y_{AC} + y_{AE} - y_{BC} - y_{BD} - y_{CD} - y_{CE} - y_{DE} >= 1",
+            "LaTeX": "y_{AB} + y_{AC} + y_{AE} - y_{BC} - y_{BD} - y_{CD} - y_{CE} - y_{DE} \\ge 1",
+            "description": "Establish a link between node A and node E that must pass through service node C (without loops)"
         },
         {
-            "rule_id": 2,
-            "name": "transmission_efficiency_A_E_decreases_by_10_percent",
-            "query": "If the direct link between A and E is selected, the transmission efficiency of the path decreases by 10% due to the long distance between the two nodes.",
-            "LaTeX": "x_{AE} \\leq 100 \\cdot y_{AE_direct}"
+            "rule_id": "R2",
+            "query": "x_{AE} <= 100 * y_{AE}",
+            "LaTeX": "x_{AE} \\le 100 \\cdot y_{AE}",
+            "description": "If the direct link between A and E is selected, the transmission efficiency of the path decreases by 10% due to the long distance between the two nodes."
+        },
+        {
+            "rule_id": "R3",
+            "query": "x_{AB} + x_{AC} + x_{BC} + x_{BD} + x_{CD} + x_{DE} >= 100",
+            "LaTeX": "x_{AB} + x_{AC} + x_{BC} + x_{BD} + x_{CD} + x_{DE} \\ge 100",
+            "description": "The sum of bandwidth is at least 100."
         }
+    ]
+}

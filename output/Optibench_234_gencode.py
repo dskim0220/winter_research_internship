@@ -1,47 +1,44 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-# 1. Data Section (Directly extracted from JSON 'query' fields)
-x = 10  # Number of trucks allocated for GoodsX
-y = 15  # Number of trucks allocated for GoodsY
-z = 25  # Number of trucks allocated for GoodsZ
-b = 1  # Optimization software investment decision (1 if invested)
-price_A1 = 1000  # Cost reduction per $100 invested in optimization
-cost_reduction_A1 = 10  # Cost reduction for GoodsX
-cost_reduction_A2 = 12  # Cost reduction for GoodsY
-cost_reduction_A3 = 15  # Cost reduction for GoodsZ
-total_trucks_limit = 50  # Total trucks constraint
-goodsX_trucks_min = 10  # GoodsX trucks constraint
-goodsY_trucks_min = 15  # GoodsY trucks constraint
-goodsZ_trucks_max = 25  # GoodsZ trucks constraint
-goodsZ_cost_reduction_max = 3750  # Cost reduction constraint for GoodsZ
-total_cost_reduction_min = 0  # Total cost reduction constraint
-investment_limit = 10000  # Investment constraint
+# 1. Constants (Derived from 'query' values)
+price_x = 170000
+price_y = 124
+price_z = 15000
+total_trucks = 50
+min_x = 10
+min_y = 15
+max_z = 25
+budget_opt = 10000
+cost_reduction_ratio = 0.01
+total_cost_reduction_z = 37500
 
 # 2. Model Initialization
-m = gp.Model("production_optimization")
+m = gp.Model("optimization_model")
 
-# 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
-x_var = m.addVar(vtype=GRB.INTEGER, name="x")
-y_var = m.addVar(vtype=GRB.INTEGER, name="y")
-z_var = m.addVar(vtype=GRB.INTEGER, name="z")
-b_var = m.addVar(vtype=GRB.BINARY, name="b")
+# 3. Variables (Check 'type' in VARIABLES: Binary/Int/Cont)
+y_x = m.addVar(vtype=GRB.BINARY, name="y_x")
+y_y = m.addVar(vtype=GRB.BINARY, name="y_y")
+y_z = m.addVar(vtype=GRB.BINARY, name="y_z")
+x_x = m.addVar(vtype=GRB.INTEGER, name="x_x")
+x_y = m.addVar(vtype=GRB.INTEGER, name="x_y")
+x_z = m.addVar(vtype=GRB.INTEGER, name="x_z")
 
-# 4. Objective (Use 'LaTeX' logic + 'query' numbers)
-m.setObjective(x_var * cost_reduction_A1 + y_var * cost_reduction_A2 + z_var * cost_reduction_A3 - b_var * price_A1 * x_var - b_var * price_A2 * y_var - b_var * price_A3 * z_var, GRB.MINIMIZE)
+# 4. Objective (LaTeX structure + query numbers)
+m.setObjective(price_x * x_x + price_y * x_y + price_z * x_z + total_cost_reduction_z * y_z, GRB.MINIMIZE)
 
-# 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
-m.addConstr(x_var + y_var + z_var <= total_trucks_limit, "TotalTrucksConstraint")
-m.addConstr(x_var >= goodsX_trucks_min, "GoodsXTrucksConstraint")
-m.addConstr(y_var >= goodsY_trucks_min, "GoodsYTrucksConstraint")
-m.addConstr(z_var <= goodsZ_trucks_max, "GoodsZTrucksConstraint")
-m.addConstr(x_var * cost_reduction_A1 + y_var * cost_reduction_A2 + z_var * cost_reduction_A3 <= goodsZ_cost_reduction_max, "GoodsZCostReductionConstraint")
-m.addConstr(x_var * cost_reduction_A1 + y_var * cost_reduction_A2 + z_var * cost_reduction_A3 >= total_cost_reduction_min, "TotalCostReductionConstraint")
-m.addConstr(b_var <= investment_limit, "InvestmentConstraint")
+# 5. Constraints (LaTeX structure + query numbers)
+m.addConstr(x_x + x_y + x_z == total_trucks, "R1")
+m.addConstr(x_x >= min_x * y_x, "R2")
+m.addConstr(x_y >= min_y * y_y, "R3")
+m.addConstr(x_z <= max_z * y_z, "R4")
+m.addConstr(x_z <= total_cost_reduction_z / cost_reduction_ratio, "R5")
+m.addConstr(x_x + x_y + x_z >= total_trucks * cost_reduction_ratio, "R6")
+m.addConstr(y_z <= budget_opt, "R7")
+m.addConstr(x_x + x_y + x_z <= total_trucks, "R8")
 
-# 6. Optimization and Output
+# 6. Optimization & Output
 m.optimize()
-# Print results for each variable
-for v in m.getVars():
-    print(f'{v.varName} = {v.x}')
-print(f'Total Objective Value = {m.objVal}')
+if m.status == GRB.OPTIMAL:
+    for v in m.getVars():
+        print(f"{v.varName}: {v.x}")

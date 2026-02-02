@@ -1,84 +1,53 @@
 {
-    "SETS": {
-        "query": "Set of 3 product types (Product_I, Product_II, Product_III), 2 processing stages (Stage_A, Stage_B), and 4 equipment types (Equipment_A1, Equipment_A2, Equipment_B1, Equipment_B2)",
-        "LaTeX": "Product = \{Product_I, Product_II, Product_III\}, Stage = \{Stage_A, Stage_B\}, Equipment = \{Equipment_A1, Equipment_A2, Equipment_B1, Equipment_B2\}"
-    },
     "VARIABLES": [
-        {
-            "name": "x_product_stage_equipment",
-            "type": "Binary",
-            "LaTeX": "x_{p,s,e} \in \{0, 1\}, \forall p \in Product, s \in Stage, e \in Equipment",
-            "description": "Indicator variable indicating whether product p is processed on equipment e during stage s"
+        { 
+          "name": "x_i", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{i} \in \mathbb{Z}^+", 
+          "description": "Total production of Product I"
+        },
+        { 
+          "name": "x_ii", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{ii} \in \mathbb{Z}^+", 
+          "description": "Total production of Product II"
+        },
+        { 
+          "name": "x_iii", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{iii} \in \mathbb{Z}^+", 
+          "description": "Total production of Product III"
         }
     ],
-    "PARAMETERS": [
-        {
-            "name": "raw_material_cost_I",
-            "LaTeX": "raw_material_cost_{Product_I} = 0.25",
-            "description": "Raw material cost for Product I (Yuan/Piece)"
+    "OBJECTIVE": { 
+      "query": "p_i * x_i + p_ii * x_ii + p_iii * x_iii",
+      "goal": "MAX",
+      "LaTeX": "\max Z = p_i \cdot x_i + p_ii \cdot x_ii + p_iii \cdot x_iii"
+    },
+    "CONSTRAINTS": [
+        { 
+          "rule_id": "R1",
+          "query": "x_i + x_ii + x_iii <= 1509",
+          "LaTeX": "x_i + x_ii + x_iii \le 1509",
+          "description": "The total production of Product I, II, and III can not exceed 1,509."
         },
-        {
-            "name": "raw_material_cost_II",
-            "LaTeX": "raw_material_cost_{Product_II} = 0.35",
-            "description": "Raw material cost for Product II (Yuan/Piece)"
+        { 
+          "rule_id": "R2",
+          "query": "x_i <= 1200",
+          "LaTeX": "x_i \le 1200",
+          "description": "The total production of Product I can not exceed 1,200."
         },
-        {
-            "name": "raw_material_cost_III",
-            "LaTeX": "raw_material_cost_{Product_III} = 0.50",
-            "description": "Raw material cost for Product III (Yuan/Piece)"
+        { 
+          "rule_id": "R3",
+          "query": "x_i + x_iii <= 1510",
+          "LaTeX": "x_i + x_iii \le 1510",
+          "description": "The total production of Product I and III can not exceed 1,510."
         },
-        {
-            "name": "unit_price_I",
-            "LaTeX": "unit_price_{Product_I} = 1.25",
-            "description": "Unit price for Product I (Yuan/Piece)"
-        },
-        {
-            "name": "unit_price_II",
-            "LaTeX": "unit_price_{Product_II} = 2.00",
-            "description": "Unit price for Product II (Yuan/Piece)"
-        },
-        {
-            "name": "unit_price_III",
-            "LaTeX": "unit_price_{Product_III} = 2.80",
-            "description": "Unit price for Product III (Yuan/Piece)"
-        },
-        {
-            "name": "processing_time_I_A1",
-            "LaTeX": "processing_time_{Product_I, Stage_A, Equipment_A1} = 5",
-            "description": "Processing time for Product I on Equipment A1 during Stage A (pieces)"
-        },
-        {
-            "name": "processing_time_I_A2",
-            "LaTeX": "processing_time_{Product_I, Stage_A, Equipment_A2} = 7",
-            "description": "Processing time for Product I on Equipment A2 during Stage A (pieces)"
-        },
-        {
-            "name": "processing_time_I_B1",
-            "LaTeX": "processing_time_{Product_I, Stage_B, Equipment_B1} = 6",
-            "description": "Processing time for Product I on Equipment B1 during Stage B (pieces)"
-        },
-        {
-            "name": "processing_time_I_B2",
-            "LaTeX": "processing_time_{Product_I, Stage_B, Equipment_B2} = 4",
-            "description": "Processing time for Product I on Equipment B2 during Stage B (pieces)"
-        },
-        {
-            "name": "processing_time_II_A1",
-            "LaTeX": "processing_time_{Product_II, Stage_A, Equipment_A1} = 10",
-            "description": "Processing time for Product II on Equipment A1 during Stage A (pieces)"
-        },
-        {
-            "name": "processing_time_II_A2",
-            "LaTeX": "processing_time_{Product_II, Stage_A, Equipment_A2} = 9",
-            "description": "Processing time for Product II on Equipment A2 during Stage A (pieces)"
-        },
-        {
-            "name": "processing_time_II_B1",
-            "LaTeX": "processing_time_{Product_II, Stage_B, Equipment_B1} = 8",
-            "description": "Processing time for Product II on Equipment B1 during Stage B (pieces)"
-        },
-        {
-            "name": "processing_time_II_B2",
-            "LaTeX": "processing_time_{Product_II, Stage_B, Equipment_B2} = 0",
-            "description": "Processing time for Product II on Equipment B2 during Stage B (pieces)"
+        { 
+          "rule_id": "R4",
+          "query": "x_ii <= 800",
+          "LaTeX": "x_ii \le 800",
+          "description": "The total production of Product II can not exceed 800."
         }
+    ]
+}

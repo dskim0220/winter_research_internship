@@ -135,7 +135,7 @@ def get_llm(model_name, temperature):
         task="text-generation",
         model=model,
         tokenizer=tokenizer,
-        max_new_tokens=1024, # 출력 최대 길이
+        max_new_tokens=2048, # 출력 최대 길이
         temperature=temperature,
         return_full_text = False,
         #device_map="auto",

@@ -1,10 +1,52 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains several issues that need to be addressed for it to accurately reflect the problem description. The 'query' fields do not match the problem description, and the 'LaTeX' formulations lack precision and logical consistency.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders and do not correspond to the problem description. Specifically, the 'query' fields should include the specific constraints and conditions from the problem description, but they are currently empty placeholders.",
-    "DATA_FIDELITY_CHECK": "Numerical data in the 'query' fields is missing or set to placeholders (e.g., 0). This leads to inconsistencies with the 'LaTeX' formulations. For example, the fixed costs and demand values are not present in the 'query' fields.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided in the 'LaTeX' formulations, which is required based on the problem description. Additionally, the binary and continuous variables are not correctly linked to ensure the constraints are met.",
-    "LINEARITY_VALIDATION": "The formulation does not follow linear programming standards due to the presence of binary variables and the lack of proper coupling constraints.",
-    "DIMENSIONAL_ANALYSIS": "The unit consistency is not checked, and the problem description uses units like 'units per week', but the 'LaTeX' formulations do not reflect this.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are not properly mapped to the 'LaTeX' formulations. For instance, the requirement that if New York is opened, Los Angeles must also be opened is not reflected in the 'LaTeX' constraints. Similarly, the constraints about the total production limit and activation time are missing."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            80,
+            70,
+            40
+        ],
+        "latex_numbers": [
+            80,
+            70,
+            40
+        ],
+        "mismatch": "Numbers in the problem description do not match those in the LaTeX formulation."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "FAIL",
+            "reason": "The rule 'y_LA >= y_NY' should be 'y_LA \\ge y_{NY}' to ensure that if New York is opened, Los Angeles must also be opened."
+        },
+        {
+            "rule_id": "R2",
+            "status": "FAIL",
+            "reason": "The rule 'y_NY + y_LA + y_CH + y_AT <= 2' should be 'y_{NY} + y_{LA} + y_{CH} + y_{AT} \\le 2' to ensure that at most two warehouses can be opened."
+        },
+        {
+            "rule_id": "R3",
+            "status": "FAIL",
+            "reason": "The rule 'y_AT + y_LA >= 1' should be 'y_{AT} + y_{LA} \\ge 1' to ensure that either the Atlanta or the Los Angeles warehouse must be opened."
+        },
+        {
+            "rule_id": "R4",
+            "status": "FAIL",
+            "reason": "The rule 'y_NY + y_AT <= 1' should be 'y_{NY} + y_{AT} \\le 1' to ensure that the New York and the Atlanta warehouses cannot be opened simultaneously."
+        },
+        {
+            "rule_id": "R5",
+            "status": "FAIL",
+            "reason": "The rule 'y_NY + y_CH + y_LA >= 1' should be 'y_{NY} + y_{CH} + y_{LA} \\ge 1' to ensure that at least one of the three warehouses (New York, Los Angeles, or Chicago) must be opened."
+        },
+        {
+            "rule_id": "R6",
+            "status": "FAIL",
+            "reason": "The rule 'y_NY + y_CH >= 1' should be 'y_{NY} + y_{CH} \\ge 1' to ensure that the New York and the Chicago warehouses might be opened simultaneously."
+        }
+    ],
+    "FINAL_VERDICT": "There are critical failures in the logical linking and constraints. Please correct the rules to ensure they match the problem description and the provided JSON."
 }

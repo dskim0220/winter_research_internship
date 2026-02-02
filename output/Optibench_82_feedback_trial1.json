@@ -1,10 +1,40 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. The queries do not match the LaTeX formulations, and the mathematical integrity is compromised.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations as such, but the placeholders need to be replaced with actual numbers.",
-    "DATA_FIDELITY_CHECK": "Numerical data in queries is missing or set to 0. This leads to inconsistencies between the queries and the LaTeX formulations.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M links are provided based on the logic in the queries. The constraints related to the fixed costs and minimum batch requirements are missing.",
-    "LINEARITY_VALIDATION": "Variable-to-variable multiplication is observed in the objective function, violating the MILP standard. The objective function should be revised to ensure linearity.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. The units need to be consistent across the model.",
-    "CONSTRAINTS_FEEDBACK": "Missing constraints include 'Minimum Batch', 'Total Production Limit (Tons)', and 'Activation Time'. The constraints related to the fixed costs and minimum batch requirements are also missing. The Big-M links are not provided based on the logic in the queries."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            15,
+            13,
+            15,
+            18,
+            14,
+            16,
+            10
+        ],
+        "latex_numbers": [
+            15,
+            13,
+            15,
+            18,
+            14,
+            16,
+            10
+        ],
+        "mismatch": "Numbers in the problem description do not match the numbers in the LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "C1",
+            "status": "FAIL",
+            "reason": "The constraint does not correctly link the binary variables with the continuous variables. The correct formulation should be $x_{3} - x_{1} \\le 7 \\cdot y_{1}$, but the current formulation is incorrect."
+        },
+        {
+            "rule_id": "C2",
+            "status": "PASS",
+            "reason": "The constraint correctly links the binary variable with the continuous variable. The formulation $x_{7} + x_{1} \\ge 3$ is correct."
+        }
+    ],
+    "FINAL_VERDICT": "There are critical failures in the constraints. Specifically, the first constraint needs to be corrected to ensure it properly links the binary variables with the continuous variables. The second constraint is correct."
 }

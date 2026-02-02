@@ -1,10 +1,41 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains significant errors and omissions that violate the specified guidelines. The queries do not accurately reflect the problem description, and the mathematical formulation lacks integrity.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain fabricated queries that do not match the problem description. For example, the 'Order_Count' constraint does not correctly reflect the minimum number of tables needed.",
-    "DATA_FIDELITY_CHECK": "Numerous numeric values are missing or set to 0, leading to incomplete or incorrect equations. For instance, the'min_orders_A','min_orders_B','min_orders_total', and'max_tables_A' parameters are not properly aligned with their descriptions.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present, which is required for logical linking based on the problem description. Additionally, the 'Order_Count' and 'Order_Max' constraints do not enforce the minimum and maximum table requirements correctly.",
-    "LINEARITY_VALIDATION": "The objective function and constraints are not linear due to the presence of binary variables and non-linear relationships. For example, the 'Order_Count' and 'Order_Max' constraints involve summations of binary variables multiplied by continuous variables.",
-    "DIMENSIONAL_ANALYSIS": "There is no dimensional analysis performed, which is crucial for ensuring units are consistent. For instance, the 'tables_A', 'tables_B', and 'tables_C' parameters should be converted to a common unit (e.g., tons to kilograms).",
-    "CONSTRAINTS_FEEDBACK": "The constraints are poorly formulated and do not align with the problem description. For example, the 'Order_Count' constraint should ensure the total number of tables ordered meets the minimum requirement, but it currently only checks the total number of orders. Similarly, the 'Order_Max' constraint should limit the total number of tables ordered, not just the number of orders."
+    "OVERALL_FEEDBACK": "The problem description contains multiple inconsistencies and hallucinations that cannot be verified with the provided model JSON. The model JSON does not align with the detailed problem description.",
+    "QUERY_GROUNDING_AUDIT": [
+        "Hallucinated constraint: 'If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.' This is not mentioned in the original problem description."
+    ],
+    "DATA_FIDELITY_CHECK": [
+        "Mismatch: The minimum number of tables to order (min_tables) is 150, but the maximum number of tables (max_tables) is 600. These values conflict with each other."
+    ],
+    "LOGICAL_COUPLING_CHECK": [
+        "No Big-M linking is present in the provided model JSON, which is required for logical coupling checks."
+    ],
+    "LINEARITY_VALIDATION": [
+        "Non-linear term: The objective function includes a multiplication of continuous variables (x_A * x_B), which violates the MILP linearity requirement."
+    ],
+    "DIMENSIONAL_ANALYSIS": [
+        "Unit inconsistency: The cost of ordering each dining table (cost_A, cost_B, cost_C) is given in dollars, but the quantities (quantity_A_per_order, quantity_B_per_order, quantity_C_per_order) are given in tables. There is no unit conversion provided in the model JSON."
+    ],
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": 1,
+            "feedback": "Missing constraint: 'If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.'"
+        },
+        {
+            "rule_id": 2,
+            "feedback": "Mismatch: 'The restaurant needs to order at least 150 tables' vs 'The restaurant needs to order no more than 600 tables.' These values conflict."
+        },
+        {
+            "rule_id": 3,
+            "feedback": "No Big-M linking present in the model JSON."
+        },
+        {
+            "rule_id": 4,
+            "feedback": "Non-linear term: 'Profit = (Revenue - Variable Cost) - Fixed Cost' does not account for the multiplication of continuous variables in the objective function."
+        },
+        {
+            "rule_id": 5,
+            "feedback": "Unit inconsistency: The cost of ordering each dining table is given in dollars, but the quantities are given in tables. No unit conversion is provided in the model JSON."
+        }
+    ]
 }

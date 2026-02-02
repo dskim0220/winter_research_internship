@@ -8,11 +8,13 @@ from experts.code_generator_v2 import CodeGeneratorV2
 from experts.model_evaluator import ModelEvaluator
 from experts.model_evaluator_v2 import ModelEvaluatorV2
 from experts.model_designer import ModelDesigner
+from experts.query_extractor import Extractor
+from experts.formulator import Formulator
 from custom_callback_qwen import get_llm, get_custom_callback
 
 #설정부분
 data_set='newset'
-problem_name='Optibench_82'
+problem_name='Optibench_234'
 max_trial = 3
 confidence_standard=0.8
 
@@ -167,11 +169,56 @@ def e2e_v3(problem,model):
     print(f"총 소요시간: {running_time:.2f}s")
     return
 
+def e2e_v4(problem,model):
+    start_time = time.time()
+
+    feedback = ""
+    best_formulation = ""
+    best_confidence_score = -1.0
+
+    extractor = Extractor(model=model)
+    formulator = Formulator(model=model)
+    model_evaluator = ModelEvaluatorV2(model=model)
+    
+
+    for i in range(max_trial):
+        extraction = extractor.extract(problem=problem,feedback=feedback)
+        formulation = formulator.formulate(problem=problem, extraction=extraction)
+        model_file = save_output(formulation, f"{problem_name}_model_trial{i}","json")
+
+        raw_feedback = model_evaluator.forward(problem = problem, model_json=formulation)
+        refined_feedback = model_evaluator._extract_json(raw_feedback).replace('\\','\\\\')
+        feedback = refined_feedback
+
+        feedback_file = save_output(feedback,f"{problem_name}_feedback_trial{i}","json")
+        data = json.loads(feedback)
+        confidence_score = data.get('CONFIDENCE_SCORE',0.0)
+
+        if confidence_score >= confidence_standard:
+            best_formulation = formulation
+            best_confidence_score = confidence_score
+            break
+        
+        elif confidence_score >= best_confidence_score:
+            best_formulation = formulation
+            best_confidence_score = confidence_score
+
+    if best_formulation:
+        code_generator = CodeGeneratorV2(model=model)
+        code = code_generator.forward(model_json=best_formulation)
+        code_file = save_output(code,f"{problem_name}_gencode","py")
+    
+    print(f"모델링 및 코드 생성 완료! confidence:{best_confidence_score}")
+    end_time = time.time()
+    running_time = end_time - start_time
+    print(f"총 소요시간: {running_time:.2f}s")
+    return
+
 if __name__ == '__main__':
     from utils import read_problem2
     # 풀 문제 설정
     problem = read_problem2(data_set, problem_name)
-    e2e_v3(problem, model ='Qwen/Qwen2.5-3B-Instruct')
+    e2e_v4(problem, model ='Qwen/Qwen2.5-3B-Instruct')
 
 
 #일단 코드 맞게 나옴

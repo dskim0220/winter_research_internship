@@ -1,94 +1,89 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } I \\text{ be the set of regions; } J \\text{ be the set of warehouses.}"
-    },
     "VARIABLES": [
-        {
-            "name": "y_NewYork",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{NewYork}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether the New York warehouse is opened."
+        { 
+          "name": "y_NY", 
+          "type": "BINARY", 
+          "LaTeX": "y_{NY} \in \{0, 1\}", 
+          "description": "Whether to open New York warehouse"
         },
-        {
-            "name": "y_LosAngeles",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{LosAngeles}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether the Los Angeles warehouse is opened."
+        { 
+          "name": "y_LA", 
+          "type": "BINARY", 
+          "LaTeX": "y_{LA} \in \{0, 1\}", 
+          "description": "Whether to open Los Angeles warehouse"
         },
-        {
-            "name": "y_Chicago",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Chicago}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether the Chicago warehouse is opened."
+        { 
+          "name": "y_CH", 
+          "type": "BINARY", 
+          "LaTeX": "y_{CH} \in \{0, 1\}", 
+          "description": "Whether to open Chicago warehouse"
         },
-        {
-            "name": "y_Atlanta",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Atlanta}} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether the Atlanta warehouse is opened."
+        { 
+          "name": "y_AT", 
+          "type": "BINARY", 
+          "LaTeX": "y_{AT} \in \{0, 1\}", 
+          "description": "Whether to open Atlanta warehouse"
         },
-        {
-            "name": "x_NewYork",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{NewYork}} \\in \\mathbb{Z}^+",
-            "description": "Number of units shipped from New York warehouse."
+        { 
+          "name": "x_1", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{1} \in \mathbb{Z}^+", 
+          "description": "Number of units shipped to Region 1"
         },
-        {
-            "name": "x_LosAngeles",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{LosAngeles}} \\in \\mathbb{Z}^+",
-            "description": "Number of units shipped from Los Angeles warehouse."
+        { 
+          "name": "x_2", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{2} \in \mathbb{Z}^+", 
+          "description": "Number of units shipped to Region 2"
         },
-        {
-            "name": "x_Chicago",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Chicago}} \\in \\mathbb{Z}^+",
-            "description": "Number of units shipped from Chicago warehouse."
-        },
-        {
-            "name": "x_Atlanta",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Atlanta}} \\in \\mathbb{Z}^+",
-            "description": "Number of units shipped from Atlanta warehouse."
+        { 
+          "name": "x_3", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{3} \in \mathbb{Z}^+", 
+          "description": "Number of units shipped to Region 3"
         }
     ],
-    "PARAMETERS": [
-        {
-            "name": "p_Name",
-            "LaTeX": "P = 100",
-            "description": "Each warehouse can ship 100 units per week."
+    "OBJECTIVE": { 
+      "query": "The specific part of extracted_queries used for objective",
+      "goal": "MIN", 
+      "LaTeX": "\min Z = c_{NY} \cdot y_{NY} + c_{LA} \cdot y_{LA} + c_{CH} \cdot y_{CH} + c_{AT} \cdot y_{AT} + f_{N} \cdot x_{1} + f_{L} \cdot x_{1} + f_{C} \cdot x_{1} + f_{A} \cdot x_{1} + f_{N} \cdot x_{2} + f_{L} \cdot x_{2} + f_{C} \cdot x_{2} + f_{A} \cdot x_{2} + f_{N} \cdot x_{3} + f_{L} \cdot x_{3} + f_{C} \cdot x_{3} + f_{A} \cdot x_{3}"
+    },
+    "CONSTRAINTS": [
+        { 
+          "rule_id": "R1",
+          "query": "y_LA >= y_NY",
+          "LaTeX": "y_{LA} \ge y_{NY}",
+          "description": "If the New York warehouse is opened, then the Los Angeles warehouse must be opened."
         },
-        {
-            "name": "p_FixedCost_NewYork",
-            "LaTeX": "P_{\\text{FixedCost}, \\text{NewYork}} = 400",
-            "description": "Weekly fixed cost of keeping the New York warehouse open."
+        { 
+          "rule_id": "R2",
+          "query": "y_NY + y_LA + y_CH + y_AT <= 2",
+          "LaTeX": "y_{NY} + y_{LA} + y_{CH} + y_{AT} \le 2",
+          "description": "At most two warehouses can be opened."
         },
-        {
-            "name": "p_FixedCost_LosAngeles",
-            "LaTeX": "P_{\\text{FixedCost}, \\text{LosAngeles}} = 500",
-            "description": "Weekly fixed cost of keeping the Los Angeles warehouse open."
+        { 
+          "rule_id": "R3",
+          "query": "y_AT + y_LA >= 1",
+          "LaTeX": "y_{AT} + y_{LA} \ge 1",
+          "description": "Either the Atlanta or the Los Angeles warehouse must be opened."
         },
-        {
-            "name": "p_FixedCost_Chicago",
-            "LaTeX": "P_{\\text{FixedCost}, \\text{Chicago}} = 300",
-            "description": "Weekly fixed cost of keeping the Chicago warehouse open."
+        { 
+          "rule_id": "R4",
+          "query": "y_NY + y_AT <= 1",
+          "LaTeX": "y_{NY} + y_{AT} \le 1",
+          "description": "The New York and the Atlanta warehouses cannot be opened simultaneously."
         },
-        {
-            "name": "p_FixedCost_Atlanta",
-            "LaTeX": "P_{\\text{FixedCost}, \\text{Atlanta}} = 150",
-            "description": "Weekly fixed cost of keeping the Atlanta warehouse open."
+        { 
+          "rule_id": "R5",
+          "query": "y_NY + y_LA + y_CH >= 1",
+          "LaTeX": "y_{NY} + y_{LA} + y_{CH} \ge 1",
+          "description": "At least one of the three warehouses (New York, Los Angeles, or Chicago) must be opened."
         },
-        {
-            "name": "p_ShippingCost_NewYork_Region1",
-            "LaTeX": "P_{\\text{ShippingCost}, \\text{NewYork}, \\text{Region1}} = 20",
-            "description": "Cost of shipping one unit from New York to Region 1."
-        },
-        {
-            "name": "p_ShippingCost_NewYork_Region2",
-            "LaTeX": "P_{\\text{ShippingCost}, \\text{NewYork}, \\text{Region2}} = 40",
-            "description": "Cost of shipping one unit from New York to Region 2."
-        },
-        {
-            "name": "p_ShippingCost_NewYork_Region3",
-            "LaTeX": "P_{\\text{ShippingCost}, \\text{NewYork}, \\text{Region3}}
+        { 
+          "rule_id": "R6",
+          "query": "y_NY + y_CH >= 1",
+          "LaTeX": "y_{NY} + y_{CH} \ge 1",
+          "description": "The New York and the Chicago warehouses might be opened simultaneously."
+        }
+    ]
+}

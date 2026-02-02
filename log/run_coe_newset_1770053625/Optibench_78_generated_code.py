@@ -1,0 +1,39 @@
+import numpy as np
+from scipy.optimize import linprog
+
+# Coefficients of the objective function (minimized)
+c = [-20, -40, -50, -400, -500, -300, -150]
+
+# Coefficients matrix for the inequality constraints
+A = [
+    [1, 0, 0, 2, 0, 0, 0],  # w1 constraint
+    [0, 1, 0, 2, 0, 0, 0],  # w2 constraint
+    [0, 0, 1, 2, 0, 0, 0],  # w3 constraint
+    [0, 0, 0, 1, 1, 0, 0],  # NY constraint
+    [0, 0, 0, 1, 0, 1, 0],  # LA constraint
+    [0, 0, 0, 1, 0, 0, 1],  # Ch constraint
+    [0, 0, 0, 0, 1, 1, 1],  # At constraint
+    [0, 0, 0, 0, 0, 1, 1]   # NY_LA constraint
+]
+
+# Right-hand side values for the inequality constraints
+b = [80, 70, 40, 1, 1, 1, 1, 1]
+
+# Bounds for the binary variables (0 <= x_i <= 1)
+bounds = [(0, 1)] * 7
+
+# Bounds for the continuous variables (no lower bound, no upper bound)
+bounds += [(-np.inf, np.inf)] * 3
+
+# Solve the linear programming problem
+result = linprog(c, A_ub=A, b_ub=b, bounds=bounds, method='highs')
+
+# Extract the optimal solution
+optimal_solution = result.x
+optimal_cost = -result.fun
+
+print("Optimal Solution:")
+for i, var in enumerate(['NY', 'LA', 'Ch', 'At', 'NY_LA', 'w1', 'w2', 'w3']):
+    print(f"{var}: {optimal_solution[i]}")
+
+print(f"Minimum Cost: {optimal_cost}")

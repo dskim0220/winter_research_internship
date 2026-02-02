@@ -1,10 +1,27 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model lacks grounding with respect to the problem description and contains logical errors.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The problem description mentions specific constraints and objectives, but the JSON does not reflect these correctly.",
-    "DATA_FIDELITY_CHECK": "Numerical values in the 'query' fields do not align with the LaTeX expressions. For example, the sum_bandwidth constraint should be 100, but it is set to P_sum which is undefined.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present, which is a requirement given the problem description. Additionally, the objective function does not correctly reflect the problem statement.",
-    "LINEARITY_VALIDATION": "The model is not linear due to the presence of binary variables and the objective function structure.",
-    "DIMENSIONAL_ANALYSIS": "The problem involves continuous quantities (bandwidth), but the model uses integer and binary variables, which is inconsistent.",
-    "CONSTRAINTS_FEEDBACK": "The sum_bandwidth_constraint is incorrect. The problem requires the total bandwidth to be at least 100, not P_sum. The objective function does not correctly reflect the problem statement. There are no Big-M constraints present, which is a requirement given the problem description."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            120,
+            110,
+            150
+        ],
+        "latex_numbers": [
+            120,
+            110,
+            150
+        ],
+        "mismatch": "Numbers in the problem description do not match those in the LaTeX formulation."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "Rule 1",
+            "status": "FAIL",
+            "reason": "The constraint does not correctly reflect the problem statement. The sum of bandwidths of paths A -> C and C -> E should be greater than or equal to the bandwidth of A -> E, but the current formulation does not account for the correct bandwidth values."
+        }
+    ],
+    "FINAL_VERDICT": "There is a critical mismatch between the problem description and the LaTeX formulation. Additionally, the constraints need to be re-evaluated to ensure they accurately represent the problem requirements."
 }

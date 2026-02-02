@@ -1,0 +1,38 @@
+import numpy as np
+from scipy.optimize import linprog
+
+# Coefficients for the objective function (profit)
+c = [-0.50, -0.25, -2.80 + 0.50 + 0.25, -2.80 + 0.50 + 0.25]  # Profit per unit for each product
+
+# Coefficients for the inequality constraints
+A = [
+    [1, 0, 0, 0],  # x_I1 <= 1200
+    [0, 1, 0, 0],  # x_II1 <= 800
+    [1, 0, 0, 0],  # x_III1 + x_III2 <= 1510 - x_I1 - x_I2 - x_I3
+    [1, 0, 1, 0],  # x_I1 <= 10000 * y_A1
+    [0, 1, 1, 0],  # x_I2 <= 4000 * y_A2
+    [1, 0, 0, 1],  # x_II1 <= 7000 * y_B1
+    [0, 1, 0, 1],  # x_III1 <= 4000 * y_B2
+]
+
+# Right-hand side values for the inequality constraints
+b = [1200, 800, 1510, 10000, 4000, 7000, 4000]
+
+# Bounds for the variables (x_ij and y_i)
+x_bounds = [(0, None)] * 8  # x_I1, x_I2, x_II1, x_II2, x_III1, x_III2, y_A1, y_A2, y_B1, y_B2
+y_bounds = [(0, 1)] * 4  # y_A1, y_A2, y_B1, y_B2
+
+# Solve the optimization problem
+result = linprog(c, A_ub=A, b_ub=b, bounds=x_bounds + y_bounds, method='highs')
+
+# Extract the results
+x_values = result.x[:6]  # x_I1, x_I2, x_II1, x_II2, x_III1, x_III2
+y_values = result.x[6:]  # y_A1, y_A2, y_B1, y_B2
+
+# Calculate the total profit
+total_profit = sum((2.80 - 0.50 - 0.25) * x * y for x, y in zip(x_values, y_values))
+
+print(f"Optimal Production Plan:")
+for i in range(3):
+    print(f"Product {chr(65+i)}: {int(x_values[i])} pieces")
+print(f"Total Profit: {total_profit:.2f} Yuan")

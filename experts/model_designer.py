@@ -20,7 +20,7 @@ class ModelDesigner(BaseExpert):
     
     FORWARD_TASK_EXTRACTOR = '''Extract ALL numerical values and constraints into a structured JSON format. 
 [STRICT RULES]
-1. VARIABLE TYPE: Clearly distinguish between QUANTITY(Integer/Continuous) and SELECTION(Binary 0/1).
+1. VARIABLE TYPE: Clearly distinguish between QUANTITY(Integer or Continuous) and SELECTION(Binary 0/1).
 2. PARAMETERS: List all values with their specific units.
 3. CONSTRAINTS: Assign a unique 'rule_id' to every sentence containing a limit or requirement.
 4. FORMAT: Return ONLY the JSON object.
@@ -50,8 +50,8 @@ JSON Format:
 
 [LOGICAL EXAMPLE]
 Input: "Fixed cost 170,000, Min batch 20, Max demand 5,300"
-LaTeX Variables: $y_{A1} \in {{0, 1}}$, $x_{A1} \in \mathbb{{Z}}^+$
-LaTeX Constraints: $x_{A1} \ge 20 \cdot y_{A1}$ (Min Batch), $x_{A1} \le 5300 \cdot y_{A1}$ (Big-M Link)
+LaTeX Variables: $y_{{A1}} \in {{0, 1}}$, $x_{{A1}} \in \mathbb{{Z}}^+$
+LaTeX Constraints: $x_{{A1}} \ge 20 \cdot y_{{A1}}$ (Min Batch), $x_{{A1}} \le 5300 \cdot y_{{A1}}$ (Big-M Link)
 
 [INPUT DATA]
 1. Extracted Query: {extracted_queries}

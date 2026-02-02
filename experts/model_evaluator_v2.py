@@ -20,30 +20,38 @@ class ModelEvaluatorV2(BaseExpert):
     FORWARD_TASK = '''
 Cross-verify (1) Problem Description, (2) Extracted Queries, and (3) LaTeX Formulations.
 
-[AUDIT PRIORITIES]
-1. GROUNDING: Identify any "hallucinated" queries or constraints not in the original text.
-2. DATA FIDELITY: Ensure exact numerical values (Price, Cost, Quota) are mapped 1:1. Zero-filling or placeholders = Failure.
-3. LOGICAL COUPLING: Verify Big-M linking ($x \le M \cdot y$) between Decision (Binary) and Quantity (Int/Cont) variables.
-4. MATH INTEGRITY: Check for MILP linearity (no $var \times var$) and dimensional/unit consistency.
-5. OBJECTIVE STRUCTURE: Confirm Profit = (Revenue - Variable Cost) - Fixed Cost.
+[AUDIT PRIORITIES & CRITICAL CHECKS]
+1. NUMERICAL HARVESTING: Are the numbers in LaTeX (e.g., 120, 150, 7) EXACTLY the same as the problem text? 
+2. UNIT MISMATCH (FATAL): Did the model add 'Orders' to 'Tables'? (e.g., n_A + n_B >= 150 is WRONG if 150 is tables and n is orders).
+3. THE BINARY BRIDGE: Every "If" condition must have a Binary variable ($y$). Does every $x$ (quantity) have a corresponding $y$ (selection) linked via Big-M ($x \le M \cdot y$)?
+4. OBJECTIVE PURITY: Ensure Fixed Costs are multiplied by Binary variables in the Objective function, not hidden in Constraints.
+5. DIMENSIONAL SANITY: Check if $/unit \times units = Total$.
 
-[SCORING RULE]
-- Penalty: Drop Confidence Score below 0.5 if major numerical data is missing or Fixed Costs are treated as constraints instead of objective terms.
+[AUDIT PROCESS - STEP-BY-STEP]
+- Step 1: List all numbers in the Problem. Compare them to the PARAMETERS in JSON.
+- Step 2: Check every 'if-then' sentence. Verify if $y_{{A}} \to y_{{B}}$ or $x_{{A}} \to y_{{A}}$ logic exists in LaTeX.
+- Step 3: Identify any $var \times var$ terms (Non-linear) which will break MILP solvers.
 
 [INPUT]
 1. Original Problem: {problem_description}
 2. Model JSON: {model_json}
 
-Return ONLY JSON:
+[OUTPUT FORMAT]
+Return ONLY a JSON:
 {{
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "Summary of accuracy and grounding.",
-    "QUERY_GROUNDING_AUDIT": "List any fabricated or missing information.",
-    "DATA_FIDELITY_CHECK": "Identify mismatches between Query numbers and LaTeX numbers.",
-    "LOGICAL_COUPLING_CHECK": "Check Big-M links and Binary/Continuous separation.",
-    "LINEARITY_VALIDATION": "Confirm no non-linear terms (MILP compliance).",
-    "DIMENSIONAL_ANALYSIS": "Verify unit consistency across equations.",
-    "CONSTRAINTS_FEEDBACK": "Detailed mapping critique for each rule_id."
+    "CRITICAL_FAILURE_FOUND": "YES/NO",
+    "DATA_FIDELITY": {{
+        "problem_numbers": [120, 110, 150],
+        "latex_numbers": [120, 110, 150],
+        "mismatch": "List any differences"
+    }},
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {{ "rule_id": "R1", "status": "PASS/FAIL", "reason": "Detailed critique" }}
+    ],
+    "FINAL_VERDICT": "Final summary for the Generator to fix the code."
 }}
 '''
 

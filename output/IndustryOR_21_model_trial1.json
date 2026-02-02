@@ -1,97 +1,114 @@
 {
     "SETS": {
-        "query": "Set of suppliers (A, B, C) and orders (O1, O2,..., ON)",
-        "LaTeX": "S = \\{A, B, C\\}, O = \\{O1, O2,..., ON\\}"
+        "query": "indices definition",
+        "LaTeX": "\\text{let } I = \\{A, B, C\\}"
     },
     "VARIABLES": [
         {
-            "name": "x_O",
+            "name": "x_A",
+            "type": "Continuous",
+            "LaTeX": "x_A \\in \\mathbb{R}^+",
+            "description": "Number of tables ordered from Supplier A"
+        },
+        {
+            "name": "x_B",
+            "type": "Continuous",
+            "LaTeX": "x_B \\in \\mathbb{R}^+",
+            "description": "Number of tables ordered from Supplier B"
+        },
+        {
+            "name": "x_C",
+            "type": "Continuous",
+            "LaTeX": "x_C \\in \\mathbb{R}^+",
+            "description": "Number of tables ordered from Supplier C"
+        },
+        {
+            "name": "y_A",
             "type": "Binary",
-            "LaTeX": "x_{O} \in \{0, 1\}, \forall O \in O",
-            "description": "Indicator variable: 1 if order O is placed, 0 otherwise"
+            "LaTeX": "y_A \\in \\{0, 1\\}",
+            "description": "Indicator variable for ordering from Supplier A"
+        },
+        {
+            "name": "y_B",
+            "type": "Binary",
+            "LaTeX": "y_B \\in \\{0, 1\\}",
+            "description": "Indicator variable for ordering from Supplier B"
+        },
+        {
+            "name": "y_C",
+            "type": "Binary",
+            "LaTeX": "y_C \\in \\{0, 1\\}",
+            "description": "Indicator variable for ordering from Supplier C"
         }
     ],
     "PARAMETERS": [
         {
             "name": "cost_A",
-            "LaTeX": "C_{A} = 120",
+            "LaTeX": "P_{A} = 120",
             "description": "Cost of ordering each dining table from Supplier A"
         },
         {
             "name": "cost_B",
-            "LaTeX": "C_{B} = 110",
+            "LaTeX": "P_{B} = 110",
             "description": "Cost of ordering each dining table from Supplier B"
         },
         {
             "name": "cost_C",
-            "LaTeX": "C_{C} = 100",
+            "LaTeX": "P_{C} = 100",
             "description": "Cost of ordering each dining table from Supplier C"
         },
         {
-            "name": "tables_A",
-            "LaTeX": "T_{A} = 20",
-            "description": "Number of tables included in each order from Supplier A"
+            "name": "quantity_A_per_order",
+            "LaTeX": "Q_{A} = 20",
+            "description": "Quantity of tables per order from Supplier A"
         },
         {
-            "name": "tables_B",
-            "LaTeX": "T_{B} = 15",
-            "description": "Number of tables included in each order from Suppliers B and C"
+            "name": "quantity_B_per_order",
+            "LaTeX": "Q_{B} = 15",
+            "description": "Quantity of tables per order from Suppliers B and C"
+        },
+        {
+            "name": "quantity_C_per_order",
+            "LaTeX": "Q_{C} = 15",
+            "description": "Quantity of tables per order from Suppliers B and C"
+        },
+        {
+            "name": "min_orders",
+            "LaTeX": "N_{\text{orders}} = 7",
+            "description": "Minimum number of orders from Supplier A, B, or C"
         },
         {
             "name": "min_tables",
-            "LaTeX": "Min_{tables} = 150",
-            "description": "Minimum number of tables to be ordered"
+            "LaTeX": "N_{\text{tables}} = 150",
+            "description": "Minimum number of tables to order"
         },
         {
             "name": "max_tables",
-            "LaTeX": "Max_{tables} = 600",
-            "description": "Maximum number of tables to be ordered"
+            "LaTeX": "N_{\text{max}} = 600",
+            "description": "Maximum number of tables to order"
         },
         {
-            "name": "min_orders_A",
-            "LaTeX": "Min_{orders_A} = 30",
-            "description": "Minimum number of orders from Supplier A"
+            "name": "tables_from_A_and_B_min",
+            "LaTeX": "N_{\text{AB}} = 25",
+            "description": "Sum of tables supplied from Suppler A and B is at least 25"
         },
         {
-            "name": "min_orders_B",
-            "LaTeX": "Min_{orders_B} = 30",
-            "description": "Minimum number of orders from Supplier B"
+            "name": "tables_from_B_and_C_min",
+            "LaTeX": "N_{\text{BC}} = 30",
+            "description": "Sum of tables supplied from Supplier B and C is at least 30"
         },
         {
-            "name": "sum_A_B",
-            "LaTeX": "Sum_{A_B} = 25",
-            "description": "Sum of tables supplied from Supplier A and B must be at least 25"
+            "name": "tables_from_A_min",
+            "LaTeX": "N_{\text{A}} = 30",
+            "description": "If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B"
         },
         {
-            "name": "sum_B_C",
-            "LaTeX": "Sum_{B_C} = 30",
-            "description": "Sum of tables supplied from Supplier B and C must be at least 30"
-        },
-        {
-            "name": "min_orders_total",
-            "LaTeX": "Min_{orders_total} = 7",
-            "description": "At least 7 orders must be placed from Supplier A, B, or C"
-        },
-        {
-            "name": "max_tables_A",
-            "LaTeX": "Max_{tables_A} = 60",
-            "description": "Maximum number of tables that can be supplied from Supplier A"
+            "name": "max_tables_from_A",
+            "LaTeX": "N_{\text{maxA}} = 60",
+            "description": "Total tables supplied from Supplier A can not exceed 60"
         }
     ],
     "OBJECTIVE": {
-        "query": "Minimize total cost of the order",
-        "LaTeX": "\\min \\sum_{O \in O} (C_A \\cdot x_A + C_B \\cdot x_B + C_C \\cdot x_C)"
-    },
-    "CONSTRAINTS": [
-        {
-            "rule_id": 1,
-            "name": "Order_Count",
-            "query": "The restaurant needs to order at least 150 tables.",
-            "LaTeX": "\\sum_{O \in O} (T_A \\cdot x_A + T_B \\cdot x_B + T_C \\cdot x_C) \\geq Min_{tables}"
-        },
-        {
-            "rule_id": 2,
-            "name": "Order_Max",
-            "query": "The restaurant needs to order no more than 600 tables.",
-            "LaTeX": "\\sum_{O \in O} (T_A \\cdot x_A + T_B \\cdot x_B + T_C \\cdot x_C) \\leq Max_{tables}"
-        }
+        "query": "goal",
+        "LaTeX": "\\min \\sum_{i \\in I} P_i x_i"
+    }

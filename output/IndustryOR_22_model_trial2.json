@@ -1,109 +1,111 @@
 {
     "SETS": {
-        "query": "Set of 3 products (A1, A2, A3) and 22 time periods (t1, t2,..., t22)",
-        "LaTeX": "I = \\{A1, A2, A3\\}, T = \\{t1, t2,..., t22\\}"
+        "query": "indices definition",
+        "LaTeX": "\\text{let } i \\in \\{A_1, A_2, A_3\\}"
     },
     "VARIABLES": [
         {
-            "name": "x_it",
-            "type": "Binary",
-            "LaTeX": "x_{i,t} \\in \\{0, 1\\}, \\forall i \\in I, t \\in T",
-            "description": "Indicator variable: 1 if product i is produced in period t"
+            "name": "x_A1",
+            "type": "Cont",
+            "LaTeX": "x_{A1} \\in \\mathbb{R}^+",
+            "description": "Quantity of product A1 produced"
+        },
+        {
+            "name": "x_A2",
+            "type": "Cont",
+            "LaTeX": "x_{A2} \\in \\mathbb{R}^+",
+            "description": "Quantity of product A2 produced"
+        },
+        {
+            "name": "x_A3",
+            "type": "Cont",
+            "LaTeX": "x_{A3} \\in \\mathbb{R}^+",
+            "description": "Quantity of product A3 produced"
+        },
+        {
+            "name": "y_A1",
+            "type": "Bin",
+            "LaTeX": "y_{A1} \\in \\{0, 1\\}",
+            "description": "Decision variable for producing A1"
         }
     ],
     "PARAMETERS": [
         {
-            "name": "demand_A1",
-            "LaTeX": "\\text{demand}_{A1} = 5300",
-            "description": "Maximum demand for product A1"
+            "name": "P",
+            "LaTeX": "P = 100",
+            "description": "Conversion factor from kg to 100kg"
         },
         {
-            "name": "demand_A2",
-            "LaTeX": "\\text{demand}_{A2} = 4500",
-            "description": "Maximum demand for product A2"
+            "name": "Selling_Price_A1",
+            "LaTeX": "S_{A1} = 124",
+            "description": "Selling price per 100kg of product A1"
         },
         {
-            "name": "demand_A3",
-            "LaTeX": "\\text{demand}_{A3} = 5400",
-            "description": "Maximum demand for product A3"
+            "name": "Selling_Price_A2",
+            "LaTeX": "S_{A2} = 109",
+            "description": "Selling price per 100kg of product A2"
         },
         {
-            "name": "price_A1",
-            "LaTeX": "P_{A1} = 124",
-            "description": "Selling price of product A1"
+            "name": "Selling_Price_A3",
+            "LaTeX": "S_{A3} = 115",
+            "description": "Selling price per 100kg of product A3"
         },
         {
-            "name": "price_A2",
-            "LaTeX": "P_{A2} = 109",
-            "description": "Selling price of product A2"
-        },
-        {
-            "name": "price_A3",
-            "LaTeX": "P_{A3} = 115",
-            "description": "Selling price of product A3"
-        },
-        {
-            "name": "cost_A1",
+            "name": "Production_Cost_A1",
             "LaTeX": "C_{A1} = 73.30",
-            "description": "Production cost of product A1"
+            "description": "Production cost per 100kg of product A1"
         },
         {
-            "name": "cost_A2",
+            "name": "Production_Cost_A2",
             "LaTeX": "C_{A2} = 52.90",
-            "description": "Production cost of product A2"
+            "description": "Production cost per 100kg of product A2"
         },
         {
-            "name": "cost_A3",
+            "name": "Production_Cost_A3",
             "LaTeX": "C_{A3} = 65.40",
-            "description": "Production cost of product A3"
+            "description": "Production cost per 100kg of product A3"
         },
         {
-            "name": "quota_A1",
-            "LaTeX": "Quota_{A1} = 500",
-            "description": "Maximum daily production quota for product A1"
+            "name": "Activation_Cost_A1",
+            "LaTeX": "F_{A1} = 170000",
+            "description": "Activation cost for product A1"
         },
         {
-            "name": "quota_A2",
-            "LaTeX": "Quota_{A2} = 450",
-            "description": "Maximum daily production quota for product A2"
+            "name": "Activation_Cost_A2",
+            "LaTeX": "F_{A2} = 150000",
+            "description": "Activation cost for product A2"
         },
         {
-            "name": "quota_A3",
-            "LaTeX": "Quota_{A3} = 550",
-            "description": "Maximum daily production quota for product A3"
+            "name": "Activation_Cost_A3",
+            "LaTeX": "F_{A3} = 100000",
+            "description": "Activation cost for product A3"
         },
         {
-            "name": "activation_cost_A1",
-            "LaTeX": "ActivationCost_{A1} = 170000",
-            "description": "Fixed activation cost for product A1"
-        },
-        {
-            "name": "activation_cost_A2",
-            "LaTeX": "ActivationCost_{A2} = 150000",
-            "description": "Fixed activation cost for product A2"
-        },
-        {
-            "name": "activation_cost_A3",
-            "LaTeX": "ActivationCost_{A3} = 100000",
-            "description": "Fixed activation cost for product A3"
-        },
-        {
-            "name": "minimum_batch_A1",
-            "LaTeX": "MinBatch_{A1} = 20",
+            "name": "Minimum_Batch_A1",
+            "LaTeX": "B_{A1} = 20",
             "description": "Minimum production batch for product A1"
         },
         {
-            "name": "minimum_batch_A2",
-            "LaTeX": "MinBatch_{A2} = 20",
+            "name": "Minimum_Batch_A2",
+            "LaTeX": "B_{A2} = 20",
             "description": "Minimum production batch for product A2"
         },
         {
-            "name": "minimum_batch_A3",
-            "LaTeX": "MinBatch_{A3} = 16",
+            "name": "Minimum_Batch_A3",
+            "LaTeX": "B_{A3} = 16",
             "description": "Minimum production batch for product A3"
         },
         {
-            "name": "total_production_limit",
-            "LaTeX": "TotalProductionLimit = 1210",
+            "name": "Total_Production_Limit",
+            "LaTeX": "T = 1210",
             "description": "Total production limit in tons"
+        },
+        {
+            "name": "Days_Per_Month",
+            "LaTeX": "D = 22",
+            "description": "Number of days in a month"
         }
+    ],
+    "OBJECTIVE": {
+        "query": "Maximize Total_Revenue",
+        "LaTeX": "\\max \\sum_{i \\in \\{A_1, A_2, A_3\\}}

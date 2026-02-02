@@ -1,89 +1,53 @@
 {
-    "SETS": {
-        "query": "Set of 3 product types (I, II, III), 2 processing stages (A, B), 2 equipment types for stage A (A1, A2), and 3 equipment types for stage B (B1, B2, B3)",
-        "LaTeX": "P = \{I, II, III\}, S = \{A, B\}, E_A = \{A1, A2\}, E_B = \{B1, B2, B3\}"
-    },
     "VARIABLES": [
         {
-            "name": "x_ip",
-            "type": "Binary",
-            "LaTeX": "x_{i,p} \in \{0, 1\}, \forall i \in P, p \in S",
-            "description": "Indicator variable indicating whether product i is processed in stage p"
-        }
-    ],
-    "PARAMETERS": [
-        {
-            "name": "raw_material_cost_I",
-            "LaTeX": "raw\_material\_cost_{I} = 0.25",
-            "description": "Raw material cost for product I"
+            "name": "x_i",
+            "type": "INTEGER",
+            "LaTeX": "x_i \\in \\mathbb{Z}^+",
+            "description": "Quantity of Product I produced"
         },
         {
-            "name": "raw_material_cost_II",
-            "LaTeX": "raw\_material\_cost_{II} = 0.35",
-            "description": "Raw material cost for product II"
+            "name": "x_ii",
+            "type": "INTEGER",
+            "LaTeX": "x_ii \\in \\mathbb{Z}^+",
+            "description": "Quantity of Product II produced"
         },
         {
-            "name": "raw_material_cost_III",
-            "LaTeX": "raw\_material\_cost_{III} = 0.50",
-            "description": "Raw material cost for product III"
-        },
-        {
-            "name": "unit_price_I",
-            "LaTeX": "unit\_price_{I} = 1.25",
-            "description": "Unit price for product I"
-        },
-        {
-            "name": "unit_price_II",
-            "LaTeX": "unit\_price_{II} = 2.00",
-            "description": "Unit price for product II"
-        },
-        {
-            "name": "unit_price_III",
-            "LaTeX": "unit\_price_{III} = 2.80",
-            "description": "Unit price for product III"
-        },
-        {
-            "name": "fixed_cost_A1",
-            "LaTeX": "fixed\_cost_{A1} = 321",
-            "description": "Fixed cost for equipment A1 at full capacity"
-        },
-        {
-            "name": "fixed_cost_A2",
-            "LaTeX": "fixed\_cost_{A2} = 250",
-            "description": "Fixed cost for equipment A2 at full capacity"
-        },
-        {
-            "name": "fixed_cost_B1",
-            "LaTeX": "fixed\_cost_{B1} = 783",
-            "description": "Fixed cost for equipment B1 at full capacity"
-        },
-        {
-            "name": "fixed_cost_B2",
-            "LaTeX": "fixed\_cost_{B2} = 200",
-            "description": "Fixed cost for equipment B2 at full capacity"
-        },
-        {
-            "name": "total_production_I_limit",
-            "LaTeX": "total\_production_{I} = 1210",
-            "description": "Total production limit for product I"
-        },
-        {
-            "name": "total_production_I_and_III_limit",
-            "LaTeX": "total\_production_{I,III} = 1510",
-            "description": "Total production limit for product I and III"
-        },
-        {
-            "name": "total_production_II_limit",
-            "LaTeX": "total\_production_{II} = 800",
-            "description": "Total production limit for product II"
-        },
-        {
-            "name": "total_production_I_II_III_limit",
-            "LaTeX": "total\_production_{I,II,III} = 1509",
-            "description": "Total production limit for product I, II, and III"
+            "name": "x_iii",
+            "type": "INTEGER",
+            "LaTeX": "x_iii \\in \\mathbb{Z}^+",
+            "description": "Quantity of Product III produced"
         }
     ],
     "OBJECTIVE": {
-        "query": "Maximize total profit (Revenue - Fixed Cost)",
-        "LaTeX": "\\max \\sum_{i \\in P} \\sum_{p \\in S} (unit\_price_{i} \\cdot x_{i,p}) - \\sum_{i \\in P} \\sum_{p \\in S} (fixed\_cost_{p} \\cdot x_{i,p})"
-    }
+        "query": "sum(p_i * x_i, p_ii * x_ii, p_iii * x_iii) - sum(c_a1 * e_a1 * x_i, c_a2 * e_a2 * x_i, c_b1 * e_b1 * x_ii, c_b2 * e_b2 * x_iii, c_b3 * e_b3 * x_iii)",
+        "goal": "MAX",
+        "LaTeX": "\\max Z = \\sum_{i \\in {I, II, III}} p_i x_i - \\sum_{j \\in {A1, A2, B1, B2, B3}} c_j e_j x_j"
+    },
+    "CONSTRAINTS": [
+        {
+            "rule_id": "R1",
+            "query": "x_i <= 1200",
+            "LaTeX": "x_i \\le 1200",
+            "description": "The total production of Product I can not exceed 1,200."
+        },
+        {
+            "rule_id": "R2",
+            "query": "x_i + x_iii <= 1510",
+            "LaTeX": "x_i + x_iii \\le 1510",
+            "description": "The total production of Product I and III can not exceed 1,510."
+        },
+        {
+            "rule_id": "R3",
+            "query": "x_ii <= 800",
+            "LaTeX": "x_ii \\le 800",
+            "description": "The total production of Product II can not exceed 800."
+        },
+        {
+            "rule_id": "R4",
+            "query": "x_i + x_ii + x_iii <= 1509",
+            "LaTeX": "x_i + x_ii + x_iii \\le 1509",
+            "description": "The total production of Product I, II, and III can not exceed 1,509."
+        }
+    ]
+}

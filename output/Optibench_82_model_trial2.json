@@ -1,107 +1,71 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "I = \\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}"
-    },
     "VARIABLES": [
         {
-            "name": "y_monday",
+            "name": "x_1",
+            "type": "INTEGER",
+            "LaTeX": "x_{1} \in \mathbb{Z}^+",
+            "description": "Number of employees working on day 1"
+        },
+        {
+            "name": "x_2",
+            "type": "INTEGER",
+            "LaTeX": "x_{2} \in \mathbb{Z}^+",
+            "description": "Number of employees working on day 2"
+        },
+        {
+            "name": "x_3",
+            "type": "INTEGER",
+            "LaTeX": "x_{3} \in \mathbb{Z}^+",
+            "description": "Number of employees working on day 3"
+        },
+        {
+            "name": "x_4",
+            "type": "INTEGER",
+            "LaTeX": "x_{4} \in \mathbb{Z}^+",
+            "description": "Number of employees working on day 4"
+        },
+        {
+            "name": "x_5",
+            "type": "INTEGER",
+            "LaTeX": "x_{5} \in \mathbb{Z}^+",
+            "description": "Number of employees working on day 5"
+        },
+        {
+            "name": "x_6",
+            "type": "INTEGER",
+            "LaTeX": "x_{6} \in \mathbb{Z}^+",
+            "description": "Number of employees working on day 6"
+        },
+        {
+            "name": "x_7",
+            "type": "INTEGER",
+            "LaTeX": "x_{7} \in \mathbb{Z}^+",
+            "description": "Number of employees working on day 7"
+        },
+        {
+            "name": "y_1",
             "type": "Binary",
-            "LaTeX": "y_{\\text{Monday}} \\in \\{0, 1\\}",
-            "description": "1 if Monday team is formed, 0 otherwise"
-        },
-        {
-            "name": "y_tuesday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Tuesday}} \\in \\{0, 1\\}",
-            "description": "1 if Tuesday team is formed, 0 otherwise"
-        },
-        {
-            "name": "y_wednesday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Wednesday}} \\in \\{0, 1\\}",
-            "description": "1 if Wednesday team is formed, 0 otherwise"
-        },
-        {
-            "name": "y_thursday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Thursday}} \\in \\{0, 1\\}",
-            "description": "1 if Thursday team is formed, 0 otherwise"
-        },
-        {
-            "name": "y_friday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Friday}} \\in \\{0, 1\\}",
-            "description": "1 if Friday team is formed, 0 otherwise"
-        },
-        {
-            "name": "y_saturday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Saturday}} \\in \\{0, 1\\}",
-            "description": "1 if Saturday team is formed, 0 otherwise"
-        },
-        {
-            "name": "y_sunday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Sunday}} \\in \\{0, 1\\}",
-            "description": "1 if Sunday team is formed, 0 otherwise"
-        },
-        {
-            "name": "x_monday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Monday}} \\in \\mathbb{Z}^+",
-            "description": "Number of employees in Monday team"
-        },
-        {
-            "name": "x_tuesday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Tuesday}} \\in \\mathbb{Z}^+",
-            "description": "Number of employees in Tuesday team"
-        },
-        {
-            "name": "x_wednesday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Wednesday}} \\in \\mathbb{Z}^+",
-            "description": "Number of employees in Wednesday team"
-        },
-        {
-            "name": "x_thursday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Thursday}} \\in \\mathbb{Z}^+",
-            "description": "Number of employees in Thursday team"
-        },
-        {
-            "name": "x_friday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Friday}} \\in \\mathbb{Z}^+",
-            "description": "Number of employees in Friday team"
-        },
-        {
-            "name": "x_saturday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Saturday}} \\in \\mathbb{Z}^+",
-            "description": "Number of employees in Saturday team"
-        },
-        {
-            "name": "x_sunday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Sunday}} \\in \\mathbb{Z}^+",
-            "description": "Number of employees in Sunday team"
+            "LaTeX": "y_{1} \in \{0, 1\}",
+            "description": "Indicator variable for whether employees start their five-day shift on Monday"
         }
     ],
-    "PARAMETERS": [
+    "OBJECTIVE": {
+        "query": "sum(x_i for i in range(1, 8))",
+        "goal": "MIN",
+        "LaTeX": "\min Z = \sum_{i=1}^{7} x_i"
+    },
+    "CONSTRAINTS": [
         {
-            "name": "employees_monday",
-            "LaTeX": "P_{\\text{Monday}} = 15",
-            "description": "Number of employees starting on Monday"
+            "rule_id": "C1",
+            "query": "x_1 - x_5 <= 7 * y_1",
+            "LaTeX": "x_{1} - x_{5} \leq 7 \cdot y_{1}",
+            "description": "The difference between the number of employees who start their five-day shift on Monday and those who start on Wednesday must be less than 7."
         },
         {
-            "name": "employees_tuesday",
-            "LaTeX": "P_{\\text{Tuesday}} = 13",
-            "description": "Number of employees starting on Tuesday"
-        },
-        {
-            "name": "employees_wednesday",
-            "LaTeX": "P_{\\text{Wednesday}} = 15",
-            "description": "Number of employees starting on Wednesday"
+            "rule_id": "C2",
+            "query": "x_7 + x_1 >= 3 * y_1",
+            "LaTeX": "x_{7} + x_{1} \geq 3 \cdot y_{1}",
+            "description": "At least three employees must be assigned to a schedule where they have both Sunday and Monday off consecutively."
         }
+    ]
+}

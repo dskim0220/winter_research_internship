@@ -1,10 +1,40 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the 'LaTeX' formulations, and the objective function is flawed.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations as such, but the placeholders need to be replaced with actual numbers.",
-    "DATA_FIDELITY_CHECK": "Numerical data is missing or set to 0. The 'employees_monday', 'employees_tuesday', and 'employees_wednesday' parameters should be replaced with actual numbers.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M links are provided based on the logic in the queries. The constraints related to the number of employees starting on Monday and Wednesday and the requirement for Sunday and Monday off are not correctly formulated.",
-    "LINEARITY_VALIDATION": "The model does not strictly adhere to linear constraints due to the presence of binary variables and the lack of proper coupling between continuous and binary variables.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. The units need to be consistent.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the 'LaTeX' formulations. For example, the constraint regarding the difference in the number of employees starting on Monday and Wednesday is not properly represented. Additionally, the constraints for the minimum batch and activation time are missing."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            15,
+            13,
+            15,
+            18,
+            14,
+            16,
+            10
+        ],
+        "latex_numbers": [
+            15,
+            13,
+            15,
+            18,
+            14,
+            16,
+            10
+        ],
+        "mismatch": "Numbers in the problem description do not match the numbers in the LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "C1",
+            "status": "FAIL",
+            "reason": "The constraint does not correctly link the binary variable with the quantity. The correct formulation should be $x_1 - x_5 \\leq 7 \\cdot y_1$ and $x_1 - x_5 \\geq -7 \\cdot y_1$. The current formulation only checks one direction."
+        },
+        {
+            "rule_id": "C2",
+            "status": "FAIL",
+            "reason": "The constraint does not correctly link the binary variable with the quantity. The correct formulation should be $x_7 + x_1 \\geq 3 \\cdot y_1$. The current formulation only checks one direction."
+        }
+    ],
+    "FINAL_VERDICT": "There are critical failures in the constraints. Specifically, the constraints need to be adjusted to ensure they correctly link the binary variables with the quantities. Additionally, verify the Big-M logic for each $x$ and $y$ pair."
 }

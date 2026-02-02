@@ -16,54 +16,49 @@ from custom_callback_qwen import get_custom_callback, get_llm
 
 class CodeGeneratorV2(BaseExpert):
 
-    ROLE_DESCRIPTION = 'You are a Gurobi Script Expert. Your mission is to generate a Python script that is 100 percents executable without any external data dependencies.'
-    FORWARD_TASK = '''Convert the provided JSON model into a standalone Gurobi Python script.
+    ROLE_DESCRIPTION = 'Your mission is to generate a Python script that is 100 percents executable without any external data dependencies.'
+    FORWARD_TASK = '''Translate the provided JSON model into a standalone, executable Python script.
 
-[STRICT RULES: NO SYMBOLIC PLACEHOLDERS]
-1. ZERO SYMBOLIC ABSTRACTION: Do NOT use variables like 'sets["PARAMETERS"]' or 'P[i]' in the code.
-2. DIRECT VALUE MAPPING: 
-   - Look at the "query" field to find the ACTUAL NUMBERS (e.g., 124, 109, 170000).
-   - Look at the "LaTeX" field to understand the MATHEMATICAL LOGIC.
-   - Combine them to write explicit code (e.g., `m.setObjective(124 * x1 + 109 * x2, GRB.MAXIMIZE)`).
-3. HARD-CODED DATA SECTION: Explicitly define all parameters as numeric constants at the beginning of the script based on the "query" values.
-4. UNIT CONVERSION: If the 'query' mentions 'tons' but the model uses '100kg units', calculate the numeric value (e.g., 1210 tons = 12100 units) and use that number directly.
+[STRICT RULES]
+1. LITERAL CODING: Do NOT use abstract loops or symbolic placeholders (e.g., `params["A1"]`). Hard-code every value.
+2. SOURCE MAPPING: 
+   - Logic: Use the 'LaTeX' field as the mathematical blueprint.
+   - Numbers: Use the 'query' field to extract exact numerical values (e.g., 170000, 124).
+3. DATA SECTION: Define all parameters as Python constants at the top of the script.
+4. UNIT SYNC: Perform necessary unit conversions (e.g., tons to kg) based on the 'query' context before defining constants.
+5. NO PARSING: The script must not contain any JSON loading or parsing logic. It must be 100 percents self-contained.
 
-[MODELING GUIDELINE]
-- Variables: Check "VARIABLES" for (Binary, Integer, Continuous).
-- Constraints: Implement the "LaTeX" logic using the specific numbers from its paired "query".
-- Logic: Use Big-M (e.g., 1000000) for linking constraints if the LaTeX suggests conditional logic.    
 
-JSON Input:
-{model_json}
+Input: {model_json}
 
 [OUTPUT FORMAT]
 - Return ONLY the Python code.
 - Every constant (Price, Cost, Limit) must be defined as a Python variable (e.g., price_A1 = 124) based on the "query".
 - Do NOT include any code that attempts to read or parse JSON.
 
-Format Example:
+[OUTPUT FORMAT]
 ```python
 import gurobipy as gp
 from gurobipy import GRB
 
-# 1. Data Section (Directly extracted from JSON 'query' fields)
-# Define numeric constants here (e.g., demand_A1 = 5300)
-# DO NOT USE symbolic placeholders.
+# 1. Constants (Derived from 'query' values)
+# Example: price_A1 = 124
 
 # 2. Model Initialization
-m = gp.Model("production_optimization")
+m = gp.Model("optimization_model")
 
-# 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
+# 3. Variables (Check 'type' in VARIABLES: Binary/Int/Cont)
 
-# 4. Objective (Use 'LaTeX' logic + 'query' numbers)
+# 4. Objective (LaTeX structure + query numbers)
 
-# 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
-# Ensure unit consistency (e.g., 1,210 tons -> 12100 in 100kg units)
+# 5. Constraints (LaTeX structure + query numbers)
+# Ensure Big-M values are large enough (e.g., 1e6) if logic requires.
 
-# 6. Optimization and Output
+# 6. Optimization & Output
 m.optimize()
-# ... (Print results for each variable)
-
+if m.status == GRB.OPTIMAL:
+    for v in m.getVars():
+        print(f"{{v.varName}}: {{v.x}}")
 '''
 
     def __init__(self, model):

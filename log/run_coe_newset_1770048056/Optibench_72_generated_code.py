@@ -1,0 +1,37 @@
+import numpy as np
+from scipy.optimize import linprog
+
+# Coefficients for the objective function (negative because linprog minimizes)
+c = [-100000, -150000, -200000, -120000, -180000]
+
+# Coefficients for the inequality constraints
+A = [
+    [1, 1, 1, 1, 1],  # x1 + x2 + x3 + x4 + x5 = 30
+    [1, -2, 0, 0, 0],  # x1 >= 2*x2
+    [1, 1, 1, 1, 0],  # x1 + x2 + x3 + x4 + x5 <= 10
+    [0, 0, 1, 0, 1],  # x3 + x5 <= 28
+    [1, 1, 1, 1, 1]   # x1 >= 1, x2 >= 1, x3 >= 1, x4 >= 1, x5 >= 1
+]
+
+# Right-hand side values for the inequality constraints
+b = [30, 2, 10, 28, 5]
+
+# Coefficients for the equality constraint (marketing cost budget)
+A_eq = [[20000, 30000, 40000, 25000, 35000]]
+b_eq = [2500000]
+
+# Bounds for the variables (non-negative and within the constraints)
+x_bounds = [(1, None), (1, None), (1, None), (1, None), (1, None)]
+
+# Solve the linear programming problem
+result = linprog(c, A_ub=A, b_ub=b, A_eq=A_eq, b_eq=b_eq, bounds=x_bounds, method='highs')
+
+# Extract the optimal solution
+optimal_solution = result.x
+optimal_profit = result.fun
+
+print("Optimal Solution:")
+for i, product in enumerate(['AppX', 'AppY', 'AppZ', 'AppW', 'AppV']):
+    print(f"{product}: {optimal_solution[i]} teams")
+
+print(f"Maximum Average Net Profit per Team: ${optimal_profit:.2f}")

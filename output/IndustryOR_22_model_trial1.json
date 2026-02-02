@@ -1,100 +1,71 @@
 {
-    "SETS": {
-        "query": "Set of 3 products (A1, A2, A3) and 22 time periods (t1, t2,..., t22)",
-        "LaTeX": "I = \\{A1, A2, A3\\}, T = \\{t1, t2,..., t22\\}"
-    },
     "VARIABLES": [
-        {
-            "name": "x_it",
-            "type": "Binary",
-            "LaTeX": "x_{i,t} \in \{0, 1\}, \forall i \in I, t \in T",
-            "description": "Indicator variable: 1 if product i is produced in period t"
+        { 
+          "name": "x_A1", 
+          "type": "CONTINUOUS", 
+          "LaTeX": "x_{A1} \ge 0", 
+          "description": "Quantity of Product A1 produced"
+        },
+        { 
+          "name": "x_A2", 
+          "type": "CONTINUOUS", 
+          "LaTeX": "x_{A2} \ge 0", 
+          "description": "Quantity of Product A2 produced"
+        },
+        { 
+          "name": "x_A3", 
+          "type": "CONTINUOUS", 
+          "LaTeX": "x_{A3} \ge 0", 
+          "description": "Quantity of Product A3 produced"
+        },
+        { 
+          "name": "y_A1", 
+          "type": "BINARY", 
+          "LaTeX": "y_{A1} \in {0, 1}", 
+          "description": "Binary variable indicating whether Product A1 is produced"
+        },
+        { 
+          "name": "y_A2", 
+          "type": "BINARY", 
+          "LaTeX": "y_{A2} \in {0, 1}", 
+          "description": "Binary variable indicating whether Product A2 is produced"
+        },
+        { 
+          "name": "y_A3", 
+          "type": "BINARY", 
+          "LaTeX": "y_{A3} \in {0, 1}", 
+          "description": "Binary variable indicating whether Product A3 is produced"
         }
     ],
-    "PARAMETERS": [
+    "OBJECTIVE": { 
+      "query": "The specific part of extracted_queries used for objective",
+      "goal": "MAX", 
+      "LaTeX": "\max Z = \sum (p_{A1} \cdot x_{A1} + p_{A2} \cdot x_{A2} + p_{A3} \cdot x_{A3})"
+    },
+    "CONSTRAINTS": [
         {
-            "name": "Price_A1",
-            "LaTeX": "P_{A1} = 124",
-            "description": "Selling price of product A1"
+          "rule_id": "R1",
+          "query": "x_A1 + x_A2 + x_A3 <= 12100",
+          "LaTeX": "x_{A1} + x_{A2} + x_{A3} \le 12100",
+          "description": "The total production of A1, A2, A3 does not exceed 1210 tons."
         },
         {
-            "name": "Price_A2",
-            "LaTeX": "P_{A2} = 109",
-            "description": "Selling price of product A2"
+          "rule_id": "R2",
+          "query": "y_A1 * 57 <= activation_cost_A1",
+          "LaTeX": "y_{A1} \cdot 57 \le 170000",
+          "description": "If the company decides to produce A1, then it must activate production the production lines at least 57 minutes to produce A1."
         },
         {
-            "name": "Price_A3",
-            "LaTeX": "P_{A3} = 115",
-            "description": "Selling price of product A3"
+          "rule_id": "R3",
+          "query": "x_A1 >= min_batch_A1 * y_A1",
+          "LaTeX": "x_{A1} \ge 20 \cdot y_{A1}",
+          "description": "The minimum production batch constraint for A1 is 20 units per day."
         },
         {
-            "name": "Demand_A1",
-            "LaTeX": "D_{A1} = 5300",
-            "description": "Maximum demand for product A1"
-        },
-        {
-            "name": "Demand_A2",
-            "LaTeX": "D_{A2} = 4500",
-            "description": "Maximum demand for product A2"
-        },
-        {
-            "name": "Demand_A3",
-            "LaTeX": "D_{A3} = 5400",
-            "description": "Maximum demand for product A3"
-        },
-        {
-            "name": "Cost_A1",
-            "LaTeX": "C_{A1} = 73.30",
-            "description": "Production cost per 100 kg for product A1"
-        },
-        {
-            "name": "Cost_A2",
-            "LaTeX": "C_{A2} = 52.90",
-            "description": "Production cost per 100 kg for product A2"
-        },
-        {
-            "name": "Cost_A3",
-            "LaTeX": "C_{A3} = 65.40",
-            "description": "Production cost per 100 kg for product A3"
-        },
-        {
-            "name": "Quota_A1",
-            "LaTeX": "Q_{A1} = 500",
-            "description": "Daily production quota for product A1"
-        },
-        {
-            "name": "Quota_A2",
-            "LaTeX": "Q_{A2} = 450",
-            "description": "Daily production quota for product A2"
-        },
-        {
-            "name": "Quota_A3",
-            "LaTeX": "Q_{A3} = 550",
-            "description": "Daily production quota for product A3"
-        },
-        {
-            "name": "Activation_Cost_A1",
-            "LaTeX": "AC_{A1} = 170000",
-            "description": "Activation cost for product A1"
-        },
-        {
-            "name": "Minimum_Batch_A1",
-            "LaTeX": "MB_{A1} = 20",
-            "description": "Minimum batch for product A1"
-        },
-        {
-            "name": "Production_Limit",
-            "LaTeX": "PL = 1210",
-            "description": "Total production limit in tons"
-        },
-        {
-            "name": "Activation_Time",
-            "LaTeX": "AT = 57",
-            "description": "Activation time constraint in minutes"
+          "rule_id": "R4",
+          "query": "x_A2 >= min_batch_A2 * y_A2",
+          "LaTeX": "x_{A2} \ge 20 \cdot y_{A2}",
+          "description": "The minimum production batch constraint for A2 is 20 units per day."
         }
-    ],
-    "OBJECTIVE": {
-        "query": "Maximize total revenue",
-        "LaTeX": "\\max \\sum_{i \\in I} \\sum_{t \\in T} (P_i \\cdot x_{i,t} - C_i \\cdot x_{i,t} \\cdot t_{i,t} - AC_i \\cdot y_{i,t} - MB_i \\cdot z_{i,t})",
-        "description": "Revenue from selling products minus production cost and activation cost, with binary variables to enforce minimum batch and activation time."
-    }
+    ]
+}

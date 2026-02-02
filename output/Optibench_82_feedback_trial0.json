@@ -1,10 +1,40 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. The queries do not match the LaTeX formulations, and the mathematical integrity is compromised.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. The queries do not reflect the problem description accurately.",
-    "DATA_FIDELITY_CHECK": "Numerical values in the 'query' fields are placeholders (e.g., 0), which do not correspond to the actual numbers in the LaTeX formulations. All numbers are set to 0.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present to link the binary variables with the continuous quantities as described in the queries.",
-    "LINEARITY_VALIDATION": "The model does not include variable-to-variable multiplication, but it lacks the necessary constraints to ensure linearity.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed; the units are consistent but not explicitly stated.",
-    "CONSTRAINTS_FEEDBACK": "The constraints do not accurately reflect the problem description. For example, the requirement for the difference between Monday and Wednesday employees to be less than 7 is not properly modeled. Additionally, the minimum batch and activation time constraints are missing."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            15,
+            13,
+            15,
+            18,
+            14,
+            16,
+            10
+        ],
+        "latex_numbers": [
+            15,
+            13,
+            15,
+            18,
+            14,
+            16,
+            10
+        ],
+        "mismatch": "Numbers in the problem description do not match the numbers in the LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "C1",
+            "status": "FAIL",
+            "reason": "The constraint 'x_wednesday - x_monday < 7' should be checked for logical consistency. The current formulation does not directly link the binary variables or ensure the difference is less than 7."
+        },
+        {
+            "rule_id": "C2",
+            "status": "PASS",
+            "reason": "The constraint 'x_sunday_monday >= 3' is correctly formulated and links to the binary variable $x_{sunday_monday}$."
+        }
+    ],
+    "FINAL_VERDICT": "There is a critical failure in the data fidelity between the problem description and the LaTeX formulations. Additionally, the constraint 'x_wednesday - x_monday < 7' needs to be re-evaluated for logical consistency. Please ensure that the binary logic and Big-M constraints are correctly implemented."
 }

@@ -1,10 +1,27 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains several issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the 'LaTeX' formulations, and the mathematical integrity is compromised.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations listed as the 'query' fields are not faithfully extracted from the problem description.",
-    "DATA_FIDELITY_CHECK": "Numerical data is missing or set to 0. For example, the estimated revenue and cost values are not provided in the 'query' fields.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided to link binary and continuous variables based on the logic in the queries.",
-    "LINEARITY_VALIDATION": "Variable-to-variable multiplication is present, violating the MILP standard. For instance, the objective function includes terms like (Price - Cost) * Quantity, which is not linear.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed. The units of the parameters and variables are not consistent.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are poorly formulated and do not align with the problem description. For example, the minimum batch constraint is missing, and the total production limit is not correctly specified."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            120,
+            150,
+            7
+        ],
+        "latex_numbers": [
+            120,
+            150,
+            7
+        ],
+        "mismatch": "Numbers in the problem description do not match those in the LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "FAIL",
+            "reason": "The constraint does not match the problem description. The correct constraint should be x_AppX + x_AppY + x_AppW + x_AppV <= 10."
+        }
+    ],
+    "FINAL_VERDICT": "There is a critical failure in the constraints verification. Specifically, the constraint R1 does not align with the problem description. Please review and correct the constraint to ensure it matches the requirements."
 }

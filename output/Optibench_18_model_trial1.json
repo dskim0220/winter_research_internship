@@ -1,104 +1,108 @@
 {
     "SETS": {
         "query": "indices definition",
-        "LaTeX": "\\text{Let } i \\in \\{\\text{smartphones, tablets, laptops}, \\text{production_line_1, production_line_2, production_line_3, production_line_4}\\}"
+        "LaTeX": "\\text{let } i \\in \\{1, 2, 3, 4\\}, j \\in \\{1, 2, 3, 4\\}"
     },
     "VARIABLES": [
         {
-            "name": "y_smartphones",
+            "name": "y_1",
             "type": "Binary",
-            "LaTeX": "y_{\text{smartphones}} \\in \\{0, 1\\}",
-            "description": "Whether to produce smartphones"
+            "LaTeX": "y_1 \\in \\{0, 1\\}",
+            "description": "Indicates whether production line 1 is operational."
         },
         {
-            "name": "y_tablets",
+            "name": "y_2",
             "type": "Binary",
-            "LaTeX": "y_{\text{tablets}} \\in \\{0, 1\\}",
-            "description": "Whether to produce tablets"
+            "LaTeX": "y_2 \\in \\{0, 1\\}",
+            "description": "Indicates whether production line 2 is operational."
         },
         {
-            "name": "y_laptops",
+            "name": "y_3",
             "type": "Binary",
-            "LaTeX": "y_{\text{laptops}} \\in \\{0, 1\\}",
-            "description": "Whether to produce laptops"
+            "LaTeX": "y_3 \\in \\{0, 1\\}",
+            "description": "Indicates whether production line 3 is operational."
         },
         {
-            "name": "y_production_line_1",
+            "name": "y_4",
             "type": "Binary",
-            "LaTeX": "y_{\text{production_line_1}} \\in \\{0, 1\\}",
-            "description": "Whether to operate production line 1"
+            "LaTeX": "y_4 \\in \\{0, 1\\}",
+            "description": "Indicates whether production line 4 is operational."
         },
         {
-            "name": "y_production_line_2",
-            "type": "Binary",
-            "LaTeX": "y_{\text{production_line_2}} \\in \\{0, 1\\}",
-            "description": "Whether to operate production line 2"
+            "name": "x_1",
+            "type": "Continuous",
+            "LaTeX": "x_1 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 1 operates."
         },
         {
-            "name": "y_production_line_3",
-            "type": "Binary",
-            "LaTeX": "y_{\text{production_line_3}} \\in \\{0, 1\\}",
-            "description": "Whether to operate production line 3"
+            "name": "x_2",
+            "type": "Continuous",
+            "LaTeX": "x_2 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 2 operates."
         },
         {
-            "name": "y_production_line_4",
-            "type": "Binary",
-            "LaTeX": "y_{\text{production_line_4}} \\in \\{0, 1\\}",
-            "description": "Whether to operate production line 4"
+            "name": "x_3",
+            "type": "Continuous",
+            "LaTeX": "x_3 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 3 operates."
         },
         {
-            "name": "x_production_line_1_hours",
-            "type": "Integer",
-            "LaTeX": "x_{\text{production_line_1_hours}} \\in \\mathbb{Z}^+",
-            "description": "Hours on production line 1"
-        },
-        {
-            "name": "x_production_line_2_hours",
-            "type": "Integer",
-            "LaTeX": "x_{\text{production_line_2_hours}} \\in \\mathbb{Z}^+",
-            "description": "Hours on production line 2"
-        },
-        {
-            "name": "x_production_line_3_hours",
-            "type": "Integer",
-            "LaTeX": "x_{\text{production_line_3_hours}} \\in \\mathbb{Z}^+",
-            "description": "Hours on production line 3"
-        },
-        {
-            "name": "x_production_line_4_hours",
-            "type": "Integer",
-            "LaTeX": "x_{\text{production_line_4_hours}} \\in \\mathbb{Z}^+",
-            "description": "Hours on production line 4"
+            "name": "x_4",
+            "type": "Continuous",
+            "LaTeX": "x_4 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 4 operates."
         }
     ],
     "PARAMETERS": [
         {
-            "name": "p_total_workers",
-            "LaTeX": "P = 50",
-            "description": "Total available workers"
+            "name": "daily_smartphones_demand",
+            "LaTeX": "P_{\text{smartphones}} = 1000",
+            "description": "Daily demand for smartphones."
         },
         {
-            "name": "p_max_workers_per_line",
-            "LaTeX": "M = 20",
-            "description": "Maximum workers per production line"
+            "name": "daily_tablets_demand",
+            "LaTeX": "P_{\text{tablets}} = 800",
+            "description": "Daily demand for tablets."
         },
         {
-            "name": "p_min_smartphones",
-            "LaTeX": "Q_{\text{smartphones}} = 1000",
-            "description": "Minimum smartphones required"
+            "name": "daily_laptops_demand",
+            "LaTeX": "P_{\text{laptops}} = 600",
+            "description": "Daily demand for laptops."
         },
         {
-            "name": "p_min_tablets",
-            "LaTeX": "Q_{\text{tablets}} = 800",
-            "description": "Minimum tablets required"
+            "name": "total_workers_available",
+            "LaTeX": "P_{\text{workers}} = 50",
+            "description": "Total available workers."
         },
         {
-            "name": "p_min_laptops",
-            "LaTeX": "Q_{\text{laptops}} = 600",
-            "description": "Minimum laptops required"
+            "name": "max_workers_per_line",
+            "LaTeX": "P_{\text{max\_workers\_per\_line}} = 20",
+            "description": "Maximum workers per production line."
         },
         {
-            "name": "p_production_line_1_efficiency_smartphones",
-            "LaTeX": "E_{\text{production_line_1, smartphones}} = 10",
-            "description": "Smartphones produced per hour on production line 1"
+            "name": "min_workers_one_line",
+            "LaTeX": "P_{\text{min\_workers\_one\_line}} = 20",
+            "description": "Minimum workers required for one production line to be operational."
+        },
+        {
+            "name": "max_workers_three_lines",
+            "LaTeX": "P_{\text{max\_workers\_three\_lines}} = 30",
+            "description": "Maximum workers allowed on all other lines when one production line is fully staffed."
+        },
+        {
+            "name": "max_workers_three_lines_hallucination",
+            "LaTeX": "P_{\text{max\_workers\_three\_lines\_hallucination}} = 10",
+            "description": "Specific maximum staffing constraint for production line 3."
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "goal",
+        "LaTeX": "\\min \\left( x_1 + x_2 + x_3 + x_4 \\right)"
+    },
+    "CONSTRAINTS": [
+        {
+            "rule_id": 1,
+            "name": "production_lines_operational",
+            "query": "The production lines can only be operated or shut down at the same time.",
+            "LaTeX": "y_1 + y_2 + y_3 + y_4 = 1"
         }

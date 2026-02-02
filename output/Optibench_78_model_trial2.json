@@ -1,106 +1,71 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } I \\text{ be the set of warehouses (NY, LA, CH, ATL)}; \\text{ let } R \\text{ be the set of regions (1, 2, 3)}"
-    },
     "VARIABLES": [
-        {
-            "name": "y_NY",
-            "type": "Binary",
-            "LaTeX": "y_{NY} \\in \\{0, 1\\}",
-            "description": "1 if New York warehouse is opened, 0 otherwise"
+        { 
+          "name": "y_NY", 
+          "type": "BINARY", 
+          "LaTeX": "y_{NY} \in \{0, 1\}", 
+          "description": "Whether to open New York warehouse"
         },
-        {
-            "name": "y_LA",
-            "type": "Binary",
-            "LaTeX": "y_{LA} \\in \\{0, 1\\}",
-            "description": "1 if Los Angeles warehouse is opened, 0 otherwise"
+        { 
+          "name": "y_LA", 
+          "type": "BINARY", 
+          "LaTeX": "y_{LA} \in \{0, 1\}", 
+          "description": "Whether to open Los Angeles warehouse"
         },
-        {
-            "name": "y_CH",
-            "type": "Binary",
-            "LaTeX": "y_{CH} \\in \\{0, 1\\}",
-            "description": "1 if Chicago warehouse is opened, 0 otherwise"
+        { 
+          "name": "y_CH", 
+          "type": "BINARY", 
+          "LaTeX": "y_{CH} \in \{0, 1\}", 
+          "description": "Whether to open Chicago warehouse"
         },
-        {
-            "name": "y_ATL",
-            "type": "Binary",
-            "LaTeX": "y_{ATL} \\in \\{0, 1\\}",
-            "description": "1 if Atlanta warehouse is opened, 0 otherwise"
-        },
-        {
-            "name": "x_NY",
-            "type": "Integer",
-            "LaTeX": "x_{NY} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of units shipped from New York warehouse"
-        },
-        {
-            "name": "x_LA",
-            "type": "Integer",
-            "LaTeX": "x_{LA} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of units shipped from Los Angeles warehouse"
-        },
-        {
-            "name": "x_CH",
-            "type": "Integer",
-            "LaTeX": "x_{CH} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of units shipped from Chicago warehouse"
-        },
-        {
-            "name": "x_ATL",
-            "type": "Integer",
-            "LaTeX": "x_{ATL} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of units shipped from Atlanta warehouse"
+        { 
+          "name": "y_AT", 
+          "type": "BINARY", 
+          "LaTeX": "y_{AT} \in \{0, 1\}", 
+          "description": "Whether to open Atlanta warehouse"
         }
     ],
-    "PARAMETERS": [
-        {
-            "name": "p_Name",
-            "LaTeX": "P = 100",
-            "description": "Each warehouse can ship 100 units per week"
+    "OBJECTIVE": { 
+      "query": "The specific part of extracted_queries used for objective",
+      "goal": "MIN", 
+      "LaTeX": "\min Z = \sum_{i \in {1, 2, 3}} (demand_i \cdot cost_NY_to_i \cdot y_{NY} + demand_i \cdot cost_LA_to_i \cdot y_{LA} + demand_i \cdot cost_CH_to_i \cdot y_{CH} + demand_i \cdot cost_AT_to_i \cdot y_{AT})"
+    },
+    "CONSTRAINTS": [
+        { 
+          "rule_id": "R1",
+          "query": "y_LA >= y_NY",
+          "LaTeX": "y_{LA} \ge y_{NY}",
+          "description": "If the New York warehouse is opened, then the Los Angeles warehouse must also be opened."
         },
-        {
-            "name": "Fixed_Cost_NY",
-            "LaTeX": "F_{NY} = 400",
-            "description": "Weekly fixed cost of keeping New York warehouse open"
+        { 
+          "rule_id": "R2",
+          "query": "y_NY + y_LA + y_CH + y_AT <= 2",
+          "LaTeX": "y_{NY} + y_{LA} + y_{CH} + y_{AT} \le 2",
+          "description": "At most two warehouses can be opened."
         },
-        {
-            "name": "Fixed_Cost_LA",
-            "LaTeX": "F_{LA} = 500",
-            "description": "Weekly fixed cost of keeping Los Angeles warehouse open"
+        { 
+          "rule_id": "R3",
+          "query": "y_AT + y_LA >= 1",
+          "LaTeX": "y_{AT} + y_{LA} \ge 1",
+          "description": "Either the Atlanta or the Los Angeles warehouse must be opened."
         },
-        {
-            "name": "Fixed_Cost_CH",
-            "LaTeX": "F_{CH} = 300",
-            "description": "Weekly fixed cost of keeping Chicago warehouse open"
+        { 
+          "rule_id": "R4",
+          "query": "y_NY + y_AT <= 1",
+          "LaTeX": "y_{NY} + y_{AT} \le 1",
+          "description": "The New York and the Atlanta warehouses cannot be opened simultaneously."
         },
-        {
-            "name": "Fixed_Cost_ATL",
-            "LaTeX": "F_{ATL} = 150",
-            "description": "Weekly fixed cost of keeping Atlanta warehouse open"
+        { 
+          "rule_id": "R5",
+          "query": "y_NY + y_CH + y_LA >= 1",
+          "LaTeX": "y_{NY} + y_{CH} + y_{LA} \ge 1",
+          "description": "At least one of the three warehouses (New York, Los Angeles, or Chicago) must be opened."
         },
-        {
-            "name": "Demand_Region_1",
-            "LaTeX": "D_{1} = 80",
-            "description": "Region 1 requires 80 units per week"
-        },
-        {
-            "name": "Demand_Region_2",
-            "LaTeX": "D_{2} = 70",
-            "description": "Region 2 requires 70 units per week"
-        },
-        {
-            "name": "Demand_Region_3",
-            "LaTeX": "D_{3} = 40",
-            "description": "Region 3 requires 40 units per week"
-        },
-        {
-            "name": "Cost_NY_to_Region_1",
-            "LaTeX": "C_{NY,1} = 20",
-            "description": "Cost of sending one unit from New York to Region 1"
-        },
-        {
-            "name": "Cost_NY_to_Region_2",
-            "LaTeX": "C_{NY,2} = 40",
-            "description": "Cost of sending one unit from New York to Region 2"
+        { 
+          "rule_id": "R6",
+          "query": "y_NY + y_CH >= 1",
+          "LaTeX": "y_{NY} + y_{CH} \ge 1",
+          "description": "The New York and the Chicago warehouses might be opened simultaneously."
         }
+    ]
+}

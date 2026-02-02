@@ -1,111 +1,125 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{SET OF PRODUCTION LINES} = \\{1, 2, 3, 4\\}"
-    },
     "VARIABLES": [
-        {
-            "name": "y_1",
-            "type": "Binary",
-            "LaTeX": "y_1 \\in \\{0, 1\\}",
-            "description": "Production line 1 is active"
+        { 
+          "name": "x_1", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{1} \in \mathbb{Z}^+", 
+          "description": "Number of hours production line 1 is operational"
         },
-        {
-            "name": "y_2",
-            "type": "Binary",
-            "LaTeX": "y_2 \\in \\{0, 1\\}",
-            "description": "Production line 2 is active"
+        { 
+          "name": "x_2", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{2} \in \mathbb{Z}^+", 
+          "description": "Number of hours production line 2 is operational"
         },
-        {
-            "name": "y_3",
-            "type": "Binary",
-            "LaTeX": "y_3 \\in \\{0, 1\\}",
-            "description": "Production line 3 is active"
+        { 
+          "name": "x_3", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{3} \in \mathbb{Z}^+", 
+          "description": "Number of hours production line 3 is operational"
         },
-        {
-            "name": "y_4",
-            "type": "Binary",
-            "LaTeX": "y_4 \\in \\{0, 1\\}",
-            "description": "Production line 4 is active"
+        { 
+          "name": "x_4", 
+          "type": "INTEGER", 
+          "LaTeX": "x_{4} \in \mathbb{Z}^+", 
+          "description": "Number of hours production line 4 is operational"
         },
-        {
-            "name": "x_1",
-            "type": "Integer",
-            "LaTeX": "x_1 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours production line 1 operates"
+        { 
+          "name": "y_1", 
+          "type": "BINARY", 
+          "LaTeX": "y_{1} \in {0, 1}", 
+          "description": "Whether production line 1 is operational"
         },
-        {
-            "name": "x_2",
-            "type": "Integer",
-            "LaTeX": "x_2 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours production line 2 operates"
+        { 
+          "name": "y_2", 
+          "type": "BINARY", 
+          "LaTeX": "y_{2} \in {0, 1}", 
+          "description": "Whether production line 2 is operational"
         },
-        {
-            "name": "x_3",
-            "type": "Integer",
-            "LaTeX": "x_3 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours production line 3 operates"
+        { 
+          "name": "y_3", 
+          "type": "BINARY", 
+          "LaTeX": "y_{3} \in {0, 1}", 
+          "description": "Whether production line 3 is operational"
         },
-        {
-            "name": "x_4",
-            "type": "Integer",
-            "LaTeX": "x_4 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours production line 4 operates"
+        { 
+          "name": "y_4", 
+          "type": "BINARY", 
+          "LaTeX": "y_{4} \in {0, 1}", 
+          "description": "Whether production line 4 is operational"
         }
     ],
-    "PARAMETERS": [
+    "OBJECTIVE": { 
+      "query": "x_1 + x_2 + x_3 + x_4",
+      "goal": "MIN",
+      "LaTeX": "\min Z = x_{1} + x_{2} + x_{3} + x_{4}"
+    },
+    "CONSTRAINTS": [
         {
-            "name": "smartphones_per_hour_1",
-            "LaTeX": "P_{1s} = 10",
-            "description": "Smartphones produced per hour by production line 1"
+          "rule_id": "R1",
+          "query": "x_1 + x_2 + x_3 + x_4 >= 1",
+          "LaTeX": "x_{1} + x_{2} + x_{3} + x_{4} \ge 1",
+          "description": "At least one production line must be operational"
         },
         {
-            "name": "tablets_per_hour_1",
-            "LaTeX": "P_{1t} = 5",
-            "description": "Tablets produced per hour by production line 1"
+          "rule_id": "R2",
+          "query": "x_1 + x_2 + x_3 + x_4 <= 4",
+          "LaTeX": "x_{1} + x_{2} + x_{3} + x_{4} \le 4",
+          "description": "Total operational production lines cannot exceed 4"
         },
         {
-            "name": "laptops_per_hour_1",
-            "LaTeX": "P_{1l} = 3",
-            "description": "Laptops produced per hour by production line 1"
+          "rule_id": "R3",
+          "query": "x_1 + x_2 + x_3 + x_4 <= 50",
+          "LaTeX": "x_{1} + x_{2} + x_{3} + x_{4} \le 50",
+          "description": "Total number of workers cannot exceed 50"
         },
         {
-            "name": "smartphones_per_hour_2",
-            "LaTeX": "P_{2s} = 8",
-            "description": "Smartphones produced per hour by production line 2"
+          "rule_id": "R4",
+          "query": "x_1 + x_2 + x_3 + x_4 <= 20 * y_1 + 20 * y_2 + 20 * y_3 + 20 * y_4",
+          "LaTeX": "x_{1} + x_{2} + x_{3} + x_{4} \le 20 \cdot y_{1} + 20 \cdot y_{2} + 20 \cdot y_{3} + 20 \cdot y_{4}",
+          "description": "Total number of workers on all lines cannot exceed 20 * (y_1 + y_2 + y_3 + y_4)"
         },
         {
-            "name": "tablets_per_hour_2",
-            "LaTeX": "P_{2t} = 6",
-            "description": "Tablets produced per hour by production line 2"
+          "rule_id": "R5",
+          "query": "x_1 + x_2 + x_3 + x_4 <= 30 - 20 * y_3",
+          "LaTeX": "x_{1} + x_{2} + x_{3} + x_{4} \le 30 - 20 \cdot y_{3}",
+          "description": "If production line 3 is operational, the combined number of workers on all other lines must not exceed 30"
         },
         {
-            "name": "laptops_per_hour_2",
-            "LaTeX": "P_{2l} = 4",
-            "description": "Laptops produced per hour by production line 2"
+          "rule_id": "R6",
+          "query": "x_1 + x_2 + x_3 + x_4 <= 10 * y_3",
+          "LaTeX": "x_{1} + x_{2} + x_{3} + x_{4} \le 10 \cdot y_{3}",
+          "description": "Maximum staffing constraint of 10 workers on production line 3"
         },
         {
-            "name": "smartphones_per_hour_3",
-            "LaTeX": "P_{3s} = 6",
-            "description": "Smartphones produced per hour by production line 3"
+          "rule_id": "R7",
+          "query": "x_1 * p_1 + x_2 * p_2 + x_3 * p_3 + x_4 * p_4 >= 1000",
+          "LaTeX": "x_{1} \cdot p_{1} + x_{2} \cdot p_{2} + x_{3} \cdot p_{3} + x_{4} \cdot p_{4} \ge 1000",
+          "description": "Minimum requirement of 1000 smartphones"
         },
         {
-            "name": "tablets_per_hour_3",
-            "LaTeX": "P_{3t} = 7",
-            "description": "Tablets produced per hour by production line 3"
+          "rule_id": "R8",
+          "query": "x_1 * q_1 + x_2 * q_2 + x_3 * q_3 + x_4 * q_4 >= 800",
+          "LaTeX": "x_{1} \cdot q_{1} + x_{2} \cdot q_{2} + x_{3} \cdot q_{3} + x_{4} \cdot q_{4} \ge 800",
+          "description": "Minimum requirement of 800 tablets"
         },
         {
-            "name": "laptops_per_hour_3",
-            "LaTeX": "P_{3l} = 5",
-            "description": "Laptops produced per hour by production line 3"
+          "rule_id": "R9",
+          "query": "x_1 * r_1 + x_2 * r_2 + x_3 * r_3 + x_4 * r_4 >= 600",
+          "LaTeX": "x_{1} \cdot r_{1} + x_{2} \cdot r_{2} + x_{3} \cdot r_{3} + x_{4} \cdot r_{4} \ge 600",
+          "description": "Minimum requirement of 600 laptops"
         },
         {
-            "name": "smartphones_per_hour_4",
-            "LaTeX": "P_{4s} = 5",
-            "description": "Smartphones produced per hour by production line 4"
+          "rule_id": "R10",
+          "query": "y_1 + y_2 + y_3 + y_4 <= 1",
+          "LaTeX": "y_{1} + y_{2} + y_{3} + y_{4} \le 1",
+          "description": "At most one production line can be fully staffed"
         },
         {
-            "name": "tablets_per_hour_4",
-            "LaTeX": "P_{4t} = 8",
-            "description": "Tablets produced per hour by production line 4"
+          "rule_id": "R11",
+          "query": "y_1 + y_2 + y_3 + y_4 >= 1",
+          "LaTeX": "y_{1} + y_{2} + y_{3} + y_{4} \ge 1",
+          "description": "At least one production line must be operational"
         }
+    ]
+}

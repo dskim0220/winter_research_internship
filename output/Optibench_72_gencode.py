@@ -1,51 +1,42 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-# 1. Data Section (Directly extracted from JSON 'query' fields)
-price_APPX = 100000
-price_APPY = 150000
-price_APPZ = 200000
-price_APPW = 120000
-price_APPV = 180000
-cost_APPX = 60000
-cost_APPY = 70000
-cost_APPZ = 80000
-cost_APPW = 90000
-cost_APPV = 110000
-demand_APPX = 1210
-demand_APPY = 1090
-demand_APPZ = 1700
-demand_APPW = 1500
-demand_APPV = 1300
+# 1. Constants (Derived from 'query' values)
+price_A1 = 170000
+cost_A1 = 124
+limit_budget = 2500000
 
 # 2. Model Initialization
-m = gp.Model("production_optimization")
+m = gp.Model("optimization_model")
 
-# 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
-y_APPX = m.addVar(vtype=GRB.BINARY, name="y_APPX")
-y_APPY = m.addVar(vtype=GRB.BINARY, name="y_APPY")
-y_APPZ = m.addVar(vtype=GRB.BINARY, name="y_APPZ")
-y_APPW = m.addVar(vtype=GRB.BINARY, name="y_APPW")
-y_APPV = m.addVar(vtype=GRB.BINARY, name="y_APPV")
-x_APPX = m.addVar(vtype=GRB.INTEGER, name="x_APPX")
-x_APPY = m.addVar(vtype=GRB.INTEGER, name="x_APPY")
-x_APPZ = m.addVar(vtype=GRB.INTEGER, name="x_APPZ")
-x_APPW = m.addVar(vtype=GRB.INTEGER, name="x_APPW")
-x_APPV = m.addVar(vtype=GRB.INTEGER, name="x_APPV")
+# 3. Variables (Check 'type' in VARIABLES: Binary/Int/Cont)
+x_AppX = m.addVar(vtype=GRB.INTEGER, name="x_AppX")
+x_AppY = m.addVar(vtype=GRB.INTEGER, name="x_AppY")
+x_AppZ = m.addVar(vtype=GRB.INTEGER, name="x_AppZ")
+x_AppW = m.addVar(vtype=GRB.INTEGER, name="x_AppW")
+x_AppV = m.addVar(vtype=GRB.INTEGER, name="x_AppV")
 
-# 4. Objective (Use 'LaTeX' logic + 'query' numbers)
-m.setObjective(price_APPX * x_APPX + price_APPY * x_APPY + price_APPZ * x_APPZ + price_APPW * x_APPW + price_APPV * x_APPV, GRB.MAXIMIZE)
+# 4. Objective (LaTeX structure + query numbers)
+m.setObjective(
+    170000 * x_AppX - 124 * x_AppX - 0 * x_AppX +
+    170000 * x_AppY - 124 * x_AppY - 0 * x_AppY +
+    170000 * x_AppZ - 124 * x_AppZ - 0 * x_AppZ +
+    170000 * x_AppW - 124 * x_AppW - 0 * x_AppW +
+    170000 * x_AppV - 124 * x_AppV - 0 * x_AppV,
+    GRB.MAXIMIZE
+)
 
-# 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
-m.addConstr(x_APPX == y_APPX * demand_APPX, "Constraint1")
-m.addConstr(x_APPY == y_APPY * demand_APPY, "Constraint2")
-m.addConstr(x_APPZ == y_APPZ * demand_APPZ, "Constraint3")
-m.addConstr(x_APPW == y_APPW * demand_APPW, "Constraint4")
-m.addConstr(x_APPV == y_APPV * demand_APPV, "Constraint5")
+# 5. Constraints (LaTeX structure + query numbers)
+m.addConstr(x_AppX + x_AppY + x_AppW + x_AppV <= 10, "R1")
+m.addConstr(x_AppZ + x_AppV <= 28, "R2")
+m.addConstr(x_AppX >= 2 * x_AppY, "R3")
+m.addConstr(x_AppX + x_AppY + x_AppW + x_AppV >= 2, "R4")
+m.addConstr(x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV <= 30, "R5")
+m.addConstr(x_AppX + x_AppY + x_AppZ + x_AppW + x_AppV >= 1, "R6")
+m.addConstr(price_A1 * x_AppX + price_A1 * x_AppY + price_A1 * x_AppZ + price_A1 * x_AppW + price_A1 * x_AppV <= limit_budget, "R7")
 
-# 6. Optimization and Output
+# 6. Optimization & Output
 m.optimize()
-# Print results for each variable
-for v in m.getVars():
-    print(f'{v.varName} = {v.x}')
-print(f'Optimal Objective Value = {m.objVal}')
+if m.status == GRB.OPTIMAL:
+    for v in m.getVars():
+        print(f"{v.varName}: {v.x}")

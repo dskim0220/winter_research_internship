@@ -1,10 +1,48 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains significant issues with grounding, mapping, and logical integrity. The queries do not align with the provided problem description, and the mathematical formulation lacks proper grounding and verification.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The problem description mentions specific constraints and conditions that are not reflected in the 'query' fields.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies exist between the 'query' and 'LaTeX' fields. For example, the 'query' for'sum_bandwidth' does not include the fixed cost or efficiency penalties, which are critical for the objective function.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly formulated based on the provided logic. The 'transmission_efficiency_AE' constraint does not properly link the bandwidth and efficiency.",
-    "LINEARITY_VALIDATION": "The objective function includes non-linear terms (percentage decrease in efficiency), which violates the standard Linear Programming (LP) assumption. Additionally, the 'transmission_efficiency_AE' constraint involves a non-linear term (1 - 0.1).",
-    "DIMENSIONAL_ANALYSIS": "The dimensional analysis is inconsistent. The 'LaTeX' field uses 'z' for variables that should be 'x', and the units need to be consistent across the entire model.",
-    "CONSTRAINTS_FEEDBACK": "The'sum_bandwidth' constraint is correct but does not account for the fixed cost or efficiency penalties. The 'transmission_efficiency_AE' constraint is incorrect as it does not properly link the bandwidth and efficiency. The 'transmission_efficiency_AE' constraint also includes a non-linear term (1 - 0.1)."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            100
+        ],
+        "latex_numbers": [
+            100
+        ],
+        "mismatch": "The problem number '100' does not match with the LaTeX formulation 'x_{AB} + x_{AC} + x_{AD} + x_{AE} \\\\ge 100'."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "FAIL",
+            "reason": "The constraint 'x_AE <= 1 * y_AE' should be 'x_{AE} \\le M \\cdot y_{AE}' where M is a large constant. Currently, it only checks if y_AE is 1 or 0 without considering the bandwidth value."
+        },
+        {
+            "rule_id": "R2",
+            "status": "FAIL",
+            "reason": "The constraint 'x_DE <= 0.96 * y_DE' should be 'x_{DE} \\le M \\cdot y_{DE}' where M is a large constant. Currently, it only checks if y_DE is 1 or 0 without considering the bandwidth value."
+        },
+        {
+            "rule_id": "R3",
+            "status": "FAIL",
+            "reason": "The constraint 'x_AE <= 1 * y_AE' should be 'x_{AE} \\le M \\cdot y_{AE}' where M is a large constant. Currently, it only checks if y_AE is 1 or 0 without considering the bandwidth value."
+        },
+        {
+            "rule_id": "R5",
+            "status": "FAIL",
+            "reason": "The constraint 'x_AE <= 1 * y_AE' should be 'x_{AE} \\le M \\cdot y_{AE}' where M is a large constant. Currently, it only checks if y_AE is 1 or 0 without considering the bandwidth value."
+        },
+        {
+            "rule_id": "R6",
+            "status": "FAIL",
+            "reason": "The constraint 'x_DE <= 0.96 * y_DE' should be 'x_{DE} \\le M \\cdot y_{DE}' where M is a large constant. Currently, it only checks if y_DE is 1 or 0 without considering the bandwidth value."
+        },
+        {
+            "rule_id": "R7",
+            "status": "PASS",
+            "reason": "The constraint 'x_AB <= 0.9 * y_AB' correctly uses the binary variable y_AB."
+        }
+    ],
+    "FINAL_VERDICT": "There are critical failures in the constraints related to the bandwidth values. The model needs to include Big-M constraints to ensure the correct bandwidth values are used. Additionally, the objective function should multiply fixed costs by binary variables."
 }

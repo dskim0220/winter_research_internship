@@ -1,10 +1,62 @@
 {
-    "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON lacks critical details and logical consistency checks, leading to a low confidence score.",
-    "QUERY_GROUNDING_AUDIT": "No hallucinations found, but the queries do not match the problem description. The problem description mentions specific constraints and requirements that are not fully captured in the provided JSON.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies exist between the queries and the LaTeX formulation. For example, the minimum batch constraints and fixed costs are not accurately represented.",
-    "LOGICAL_COUPLING_CHECK": "Major issues with Big-M validation. The provided constraints do not correctly link binary and continuous variables as required by the problem description.",
-    "LINEARITY_VALIDATION": "The objective function is linear, but some constraints may introduce non-linearities due to the Big-M approach.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis provided; conversion factors or unit consistency checks are needed.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are incomplete and do not fully capture the logical relationships described in the problem. For instance, the minimum batch constraints and activation time are not properly modeled."
+    "CONFIDENCE_SCORE": 0.9,
+    "CRITICAL_FAILURE_FOUND": "NO",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            120,
+            110,
+            150
+        ],
+        "latex_numbers": [
+            120,
+            110,
+            150
+        ],
+        "mismatch": ""
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "PASS",
+            "reason": "The rule ensures the restaurant orders at least 7 times from Supplier A or B or C."
+        },
+        {
+            "rule_id": "R2",
+            "status": "PASS",
+            "reason": "The rule ensures the restaurant orders at least 150 tables."
+        },
+        {
+            "rule_id": "R3",
+            "status": "PASS",
+            "reason": "The rule ensures the restaurant orders no more than 600 tables."
+        },
+        {
+            "rule_id": "R4",
+            "status": "PASS",
+            "reason": "The rule ensures that if Supplier A is chosen, Supplier B must also be chosen."
+        },
+        {
+            "rule_id": "R5",
+            "status": "PASS",
+            "reason": "The rule ensures that if Supplier B is chosen, Supplier C must also be chosen."
+        },
+        {
+            "rule_id": "R6",
+            "status": "PASS",
+            "reason": "The rule ensures that if Supplier A is chosen, the sum of tables from A and B is at least 25."
+        },
+        {
+            "rule_id": "R7",
+            "status": "PASS",
+            "reason": "The rule ensures that if Supplier B is chosen, the sum of tables from B and C is at least 30."
+        },
+        {
+            "rule_id": "R8",
+            "status": "PASS",
+            "reason": "The rule ensures that the total tables from Supplier A do not exceed 60."
+        }
+    ],
+    "FINAL_VERDICT": "All critical checks passed. The model appears to be logically consistent and dimensionally correct. However, further manual verification may be needed to ensure there are no hidden non-linearities or other potential issues."
 }

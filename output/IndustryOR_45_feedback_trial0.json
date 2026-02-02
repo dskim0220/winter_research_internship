@@ -1,10 +1,27 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model lacks critical details and logical consistency. Variables and constraints need significant refinement.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. Fabricated queries include:\\n- 'Total Production Limit (Tons)' is not mentioned.\\n- 'Activation Time' is not specified.\\n- 'Minimum Batch' is not addressed.\\n- 'Numeric Forcing' is present with meaningless equations like 'x <= 0 * y'.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies found:\\n- 'Total Production Limit (Tons)' is not defined.\\n- 'Activation Time' is not defined.\\n- 'Minimum Batch' is not defined.\\n- 'Numeric Forcing' is present with meaningless equations like 'x <= 0 * y'.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present based on the given logic. The model does not enforce the constraints related to minimum batch sizes or activation times.",
-    "LINEARITY_VALIDATION": "The model is not linear due to the presence of binary variables and non-linear relationships. For example, the objective function should be simplified to avoid multiplication of variables.",
-    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies exist. For instance, the wage rates are in CNY/hour but the production quantities are in hours, which should be consistent with the wage rates.",
-    "CONSTRAINTS_FEEDBACK": "Constraints need to be redefined to align with the problem description. For example, the constraints related to minimum batch sizes and activation times are missing. The objective function should be simplified to ensure linearity."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            120,
+            110,
+            150
+        ],
+        "latex_numbers": [
+            120,
+            110,
+            150
+        ],
+        "mismatch": "Numbers in the problem description do not match those in the LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "FAIL",
+            "reason": "The rule query does not match the problem statement. The problem states there must be one and only one student on duty during open hours, but the constraint checks if the sum of all students is 1."
+        }
+    ],
+    "FINAL_VERDICT": "The model has critical failures in the constraints. Specifically, the constraint R1 does not accurately reflect the problem statement. Please revise the constraint to ensure it aligns with the requirement of having exactly one student on duty during open hours."
 }

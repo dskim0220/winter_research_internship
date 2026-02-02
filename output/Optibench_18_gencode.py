@@ -1,54 +1,48 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-# 1. Data Section (Directly extracted from JSON 'query' fields)
-smartphones_per_hour_1 = 10
-tablets_per_hour_1 = 5
-laptops_per_hour_1 = 3
-smartphones_per_hour_2 = 8
-tablets_per_hour_2 = 6
-laptops_per_hour_2 = 4
-smartphones_per_hour_3 = 6
-tablets_per_hour_3 = 7
-laptops_per_hour_3 = 5
-smartphones_per_hour_4 = 5
-tablets_per_hour_4 = 8
-demand_smartphones = 1210
-demand_tablets = 1090
-demand_laptops = 800
+# 1. Constants (Derived from 'query' values)
+price_A1 = 170000
+cost_A1 = 170000
+limit_A1 = 1
+price_T1 = 124
+cost_T1 = 124
+limit_T1 = 1
+price_L1 = 100
+cost_L1 = 100
+limit_L1 = 1
 
 # 2. Model Initialization
-m = gp.Model("production_optimization")
+m = gp.Model("optimization_model")
 
-# 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
+# 3. Variables (Check 'type' in VARIABLES: Binary/Int/Cont)
+x1 = m.addVar(vtype=GRB.INTEGER, name="x1")
+x2 = m.addVar(vtype=GRB.INTEGER, name="x2")
+x3 = m.addVar(vtype=GRB.INTEGER, name="x3")
+x4 = m.addVar(vtype=GRB.INTEGER, name="x4")
 y1 = m.addVar(vtype=GRB.BINARY, name="y1")
 y2 = m.addVar(vtype=GRB.BINARY, name="y2")
 y3 = m.addVar(vtype=GRB.BINARY, name="y3")
 y4 = m.addVar(vtype=GRB.BINARY, name="y4")
-x11 = m.addVar(vtype=GRB.INTEGER, name="x11")
-x12 = m.addVar(vtype=GRB.INTEGER, name="x12")
-x13 = m.addVar(vtype=GRB.INTEGER, name="x13")
-x21 = m.addVar(vtype=GRB.INTEGER, name="x21")
-x22 = m.addVar(vtype=GRB.INTEGER, name="x22")
-x23 = m.addVar(vtype=GRB.INTEGER, name="x23")
-x31 = m.addVar(vtype=GRB.INTEGER, name="x31")
-x32 = m.addVar(vtype=GRB.INTEGER, name="x32")
-x33 = m.addVar(vtype=GRB.INTEGER, name="x33")
-x41 = m.addVar(vtype=GRB.INTEGER, name="x41")
-x42 = m.addVar(vtype=GRB.INTEGER, name="x42")
-x43 = m.addVar(vtype=GRB.INTEGER, name="x43")
 
-# 4. Objective (Use 'LaTeX' logic + 'query' numbers)
-m.setObjective(
-    smartphones_per_hour_1 * x11 + smartphones_per_hour_2 * x21 + smartphones_per_hour_3 * x31 + smartphones_per_hour_4 * x41,
-    GRB.MAXIMIZE
-)
+# 4. Objective (LaTeX structure + query numbers)
+m.setObjective(x1 + x2 + x3 + x4, GRB.MINIMIZE)
 
-# 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
-m.addConstr(x11 + x21 + x31 + x41 <= demand_smartphones, "smartphones_constraint")
-m.addConstr(x12 + x22 + x32 + x42 <= demand_tablets, "tablets_constraint")
-m.addConstr(x13 + x23 + x33 + x43 <= demand_laptops, "laptops_constraint")
+# 5. Constraints (LaTeX structure + query numbers)
+m.addConstr(x1 + x2 + x3 + x4 >= 1, "R1")
+m.addConstr(x1 + x2 + x3 + x4 <= 4, "R2")
+m.addConstr(x1 + x2 + x3 + x4 <= 50, "R3")
+m.addConstr(x1 + x2 + x3 + x4 <= 20 * y1 + 20 * y2 + 20 * y3 + 20 * y4, "R4")
+m.addConstr(x1 + x2 + x3 + x4 <= 30 - 20 * y3, "R5")
+m.addConstr(x1 + x2 + x3 + x4 <= 10 * y3, "R6")
+m.addConstr(x1 * cost_A1 + x2 * cost_T1 + x3 * cost_L1 + x4 * cost_A1 >= 1000, "R7")
+m.addConstr(x1 * price_A1 + x2 * price_T1 + x3 * price_L1 + x4 * price_A1 >= 800, "R8")
+m.addConstr(x1 * cost_A1 + x2 * cost_T1 + x3 * cost_L1 + x4 * cost_A1 >= 600, "R9")
+m.addConstr(y1 + y2 + y3 + y4 <= limit_A1, "R10")
+m.addConstr(y1 + y2 + y3 + y4 >= limit_T1, "R11")
 
-# 6. Optimization and Output
+# 6. Optimization & Output
 m.optimize()
-#... (Print results for each variable)
+if m.status == GRB.OPTIMAL:
+    for v in m.getVars():
+        print(f"{v.varName}: {v.x}")

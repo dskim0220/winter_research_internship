@@ -1,106 +1,139 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } I \\text{ be the set of nodes, } J \\text{ be the set of links, and } K \\text{ be the set of paths.}"
-    },
     "VARIABLES": [
         {
-            "name": "y_AC",
-            "type": "Binary",
-            "LaTeX": "y_{AC} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether link AC is used (1 if used, 0 otherwise)"
-        },
-        {
-            "name": "y_AD",
-            "type": "Binary",
-            "LaTeX": "y_{AD} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether link AD is used (1 if used, 0 otherwise)"
-        },
-        {
-            "name": "y_AE",
-            "type": "Binary",
-            "LaTeX": "y_{AE} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether link AE is used (1 if used, 0 otherwise)"
+            "name": "x_AB",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{AB} \\ge 0",
+            "description": "Bandwidth of path A -> B"
         },
         {
             "name": "x_AC",
-            "type": "Integer",
-            "LaTeX": "x_{AC} \\in \\mathbb{Z}_{+}",
-            "description": "Quantity of bandwidth on link AC"
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{AC} \\ge 0",
+            "description": "Bandwidth of path A -> C"
         },
         {
             "name": "x_AD",
-            "type": "Integer",
-            "LaTeX": "x_{AD} \\in \\mathbb{Z}_{+}",
-            "description": "Quantity of bandwidth on link AD"
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{AD} \\ge 0",
+            "description": "Bandwidth of path A -> D"
         },
         {
             "name": "x_AE",
-            "type": "Integer",
-            "LaTeX": "x_{AE} \\in \\mathbb{Z}_{+}",
-            "description": "Quantity of bandwidth on link AE"
-        }
-    ],
-    "PARAMETERS": [
-        {
-            "name": "bandwidth_AB",
-            "LaTeX": "P_{AB} = 90",
-            "description": "Bandwidth between A and B"
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{AE} \\ge 0",
+            "description": "Bandwidth of path A -> E"
         },
         {
-            "name": "bandwidth_AD",
-            "LaTeX": "P_{AD} = 67",
-            "description": "Bandwidth between A and D"
+            "name": "x_BE",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{BE} \\ge 0",
+            "description": "Bandwidth of path B -> E"
         },
         {
-            "name": "bandwidth_AE_direct",
-            "LaTeX": "P_{AE} = 65",
-            "description": "Direct bandwidth between A and E"
+            "name": "x_CD",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{CD} \\ge 0",
+            "description": "Bandwidth of path C -> D"
         },
         {
-            "name": "bandwidth_BE_direct",
-            "LaTeX": "P_{BE} = 34",
-            "description": "Direct bandwidth between B and E"
-        },
-        {
-            "name": "bandwidth_CD",
-            "LaTeX": "P_{CD} = 25",
-            "description": "Bandwidth between C and D"
-        },
-        {
-            "name": "bandwidth_CE",
-            "LaTeX": "P_{CE} = 80",
-            "description": "Bandwidth between C and E"
-        },
-        {
-            "name": "sum_bandwidth",
-            "LaTeX": "P_{sum} = 100",
-            "description": "Sum of bandwidths must be at least 100"
-        },
-        {
-            "name": "transmission_efficiency_AE",
-            "LaTeX": "P_{eff_AE} = 90\\%",
-            "description": "Transmission efficiency of path between A and E"
-        },
-        {
-            "name": "transmission_efficiency_DE",
-            "LaTeX": "P_{eff_DE} = 96\\%",
-            "description": "Transmission efficiency of path between D and E"
-        },
-        {
-            "name": "transmission_efficiency_AB",
-            "LaTeX": "P_{eff_AB} = 90\\%",
-            "description": "Transmission efficiency of path between A and B"
+            "name": "x_DE",
+            "type": "CONTINUOUS",
+            "LaTeX": "x_{DE} \\ge 0",
+            "description": "Bandwidth of path D -> E"
         }
     ],
     "OBJECTIVE": {
-        "query": "maximize the bandwidth of the link between A and E passing through C.",
-        "LaTeX": "\\max x_{AE}"
+        "query": "Maximize the bandwidth of the link between A and E that passes through C.",
+        "goal": "MAX",
+        "LaTeX": "\max Z = x_{AE}"
     },
     "CONSTRAINTS": [
         {
-            "rule_id": 1,
-            "name": "sum_bandwidth_constraint",
-            "query": "The sum of bandwith is at least 100",
-            "LaTeX": "x_{AC} + x_{AD} + x_{AE} \\geq P_{sum}"
-        }
+            "rule_id": "Rule 1",
+            "query": "The sum of bandwidths of paths A -> C and C -> E must be greater than or equal to the bandwidth of A -> E.",
+            "LaTeX": "x_{AC} + x_{CE} \ge x_{AE}",
+            "description": "The total bandwidth from A to E via C must be at least the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 2",
+            "query": "The sum of bandwidths of paths A -> D and D -> E must be greater than or equal to the bandwidth of A -> E.",
+            "LaTeX": "x_{AD} + x_{DE} \ge x_{AE}",
+            "description": "The total bandwidth from A to E via D must be at least the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 3",
+            "query": "The bandwidth of the path A -> C -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AC} + x_{CE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via C and then E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 4",
+            "query": "The bandwidth of the path A -> D -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AD} + x_{DE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via D and then E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 5",
+            "query": "The bandwidth of the path A -> C -> D -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AC} + x_{CD} + x_{DE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via C, D, and E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 6",
+            "query": "The bandwidth of the path A -> D -> C -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AD} + x_{DC} + x_{CE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via D, C, and E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 7",
+            "query": "The bandwidth of the path A -> B -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 8",
+            "query": "The bandwidth of the path A -> B -> D -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BD} + x_{DE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B, D, and E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 9",
+            "query": "The bandwidth of the path A -> B -> C -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BC} + x_{CE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B, C, and E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 10",
+            "query": "The bandwidth of the path A -> B -> D -> C -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BD} + x_{DC} + x_{CE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B, D, C, and E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 11",
+            "query": "The bandwidth of the path A -> B -> C -> D -> E must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BC} + x_{CD} + x_{DE} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B, C, D, and E must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 12",
+            "query": "The bandwidth of the path A -> B -> C -> D -> E -> A must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BC} + x_{CD} + x_{DE} + x_{EA} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B, C, D, E, and back to A must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 13",
+            "query": "The bandwidth of the path A -> B -> C -> D -> E -> B must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BC} + x_{CD} + x_{DE} + x_{EB} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B, C, D, E, and back to B must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 14",
+            "query": "The bandwidth of the path A -> B -> C -> D -> E -> C must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BC} + x_{CD} + x_{DE} + x_{EC} \le x_{AE}",
+            "description": "The total bandwidth from A to E via B, C, D, E, and back to C must be at most the bandwidth of the direct A -> E link."
+        },
+        {
+            "rule_id": "Rule 15",
+            "query": "The bandwidth of the path A -> B -> C -> D -> E -> D must be less than or equal to the bandwidth of the direct A -> E link.",
+            "LaTeX": "x_{AB} + x_{BC} + x_{CD} + x_{DE} + x_{ED} \le x_{AE}

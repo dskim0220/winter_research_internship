@@ -1,108 +1,101 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } i \\in \\{X, Y, Z\\} \\text{ represent GoodsX, GoodsY, and GoodsZ respectively.}"
-    },
     "VARIABLES": [
-        {
-            "name": "y_X",
-            "type": "Binary",
-            "LaTeX": "y_X \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether GoodsX is produced (1) or not (0)"
+        { 
+          "name": "y_x", 
+          "type": "BINARY", 
+          "LaTeX": "y_x \in \{0, 1\}", 
+          "description": "Whether to choose Supplier X"
         },
-        {
-            "name": "y_Y",
-            "type": "Binary",
-            "LaTeX": "y_Y \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether GoodsY is produced (1) or not (0)"
+        { 
+          "name": "y_y", 
+          "type": "BINARY", 
+          "LaTeX": "y_y \in \{0, 1\}", 
+          "description": "Whether to choose Supplier Y"
         },
-        {
-            "name": "y_Z",
-            "type": "Binary",
-            "LaTeX": "y_Z \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether GoodsZ is produced (1) or not (0)"
+        { 
+          "name": "y_z", 
+          "type": "BINARY", 
+          "LaTeX": "y_z \in \{0, 1\}", 
+          "description": "Whether to choose Supplier Z"
         },
-        {
-            "name": "x_X",
-            "type": "Integer",
-            "LaTeX": "x_X \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of Trucks allocated for GoodsX"
+        { 
+          "name": "x_x", 
+          "type": "INTEGER", 
+          "LaTeX": "x_x \in \mathbb{Z}^+", 
+          "description": "Number of Trucks for GoodsX"
         },
-        {
-            "name": "x_Y",
-            "type": "Integer",
-            "LaTeX": "x_Y \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of Trucks allocated for GoodsY"
+        { 
+          "name": "x_y", 
+          "type": "INTEGER", 
+          "LaTeX": "x_y \in \mathbb{Z}^+", 
+          "description": "Number of Trucks for GoodsY"
         },
-        {
-            "name": "x_Z",
-            "type": "Integer",
-            "LaTeX": "x_Z \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of Trucks allocated for GoodsZ"
+        { 
+          "name": "x_z", 
+          "type": "INTEGER", 
+          "LaTeX": "x_z \in \mathbb{Z}^+", 
+          "description": "Number of Trucks for GoodsZ"
+        },
+        { 
+          "name": "z_opt", 
+          "type": "CONTINUOUS", 
+          "LaTeX": "z_opt \in [0, M]", 
+          "description": "Investment in Optimization Software"
         }
     ],
-    "PARAMETERS": [
-        {
-            "name": "Cost_X",
-            "LaTeX": "P_X = 1000",
-            "description": "Initial cost per truck for GoodsX"
-        },
-        {
-            "name": "Cost_Y",
-            "LaTeX": "P_Y = 1200",
-            "description": "Initial cost per truck for GoodsY"
-        },
-        {
-            "name": "Cost_Z",
-            "LaTeX": "P_Z = 1500",
-            "description": "Initial cost per truck for GoodsZ"
-        },
-        {
-            "name": "Optimization_Software_Budget",
-            "LaTeX": "P_{OS} = 10000",
-            "description": "Budget for route optimization software"
-        },
-        {
-            "name": "Total_Trucks_Available",
-            "LaTeX": "P_{Total} = 50",
-            "description": "Total number of trucks available for allocation"
-        },
-        {
-            "name": "Cost_Reduction_X",
-            "LaTeX": "P_{CR_X} = 10",
-            "description": "Cost reduction per $100 invested in optimization for GoodsX"
-        },
-        {
-            "name": "Cost_Reduction_Y",
-            "LaTeX": "P_{CR_Y} = 12",
-            "description": "Cost reduction per $100 invested in optimization for GoodsY"
-        },
-        {
-            "name": "Cost_Reduction_Z",
-            "LaTeX": "P_{CR_Z} = 15",
-            "description": "Cost reduction per $100 invested in optimization for GoodsZ"
-        }
-    ],
-    "OBJECTIVE": {
-        "query": "minimize the total delivery cost for all goods",
-        "LaTeX": "\\min \\left( P_X x_X + P_Y x_Y + P_Z x_Z \\right)"
+    "OBJECTIVE": { 
+      "query": "The specific part of extracted_queries used for objective",
+      "goal": "MIN", 
+      "LaTeX": "\min Z = c_x \cdot x_x + c_y \cdot x_y + c_z \cdot x_z + z_opt"
     },
     "CONSTRAINTS": [
         {
-            "rule_id": 1,
-            "name": "Must allocate at least 10 trucks for GoodsX",
-            "query": ">=",
-            "LaTeX": "x_X \\geq 10 y_X"
+          "rule_id": "R1",
+          "query": "x_x + x_y + x_z == total_trucks",
+          "LaTeX": "x_x + x_y + x_z = 50",
+          "description": "The total number of trucks allocated for GoodsX, GoodsY, and GoodsZ must equal 50"
         },
         {
-            "rule_id": 2,
-            "name": "Must allocate at least 15 trucks for GoodsY",
-            "query": ">=",
-            "LaTeX": "x_Y \\geq 15 y_Y"
+          "rule_id": "R2",
+          "query": "x_x >= min_x * y_x",
+          "LaTeX": "x_x \ge 10 \cdot y_x",
+          "description": "At least 10 trucks must be allocated for GoodsX"
         },
         {
-            "rule_id": 3,
-            "name": "Total number of trucks allocated for GoodsZ must not exceed 25 units",
-            "query": "<=",
-            "LaTeX": "x_Z \\leq 25 y_Z"
+          "rule_id": "R3",
+          "query": "x_y >= min_y * y_y",
+          "LaTeX": "x_y \ge 15 \cdot y_y",
+          "description": "At least 15 trucks must be allocated for GoodsY"
+        },
+        {
+          "rule_id": "R4",
+          "query": "x_z <= max_z * y_z",
+          "LaTeX": "x_z \le 25 \cdot y_z",
+          "description": "The total number of trucks allocated for GoodsZ must not exceed 25"
+        },
+        {
+          "rule_id": "R5",
+          "query": "x_z <= max_cost_reduction_z / delta_z",
+          "LaTeX": "x_z \le \frac{37500}{15}",
+          "description": "The total cost reduction for GoodsZ cannot exceed $37,500"
+        },
+        {
+          "rule_id": "R6",
+          "query": "x_x + x_y + x_z >= total_trucks * cost_reduction_ratio * z_opt",
+          "LaTeX": "x_x + x_y + x_z \ge 50 \cdot 0.01 \cdot z_opt",
+          "description": "The combined cost reduction for GoodsX, GoodsY, and GoodsZ must be positive"
+        },
+        {
+          "rule_id": "R7",
+          "query": "z_opt <= budget_opt",
+          "LaTeX": "z_opt \le 10000",
+          "description": "The total investment in optimization software does not exceed the budget"
+        },
+        {
+          "rule_id": "R8",
+          "query": "x_x + x_y + x_z <= total_trucks",
+          "LaTeX": "x_x + x_y + x_z \le 50",
+          "description": "The total number of trucks allocated cannot exceed the total available trucks"
         }
+    ]
+}

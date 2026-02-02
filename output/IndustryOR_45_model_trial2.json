@@ -1,118 +1,22 @@
 {
     "SETS": {
         "query": "indices definition",
-        "LaTeX": "\\text{SET OF STUDENTS} = \\{1, 2, 3, 4, 5, 6\\}"
+        "LaTeX": "\\text{let } i \\in \\{1, 2, 3, 4\\}, j \\in \\{1, 2, 3, 4, 5, 6\\}"
     },
     "VARIABLES": [
         {
-            "name": "y_1",
+            "name": "x_{ij}",
             "type": "Binary",
-            "LaTeX": "y_1 \\in \\{0, 1\\}",
-            "description": "Student 1 works"
-        },
-        {
-            "name": "x_1",
-            "type": "Integer",
-            "LaTeX": "x_1 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Hours worked by Student 1"
-        },
-        {
-            "name": "y_2",
-            "type": "Binary",
-            "LaTeX": "y_2 \\in \\{0, 1\\}",
-            "description": "Student 2 works"
-        },
-        {
-            "name": "x_2",
-            "type": "Integer",
-            "LaTeX": "x_2 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Hours worked by Student 2"
-        },
-        {
-            "name": "y_3",
-            "type": "Binary",
-            "LaTeX": "y_3 \\in \\{0, 1\\}",
-            "description": "Student 3 works"
-        },
-        {
-            "name": "x_3",
-            "type": "Integer",
-            "LaTeX": "x_3 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Hours worked by Student 3"
-        },
-        {
-            "name": "y_4",
-            "type": "Binary",
-            "LaTeX": "y_4 \\in \\{0, 1\\}",
-            "description": "Student 4 works"
-        },
-        {
-            "name": "x_4",
-            "type": "Integer",
-            "LaTeX": "x_4 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Hours worked by Student 4"
-        },
-        {
-            "name": "y_5",
-            "type": "Binary",
-            "LaTeX": "y_5 \\in \\{0, 1\\}",
-            "description": "Student 5 works"
-        },
-        {
-            "name": "x_5",
-            "type": "Integer",
-            "LaTeX": "x_5 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Hours worked by Student 5"
-        },
-        {
-            "name": "y_6",
-            "type": "Binary",
-            "LaTeX": "y_6 \\in \\{0, 1\\}",
-            "description": "Student 6 works"
-        },
-        {
-            "name": "x_6",
-            "type": "Integer",
-            "LaTeX": "x_6 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Hours worked by Student 6"
+            "LaTeX": "x_{ij} \\in \\{0, 1\\}",
+            "description": "Indicates if student j works on day i"
         }
     ],
     "PARAMETERS": [
         {
-            "name": "Wage_1",
-            "LaTeX": "P_{1} = 10.0",
-            "description": "Hourly wage of Student 1"
+            "name": "Wage_i",
+            "LaTeX": "Wage_i = \\begin{cases} 10.0 & \\text{if student } i = 1 \\\\ 10.0 & \\text{if student } i = 2 \\\\ 9.9 & \\text{if student } i = 3 \\\\ 9.8 & \\text{if student } i = 4 \\\\ 10.8 & \\text{if student } i = 5 \\\\ 11.3 & \\text{if student } i = 6 \\end{cases}",
+            "description": "Hourly wage for each student"
         },
         {
-            "name": "Wage_2",
-            "LaTeX": "P_{2} = 10.0",
-            "description": "Hourly wage of Student 2"
-        },
-        {
-            "name": "Wage_3",
-            "LaTeX": "P_{3} = 9.9",
-            "description": "Hourly wage of Student 3"
-        },
-        {
-            "name": "Wage_4",
-            "LaTeX": "P_{4} = 9.8",
-            "description": "Hourly wage of Student 4"
-        },
-        {
-            "name": "Wage_5",
-            "LaTeX": "P_{5} = 10.8",
-            "description": "Hourly wage of Student 5"
-        },
-        {
-            "name": "Wage_6",
-            "LaTeX": "P_{6} = 11.3",
-            "description": "Hourly wage of Student 6"
-        },
-        {
-            "name": "Monday_1",
-            "LaTeX": "M_{1} = 6",
-            "description": "Maximum duty hours for Student 1 on Monday"
-        },
-        {
-            "name": "Tuesday_1",
-            "LaTeX": "T_{1}
+            "name": "Hours_i_j",
+            "LaTeX": "Hours_i_j = \\begin{cases} 6 & \\text{if student } i = 1 \\\\ 0 & \\text{if student } i = 2 \\\\ 4 & \\text{if student } i = 3 \\\\ 5 & \\text{if student } i = 4 \\\\ 3 & \\text{if student } i = 5 \\\\ 0 & \\text{if student } i = 6 \\\\ 0 & \\text{if student } i = 7 \\\\ 0 & \\text{if student } i = 8 \\\\ 0 & \\text{if student } i = 9 \\\\ 0 & \\text{if student } i = 10 \\\\ 0 & \\text{if student } i = 11 \\\\ 0 & \\text{if student } i = 12 \\\\ 0 & \\text{if student } i = 13 \\\\ 0 & \\text{if student } i = 14 \\\\ 0 & \\text{if student } i = 15 \\\\ 0 & \\text{if student } i = 16 \\\\ 0 & \\text{if student } i = 17 \\\\ 0 & \\text{if student } i = 18 \\\\ 0 & \\text{if student } i = 19 \\\\ 0 & \\text{if student } i = 20 \\\\ 0 & \\text{if student } i = 21 \\\\ 0 & \\text{if student } i = 22 \\\\ 0 & \\text{if student } i = 23 \\\\ 0 & \\text{if student } i = 24 \\\\ 0 & \\text{if student } i = 25 \\\\ 0 & \\text{if student } i = 26 \\\\ 0 & \\text{if student } i = 27 \\\\ 0 & \\text{if student } i = 28 \\\\ 0 & \\text{if student } i = 29 \\\\ 0 & \\text{if student } i = 30 \\\\ 0 & \\text{if student } i = 31 \\\\ 0 & \\text{if student } i = 32 \\\\ 0 & \\text{if student } i = 33 \\\\ 0 & \\text{if student } i = 34 \\\\ 0 & \\text{if student } i = 35 \\\\ 0 & \\text{if student } i = 36 \\\\ 0 & \\text{if student } i = 37 \\\\ 0 & \\text{if student } i = 38 \\\\ 0 & \\text{if student } i = 39 \\\\ 0 & \\text{if student } i = 40 \\\\ 0 & \\text{if student } i = 41 \\\\ 0 & \\text{if student } i = 42 \\\\ 0 & \\text{if student } i = 43 \\\\ 0 & \\text{if student } i = 44 \\\\ 0 & \\text{if student }

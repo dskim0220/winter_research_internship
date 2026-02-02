@@ -1,107 +1,107 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } i \\in \\{\\text{Monday}, \\text{Tuesday}, \\text{Wednesday}, \\text{Thursday}, \\text{Friday}, \\text{Saturday}, \\text{Sunday}\\}"
-    },
     "VARIABLES": [
         {
-            "name": "y_monday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Monday}} \\in \\{0, 1\\}",
-            "description": "1 if Monday is selected, 0 otherwise"
-        },
-        {
-            "name": "y_tuesday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Tuesday}} \\in \\{0, 1\\}",
-            "description": "1 if Tuesday is selected, 0 otherwise"
-        },
-        {
-            "name": "y_wednesday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Wednesday}} \\in \\{0, 1\\}",
-            "description": "1 if Wednesday is selected, 0 otherwise"
-        },
-        {
-            "name": "y_thursday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Thursday}} \\in \\{0, 1\\}",
-            "description": "1 if Thursday is selected, 0 otherwise"
-        },
-        {
-            "name": "y_friday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Friday}} \\in \\{0, 1\\}",
-            "description": "1 if Friday is selected, 0 otherwise"
-        },
-        {
-            "name": "y_saturday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Saturday}} \\in \\{0, 1\\}",
-            "description": "1 if Saturday is selected, 0 otherwise"
-        },
-        {
-            "name": "y_sunday",
-            "type": "Binary",
-            "LaTeX": "y_{\\text{Sunday}} \\in \\{0, 1\\}",
-            "description": "1 if Sunday is selected, 0 otherwise"
-        },
-        {
-            "name": "x_monday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Monday}} \\in \\mathbb{Z}^+",
+            "name": "x_1",
+            "type": "CONT",
+            "LaTeX": "x_{1} \ge 0",
             "description": "Number of employees working on Monday"
         },
         {
-            "name": "x_tuesday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Tuesday}} \\in \\mathbb{Z}^+",
+            "name": "x_2",
+            "type": "CONT",
+            "LaTeX": "x_{2} \ge 0",
             "description": "Number of employees working on Tuesday"
         },
         {
-            "name": "x_wednesday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Wednesday}} \\in \\mathbb{Z}^+",
+            "name": "x_3",
+            "type": "CONT",
+            "LaTeX": "x_{3} \ge 0",
             "description": "Number of employees working on Wednesday"
         },
         {
-            "name": "x_thursday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Thursday}} \\in \\mathbb{Z}^+",
+            "name": "x_4",
+            "type": "CONT",
+            "LaTeX": "x_{4} \ge 0",
             "description": "Number of employees working on Thursday"
         },
         {
-            "name": "x_friday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Friday}} \\in \\mathbb{Z}^+",
+            "name": "x_5",
+            "type": "CONT",
+            "LaTeX": "x_{5} \ge 0",
             "description": "Number of employees working on Friday"
         },
         {
-            "name": "x_saturday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Saturday}} \\in \\mathbb{Z}^+",
+            "name": "x_6",
+            "type": "CONT",
+            "LaTeX": "x_{6} \ge 0",
             "description": "Number of employees working on Saturday"
         },
         {
-            "name": "x_sunday",
-            "type": "Integer",
-            "LaTeX": "x_{\\text{Sunday}} \\in \\mathbb{Z}^+",
+            "name": "x_7",
+            "type": "CONT",
+            "LaTeX": "x_{7} \ge 0",
             "description": "Number of employees working on Sunday"
+        },
+        {
+            "name": "y_1",
+            "type": "BIN",
+            "LaTeX": "y_{1} \in {0, 1}",
+            "description": "Indicator variable for Monday start"
+        },
+        {
+            "name": "y_2",
+            "type": "BIN",
+            "LaTeX": "y_{2} \in {0, 1}",
+            "description": "Indicator variable for Tuesday start"
+        },
+        {
+            "name": "y_3",
+            "type": "BIN",
+            "LaTeX": "y_{3} \in {0, 1}",
+            "description": "Indicator variable for Wednesday start"
+        },
+        {
+            "name": "y_4",
+            "type": "BIN",
+            "LaTeX": "y_{4} \in {0, 1}",
+            "description": "Indicator variable for Thursday start"
+        },
+        {
+            "name": "y_5",
+            "type": "BIN",
+            "LaTeX": "y_{5} \in {0, 1}",
+            "description": "Indicator variable for Friday start"
+        },
+        {
+            "name": "y_6",
+            "type": "BIN",
+            "LaTeX": "y_{6} \in {0, 1}",
+            "description": "Indicator variable for Saturday start"
+        },
+        {
+            "name": "y_7",
+            "type": "BIN",
+            "LaTeX": "y_{7} \in {0, 1}",
+            "description": "Indicator variable for Sunday start"
         }
     ],
-    "PARAMETERS": [
+    "OBJECTIVE": {
+        "query": "sum(x_i for i in range(1, 8))",
+        "goal": "MIN",
+        "LaTeX": "\min Z = \sum_{i=1}^{7} x_i"
+    },
+    "CONSTRAINTS": [
         {
-            "name": "employees_monday",
-            "LaTeX": "P_{\\text{Monday}} = 15",
-            "description": "Number of employees needed on Monday"
+            "rule_id": "C1",
+            "query": "x_wednesday - x_monday <= 7 * (1 - x_monday)",
+            "LaTeX": "x_{3} - x_{1} \le 7 \cdot (1 - y_{1})",
+            "description": "The difference between the number of employees who start their five-day shift on Monday and those who start on Wednesday must be less than 7."
         },
         {
-            "name": "employees_tuesday",
-            "LaTeX": "P_{\\text{Tuesday}} = 13",
-            "description": "Number of employees needed on Tuesday"
-        },
-        {
-            "name": "employees_wednesday",
-            "LaTeX": "P_{\\text{Wednesday}} = 15",
-            "description": "Number of employees needed on Wednesday"
+            "rule_id": "C2",
+            "query": "x_sunday_monday >= 3",
+            "LaTeX": "x_{7} + x_{1} \ge 3",
+            "description": "At least three employees must be assigned to a schedule where they have both Sunday and Monday off consecutively."
         }
+    ]
+}

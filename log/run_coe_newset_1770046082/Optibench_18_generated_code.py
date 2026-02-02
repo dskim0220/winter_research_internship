@@ -1,0 +1,42 @@
+import pulp
+
+# Define the problem
+prob = pulp.LpProblem("Manufacturing_Planning_Problem", pulp.LpMinimize)
+
+# Define decision variables
+x1 = pulp.LpVariable('x1', lowBound=0, cat='Continuous')
+x2 = pulp.LpVariable('x2', lowBound=0, cat='Continuous')
+x3 = pulp.LpVariable('x3', lowBound=0, cat='Continuous')
+x4 = pulp.LpVariable('x4', lowBound=0, cat='Continuous')
+
+# Objective function: minimize the total number of hours
+prob += x1 + x2 + x3 + x4, "Total_Hours"
+
+# Constraints
+# Production Constraints
+prob += 10*x1 + 8*x2 + 6*x3 + 5*x4 >= 1000, "Smartphones_Constraint"
+prob += 5*x1 + 6*x2 + 7*x3 + 8*x4 >= 800, "Tablets_Constraint"
+prob += 3*x1 + 4*x2 + 5*x3 + 6*x4 >= 600, "Laptops_Constraint"
+
+# Worker Capacity Constraints
+prob += x1 + x2 + x3 + x4 <= 50, "Total_Workers_Constraint"
+prob += x1 <= 20, "Line1_Capacity_Constraint"
+prob += x2 <= 20, "Line2_Capacity_Constraint"
+prob += x3 <= 20, "Line3_Capacity_Constraint"
+prob += x4 <= 20, "Line4_Capacity_Constraint"
+prob += x1 + x2 + x4 <= 30, "Combined_Workers_Constraint"
+prob += x3 <= 10, "Line3_Specific_Constraint"
+
+# Operational Line Constraints
+prob += x1 + x2 + x3 + x4 >= 1, "AtLeastOneLine_Operational_Constraint"
+prob += x1 + x2 + x3 + x4 <= 3, "NoMoreThanThreeLines_Operational_Constraint"
+
+# Solve the problem
+status = prob.solve()
+
+# Print the results
+print(f"Status: {pulp.LpStatus[status]}")
+print(f"Total Hours Required: {pulp.value(prob.objective)}")
+
+# Print the solution
+print(f"x1: {pulp.value(x1)}, x2: {pulp.value(x2)}, x3: {pulp.value(x3)}, x4: {pulp.value(x4)}")

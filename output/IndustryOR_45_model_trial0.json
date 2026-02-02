@@ -1,110 +1,185 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } i \\in \\{1, 2, 3, 4\\} \\text{ represent undergraduates, and } j \\in \\{5, 6\\} \\text{ represent graduate students.}"
-    },
     "VARIABLES": [
-        {
-            "name": "y_1",
-            "type": "Binary",
-            "LaTeX": "y_1 \\in \\{0, 1\\}",
-            "description": "1 if undergraduate 1 works, 0 otherwise"
+        { 
+          "name": "y_1", 
+          "type": "Binary", 
+          "LaTeX": "y_1 \in \{0, 1\}", 
+          "description": "Whether Student 1 is hired"
         },
-        {
-            "name": "x_1",
-            "type": "Integer",
-            "LaTeX": "x_1 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours undergraduate 1 works"
+        { 
+          "name": "y_2", 
+          "type": "Binary", 
+          "LaTeX": "y_2 \in \{0, 1\}", 
+          "description": "Whether Student 2 is hired"
         },
-        {
-            "name": "y_2",
-            "type": "Binary",
-            "LaTeX": "y_2 \\in \\{0, 1\\}",
-            "description": "1 if undergraduate 2 works, 0 otherwise"
+        { 
+          "name": "y_3", 
+          "type": "Binary", 
+          "LaTeX": "y_3 \in \{0, 1\}", 
+          "description": "Whether Student 3 is hired"
         },
-        {
-            "name": "x_2",
-            "type": "Integer",
-            "LaTeX": "x_2 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours undergraduate 2 works"
+        { 
+          "name": "y_4", 
+          "type": "Binary", 
+          "LaTeX": "y_4 \in \{0, 1\}", 
+          "description": "Whether Student 4 is hired"
         },
-        {
-            "name": "y_3",
-            "type": "Binary",
-            "LaTeX": "y_3 \\in \\{0, 1\\}",
-            "description": "1 if undergraduate 3 works, 0 otherwise"
+        { 
+          "name": "y_5", 
+          "type": "Binary", 
+          "LaTeX": "y_5 \in \{0, 1\}", 
+          "description": "Whether Student 5 is hired"
         },
-        {
-            "name": "x_3",
-            "type": "Integer",
-            "LaTeX": "x_3 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours undergraduate 3 works"
+        { 
+          "name": "y_6", 
+          "type": "Binary", 
+          "LaTeX": "y_6 \in \{0, 1\}", 
+          "description": "Whether Student 6 is hired"
         },
-        {
-            "name": "y_4",
-            "type": "Binary",
-            "LaTeX": "y_4 \\in \\{0, 1\\}",
-            "description": "1 if undergraduate 4 works, 0 otherwise"
+        { 
+          "name": "x_1", 
+          "type": "Integer", 
+          "LaTeX": "x_1 \in \mathbb{Z}^+", 
+          "description": "Number of hours Student 1 works"
         },
-        {
-            "name": "x_4",
-            "type": "Integer",
-            "LaTeX": "x_4 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours undergraduate 4 works"
+        { 
+          "name": "x_2", 
+          "type": "Integer", 
+          "LaTeX": "x_2 \in \mathbb{Z}^+", 
+          "description": "Number of hours Student 2 works"
         },
-        {
-            "name": "y_5",
-            "type": "Binary",
-            "LaTeX": "y_5 \\in \\{0, 1\\}",
-            "description": "1 if graduate student 5 works, 0 otherwise"
+        { 
+          "name": "x_3", 
+          "type": "Integer", 
+          "LaTeX": "x_3 \in \mathbb{Z}^+", 
+          "description": "Number of hours Student 3 works"
         },
-        {
-            "name": "x_5",
-            "type": "Integer",
-            "LaTeX": "x_5 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours graduate student 5 works"
+        { 
+          "name": "x_4", 
+          "type": "Integer", 
+          "LaTeX": "x_4 \in \mathbb{Z}^+", 
+          "description": "Number of hours Student 4 works"
         },
-        {
-            "name": "y_6",
-            "type": "Binary",
-            "LaTeX": "y_6 \\in \\{0, 1\\}",
-            "description": "1 if graduate student 6 works, 0 otherwise"
+        { 
+          "name": "x_5", 
+          "type": "Integer", 
+          "LaTeX": "x_5 \in \mathbb{Z}^+", 
+          "description": "Number of hours Student 5 works"
         },
-        {
-            "name": "x_6",
-            "type": "Integer",
-            "LaTeX": "x_6 \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Number of hours graduate student 6 works"
+        { 
+          "name": "x_6", 
+          "type": "Integer", 
+          "LaTeX": "x_6 \in \mathbb{Z}^+", 
+          "description": "Number of hours Student 6 works"
         }
     ],
-    "PARAMETERS": [
+    "OBJECTIVE": { 
+      "query": "wage_1*x_1 + wage_2*x_2 + wage_3*x_3 + wage_4*x_4 + wage_5*x_5 + wage_6*x_6",
+      "goal": "MIN", 
+      "LaTeX": "\min Z = \sum_{i=1}^{6} wage_i \cdot x_i"
+    },
+    "CONSTRAINTS": [
         {
-            "name": "Wage_1",
-            "LaTeX": "Wage_1 = 10.0",
-            "description": "Hourly wage for undergraduate 1"
+          "rule_id": "R1",
+          "query": "y_1 + y_2 + y_3 + y_4 + y_5 + y_6 == 1",
+          "LaTeX": "y_1 + y_2 + y_3 + y_4 + y_5 + y_6 = 1",
+          "description": "There must be one and only one student on duty during open hours."
         },
         {
-            "name": "Wage_2",
-            "LaTeX": "Wage_2 = 10.0",
-            "description": "Hourly wage for undergraduate 2"
+          "rule_id": "R2",
+          "query": "x_1 + x_2 + x_3 + x_4 + x_5 + x_6 == 70",
+          "LaTeX": "x_1 + x_2 + x_3 + x_4 + x_5 + x_6 = 70",
+          "description": "The total duty hours of all undergraduates and graduate students are 70 hours."
         },
         {
-            "name": "Wage_3",
-            "LaTeX": "Wage_3 = 9.9",
-            "description": "Hourly wage for undergraduate 3"
+          "rule_id": "R3",
+          "query": "x_1 >= 8 * y_1",
+          "LaTeX": "x_1 \ge 8 \cdot y_1",
+          "description": "Each undergraduate must work at least 8 hours per week."
         },
         {
-            "name": "Wage_4",
-            "LaTeX": "Wage_4 = 9.8",
-            "description": "Hourly wage for undergraduate 4"
+          "rule_id": "R4",
+          "query": "x_2 >= 8 * y_2",
+          "LaTeX": "x_2 \ge 8 \cdot y_2",
+          "description": "Each undergraduate must work at least 8 hours per week."
         },
         {
-            "name": "Wage_5",
-            "LaTeX": "Wage_5 = 10.8",
-            "description": "Hourly wage for graduate student 5"
+          "rule_id": "R5",
+          "query": "x_3 >= 8 * y_3",
+          "LaTeX": "x_3 \ge 8 \cdot y_3",
+          "description": "Each undergraduate must work at least 8 hours per week."
         },
         {
-            "name": "Wage_6",
-            "LaTeX": "Wage_6 = 11.3",
-            "description": "Hourly wage for graduate student 6"
+          "rule_id": "R6",
+          "query": "x_4 >= 8 * y_4",
+          "LaTeX": "x_4 \ge 8 \cdot y_4",
+          "description": "Each undergraduate must work at least 8 hours per week."
+        },
+        {
+          "rule_id": "R7",
+          "query": "x_5 >= 7 * y_5",
+          "LaTeX": "x_5 \ge 7 \cdot y_5",
+          "description": "Each graduate student must work at least 7 hours per week."
+        },
+        {
+          "rule_id": "R8",
+          "query": "x_6 >= 7 * y_6",
+          "LaTeX": "x_6 \ge 7 \cdot y_6",
+          "description": "Each graduate student must work at least 7 hours per week."
+        },
+        {
+          "rule_id": "R9",
+          "query": "x_1 <= 2 * y_1",
+          "LaTeX": "x_1 \le 2 \cdot y_1",
+          "description": "Each student can work no more than 2 shifts per week."
+        },
+        {
+          "rule_id": "R10",
+          "query": "x_2 <= 2 * y_2",
+          "LaTeX": "x_2 \le 2 \cdot y_2",
+          "description": "Each student can work no more than 2 shifts per week."
+        },
+        {
+          "rule_id": "R11",
+          "query": "x_3 <= 2 * y_3",
+          "LaTeX": "x_3 \le 2 \cdot y_3",
+          "description": "Each student can work no more than 2 shifts per week."
+        },
+        {
+          "rule_id": "R12",
+          "query": "x_4 <= 2 * y_4",
+          "LaTeX": "x_4 \le 2 \cdot y_4",
+          "description": "Each student can work no more than 2 shifts per week."
+        },
+        {
+          "rule_id": "R13",
+          "query": "x_5 <= 2 * y_5",
+          "LaTeX": "x_5 \le 2 \cdot y_5",
+          "description": "Each student can work no more than 2 shifts per week."
+        },
+        {
+          "rule_id": "R14",
+          "query": "x_6 <= 2 * y_6",
+          "LaTeX": "x_6 \le 2 \cdot y_6",
+          "description": "Each student can work no more than 2 shifts per week."
+        },
+        {
+          "rule_id": "R15",
+          "query": "x_1 + x_2 + x_3 + x_4 + x_5 + x_6 <= 3 * 5",
+          "LaTeX": "x_1 + x_2 + x_3 + x_4 + x_5 + x_6 \le 15",
+          "description": "No more than 3 students can be scheduled for duty each day."
+        },
+        {
+          "rule_id": "R16",
+          "query": "x_5 + x_6 <= 14",
+          "LaTeX": "x_5 + x_6 \le 14",
+          "description": "The sum of duty hours of student 5 and 6 can not exceed 14."
+        },
+        {
+          "rule_id": "R17",
+          "query": "x_5 < 2",
+          "LaTeX": "x_5 < 2",
+          "description": "Student 5 must work less than 2 hours on Thursday."
         }
+    ]
+}

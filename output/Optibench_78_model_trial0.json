@@ -1,100 +1,71 @@
 {
-    "SETS": {
-        "query": "indices definition",
-        "LaTeX": "\\text{Let } I \\text{ be the set of warehouses (NY, LA, CH, ATL)}; \\text{ let } R \\text{ be the set of regions (1, 2, 3)}"
-    },
     "VARIABLES": [
+        { 
+          "name": "y_NY", 
+          "type": "BINARY", 
+          "LaTeX": "y_{NY} \in \{0, 1\}", 
+          "description": "Whether to open New York warehouse"
+        },
+        { 
+          "name": "y_LA", 
+          "type": "BINARY", 
+          "LaTeX": "y_{LA} \in \{0, 1\}", 
+          "description": "Whether to open Los Angeles warehouse"
+        },
+        { 
+          "name": "y_CH", 
+          "type": "BINARY", 
+          "LaTeX": "y_{CH} \in \{0, 1\}", 
+          "description": "Whether to open Chicago warehouse"
+        },
+        { 
+          "name": "y_AT", 
+          "type": "BINARY", 
+          "LaTeX": "y_{AT} \in \{0, 1\}", 
+          "description": "Whether to open Atlanta warehouse"
+        }
+    ],
+    "OBJECTIVE": { 
+      "query": "y_NY * c_NY + y_LA * c_LA + y_CH * c_CH + y_AT * c_AT + y_NY * d_1 * f_NY + y_LA * d_1 * f_LA + y_CH * d_1 * f_CH + y_AT * d_1 * f_AT + y_NY * d_2 * f_NY + y_LA * d_2 * f_LA + y_CH * d_2 * f_CH + y_AT * d_2 * f_AT + y_NY * d_3 * f_NY + y_LA * d_3 * f_LA + y_CH * d_3 * f_CH + y_AT * d_3 * f_AT",
+      "goal": "MIN", 
+      "LaTeX": "\min Z = y_{NY} \cdot 400 + y_{LA} \cdot 500 + y_{CH} \cdot 300 + y_{AT} \cdot 150 + y_{NY} \cdot 80 \cdot 20 + y_{LA} \cdot 80 \cdot 48 + y_{CH} \cdot 80 \cdot 26 + y_{AT} \cdot 80 \cdot 24 + y_{NY} \cdot 70 \cdot 40 + y_{LA} \cdot 70 \cdot 15 + y_{CH} \cdot 70 \cdot 35 + y_{AT} \cdot 70 \cdot 50 + y_{NY} \cdot 40 \cdot 50 + y_{LA} \cdot 40 \cdot 26 + y_{CH} \cdot 40 \cdot 18 + y_{AT} \cdot 40 \cdot 35"
+    },
+    "CONSTRAINTS": [
         {
-            "name": "y_NY",
-            "type": "Binary",
-            "LaTeX": "y_{NY} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether New York warehouse is opened"
+          "rule_id": "R1",
+          "query": "y_LA >= y_NY",
+          "LaTeX": "y_{LA} \ge y_{NY}",
+          "description": "If the New York warehouse is opened, then the Los Angeles warehouse must also be opened."
         },
         {
-            "name": "y_LA",
-            "type": "Binary",
-            "LaTeX": "y_{LA} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether Los Angeles warehouse is opened"
+          "rule_id": "R2",
+          "query": "y_NY + y_LA + y_CH + y_AT <= 2",
+          "LaTeX": "y_{NY} + y_{LA} + y_{CH} + y_{AT} \le 2",
+          "description": "At most two warehouses can be opened."
         },
         {
-            "name": "y_CH",
-            "type": "Binary",
-            "LaTeX": "y_{CH} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether Chicago warehouse is opened"
+          "rule_id": "R3",
+          "query": "y_AT + y_LA >= 1",
+          "LaTeX": "y_{AT} + y_{LA} \ge 1",
+          "description": "Either the Atlanta or the Los Angeles warehouse must be opened."
         },
         {
-            "name": "y_ATL",
-            "type": "Binary",
-            "LaTeX": "y_{ATL} \\in \\{0, 1\\}",
-            "description": "Binary variable indicating whether Atlanta warehouse is opened"
+          "rule_id": "R4",
+          "query": "y_NY + y_AT <= 1",
+          "LaTeX": "y_{NY} + y_{AT} \le 1",
+          "description": "The New York and the Atlanta warehouses cannot be opened simultaneously."
         },
         {
-            "name": "x_NY_1",
-            "type": "Integer",
-            "LaTeX": "x_{NY_1} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from New York to Region 1"
+          "rule_id": "R5",
+          "query": "y_NY + y_CH >= 1",
+          "LaTeX": "y_{NY} + y_{CH} \ge 1",
+          "description": "At least one of the three warehouses (New York, Los Angeles, or Chicago) must be opened."
         },
         {
-            "name": "x_NY_2",
-            "type": "Integer",
-            "LaTeX": "x_{NY_2} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from New York to Region 2"
-        },
-        {
-            "name": "x_NY_3",
-            "type": "Integer",
-            "LaTeX": "x_{NY_3} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from New York to Region 3"
-        },
-        {
-            "name": "x_LA_1",
-            "type": "Integer",
-            "LaTeX": "x_{LA_1} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Los Angeles to Region 1"
-        },
-        {
-            "name": "x_LA_2",
-            "type": "Integer",
-            "LaTeX": "x_{LA_2} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Los Angeles to Region 2"
-        },
-        {
-            "name": "x_LA_3",
-            "type": "Integer",
-            "LaTeX": "x_{LA_3} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Los Angeles to Region 3"
-        },
-        {
-            "name": "x_CH_1",
-            "type": "Integer",
-            "LaTeX": "x_{CH_1} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Chicago to Region 1"
-        },
-        {
-            "name": "x_CH_2",
-            "type": "Integer",
-            "LaTeX": "x_{CH_2} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Chicago to Region 2"
-        },
-        {
-            "name": "x_CH_3",
-            "type": "Integer",
-            "LaTeX": "x_{CH_3} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Chicago to Region 3"
-        },
-        {
-            "name": "x_ATL_1",
-            "type": "Integer",
-            "LaTeX": "x_{ATL_1} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Atlanta to Region 1"
-        },
-        {
-            "name": "x_ATL_2",
-            "type": "Integer",
-            "LaTeX": "x_{ATL_2} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity shipped from Atlanta to Region 2"
-        },
-        {
-            "name": "x_ATL_3",
-            "type": "Integer",
-            "LaTeX": "x_{ATL_3} \\in \\mathbb{Z}
+          "rule_id": "R6",
+          "query": "y_NY + y_CH >= 1",
+          "LaTeX": "y_{NY} + y_{CH} \ge 1",
+          "description": "The New York and the Chicago warehouses might be opened simultaneously."
+        }
+    ]
+}

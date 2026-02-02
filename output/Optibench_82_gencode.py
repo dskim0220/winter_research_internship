@@ -1,37 +1,37 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-# 1. Data Section (Directly extracted from JSON 'query' fields)
-employees_monday = 15
-employees_tuesday = 13
-employees_wednesday = 15
-price_monday = 15
-price_tuesday = 13
-price_wednesday = 15
-M = 1000000
+# 1. Constants (Derived from 'query' values)
+price_A1 = 170000
+price_A2 = 170000
+price_A3 = 170000
+price_A4 = 170000
+price_A5 = 170000
+price_A6 = 170000
+price_A7 = 170000
 
 # 2. Model Initialization
-m = gp.Model("production_optimization")
+m = gp.Model("optimization_model")
 
-# 3. Variables (Check 'type' in VARIABLES section: Binary, Continuous, etc.)
-y_monday = m.addVar(vtype=GRB.BINARY, name="y_monday")
-y_tuesday = m.addVar(vtype=GRB.BINARY, name="y_tuesday")
-y_wednesday = m.addVar(vtype=GRB.BINARY, name="y_wednesday")
-x_monday = m.addVar(vtype=GRB.INTEGER, name="x_monday")
-x_tuesday = m.addVar(vtype=GRB.INTEGER, name="x_tuesday")
-x_wednesday = m.addVar(vtype=GRB.INTEGER, name="x_wednesday")
+# 3. Variables (Check 'type' in VARIABLES: Binary/Int/Cont)
+x1 = m.addVar(vtype=GRB.INTEGER, name="x1")
+x2 = m.addVar(vtype=GRB.INTEGER, name="x2")
+x3 = m.addVar(vtype=GRB.INTEGER, name="x3")
+x4 = m.addVar(vtype=GRB.INTEGER, name="x4")
+x5 = m.addVar(vtype=GRB.INTEGER, name="x5")
+x6 = m.addVar(vtype=GRB.INTEGER, name="x6")
+x7 = m.addVar(vtype=GRB.INTEGER, name="x7")
+y1 = m.addVar(vtype=GRB.BINARY, name="y1")
 
-# 4. Objective (Use 'LaTeX' logic + 'query' numbers)
-m.setObjective(price_monday * x_monday + price_tuesday * x_tuesday + price_wednesday * x_wednesday, GRB.MAXIMIZE)
+# 4. Objective (LaTeX structure + query numbers)
+m.setObjective(x1 + x2 + x3 + x4 + x5 + x6 + x7, GRB.MINIMIZE)
 
-# 5. Constraints (Combine 'LaTeX' structure with 'query' numeric values)
-m.addConstr(x_monday <= employees_monday * y_monday, "Constraint_Monday_Employees")
-m.addConstr(x_tuesday <= employees_tuesday * y_tuesday, "Constraint_Tuesday_Employees")
-m.addConstr(x_wednesday <= employees_wednesday * y_wednesday, "Constraint_Wednesday_Employees")
+# 5. Constraints (LaTeX structure + query numbers)
+m.addConstr(x1 - x5 <= 7 * y1, "C1")
+m.addConstr(x7 + x1 >= 3 * y1, "C2")
 
-# 6. Optimization and Output
+# 6. Optimization & Output
 m.optimize()
-# Print results for each variable
-for v in m.getVars():
-    print(f'{v.varName} = {v.x}')
-print('Optimal Objective Value:', m.objVal)
+if m.status == GRUBOpy.GRB.OPTIMAL:
+    for v in m.getVars():
+        print(f"{v.varName}: {v.x}")

@@ -1,10 +1,23 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains numerous issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the problem description, and the 'LaTeX' representations are often incorrect or incomplete.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields are not faithful extracts from the problem description. There are several hallucinations and placeholders.",
-    "DATA_FIDELITY_CHECK": "Numerous numeric discrepancies exist between the 'query' and 'LaTeX' fields. Many numbers are either missing or set to placeholders (e.g., 0).",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly identified or implemented based on the provided queries.",
-    "LINEARITY_VALIDATION": "The model is not linear due to the presence of binary variables and non-linear terms.",
-    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies are present, particularly in the conversion of hourly production rates to daily production requirements.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are poorly defined and do not accurately reflect the problem description. For example, the 'Minimum Batch' and 'Total Production Limit (Tons)' constraints are not properly modeled, and the 'Activation Time' constraint is missing."
+    "OVERALL_FEEDBACK": "The model lacks essential details such as the productivity rates for each device on each production line, which are crucial for formulating the correct constraints and objective function.",
+    "QUERY_GROUNDING_AUDIT": [
+        "Fabricated constraints like'specific_max_staffing_constraint' and 'total_workers_constraint' not present in the original problem description."
+    ],
+    "DATA_FIDELITY_CHECK": [
+        "Missing productivity rates for each device on each production line."
+    ],
+    "LOGICAL_COUPLING_CHECK": [
+        "No Big-M linking is provided in the given JSON, but the absence of such links does not necessarily indicate an issue without context."
+    ],
+    "LINEARITY_VALIDATION": [
+        "No non-linear terms are present in the given objective function and constraints, so this aspect is valid."
+    ],
+    "DIMENSIONAL_ANALYSIS": [
+        "Unit inconsistencies exist due to the lack of productivity rates for each device on each production line."
+    ],
+    "CONSTRAINTS_FEEDBACK": {
+        "rule_id_1": "The constraint 'production_lines_operational' correctly represents the requirement that at least one production line must be operational.",
+        "rule_id_2": "The constraint 'total_workers_constraint' is logically sound but requires the productivity rates to be defined for each device on each production line."
+    }
 }

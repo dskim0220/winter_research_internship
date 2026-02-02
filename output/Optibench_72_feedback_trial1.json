@@ -1,10 +1,27 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains several issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the 'LaTeX' formulations, and the mathematical integrity is compromised.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders (e.g., 0) instead of actual numbers. There are no hallucinations listed as the 'query' does not match the 'LaTeX' formulations.",
-    "DATA_FIDELITY_CHECK": "Numerical data is missing or set to 0. For example, the 'EstimatedRevenue_{APPX}', 'DevelopmentCost_{APPX}', and 'MarketingCost_{APPX}' parameters are set to 0.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M links are provided in the 'LaTeX' formulations, which is required based on the logic in the queries.",
-    "LINEARITY_VALIDATION": "Variable-to-variable multiplication is present, violating the MILP standard. For instance, the objective function includes terms like 'Price - Cost', which should be linearized.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed in the provided JSON.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly mapped to the 'LaTeX' formulations. For example, the minimum batch constraint for AppX is not properly represented, and the total production limit constraint is not included."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            120,
+            150,
+            7
+        ],
+        "latex_numbers": [
+            120,
+            150,
+            7
+        ],
+        "mismatch": "Numbers in the problem description do not match those in the LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "FAIL",
+            "reason": "The constraint does not match the problem description. The problem states that the total number of development teams assigned to AppX, AppY, AppW, and AppV combined must not exceed 10 teams, but the constraint uses 10 instead of 10."
+        }
+    ],
+    "FINAL_VERDICT": "There is a critical failure in the constraints. Specifically, the constraint R1 should be adjusted to reflect the correct limit of 10 teams for AppX, AppY, AppW, and AppV combined. Additionally, verify the logical linking and dimensional consistency as per the audit priorities."
 }

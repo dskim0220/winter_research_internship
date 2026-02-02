@@ -1,10 +1,86 @@
 {
-    "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The model contains several issues including incorrect variable types, logical errors, and missing constraints. Additionally, the objective function and constraints do not fully align with the problem description.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders and do not match the problem description. Specifically, the 'query' fields are empty and do not reflect the actual requirements.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies exist between the 'query' and 'LaTeX' fields. For example, the 'query' for 'production limit' is missing the conversion factor from tons to 100kg, and the 'query' for 'activation constraint' is not correctly formulated.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the model, which is required for the 'activation constraint' based on the problem description.",
-    "LINEARITY_VALIDATION": "The model is not linear due to the presence of binary variables and non-linear terms like 'price * x_{t,p}'.",
-    "DIMENSIONAL_ANALYSIS": "The 'production limit' constraint is dimensionally inconsistent. The 'query' mentions tons but the 'LaTeX' uses 100kg units.",
-    "CONSTRAINTS_FEEDBACK": "The 'production limit' constraint is incorrectly formulated. The 'query' specifies a limit in tons, but the 'LaTeX' uses 100kg units. The 'activation constraint' is also incorrectly formulated and lacks the Big-M link. The 'query' for'minimum batch' is not properly addressed in the model."
+    "CONFIDENCE_SCORE": 0.9,
+    "CRITICAL_FAILURE_FOUND": "NO",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            5300,
+            4500,
+            5400,
+            124,
+            109,
+            115,
+            73.3,
+            52.9,
+            65.4,
+            170000,
+            150000,
+            100000,
+            20,
+            20,
+            16
+        ],
+        "latex_numbers": [
+            5300,
+            4500,
+            5400,
+            124,
+            109,
+            115,
+            73.3,
+            52.9,
+            65.4,
+            170000,
+            150000,
+            100000,
+            20,
+            20,
+            16
+        ],
+        "mismatch": "No discrepancies found between problem numbers and LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "All 'if-then' sentences are correctly linked with binary variables ($y$).",
+    "DIMENSIONAL_CONSISTENCY": "The objective function applies the correct logic (Price * Quantity).",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "PASS",
+            "reason": "The constraint ensures the total production does not exceed 1,210 tons, which matches the problem description."
+        },
+        {
+            "rule_id": "R2",
+            "status": "PASS",
+            "reason": "The constraint ensures that if Product A1 is produced, the production lines must be activated for at least 57 minutes, which aligns with the problem description."
+        },
+        {
+            "rule_id": "R3",
+            "status": "PASS",
+            "reason": "The constraint limits the production of Product A1 to 22 days, which is consistent with the problem description."
+        },
+        {
+            "rule_id": "R4",
+            "status": "PASS",
+            "reason": "The constraint ensures that if Product A2 is produced, the production lines must be activated for at least 57 minutes, which aligns with the problem description."
+        },
+        {
+            "rule_id": "R5",
+            "status": "PASS",
+            "reason": "The constraint limits the production of Product A2 to 22 days, which is consistent with the problem description."
+        },
+        {
+            "rule_id": "R6",
+            "status": "PASS",
+            "reason": "The constraint ensures that if Product A3 is produced, the production lines must be activated for at least 57 minutes, which aligns with the problem description."
+        },
+        {
+            "rule_id": "R7",
+            "status": "PASS",
+            "reason": "The constraint limits the production of Product A3 to 22 days, which is consistent with the problem description."
+        },
+        {
+            "rule_id": "R8",
+            "status": "PASS",
+            "reason": "The constraint ensures that only one product can be produced at a time, which aligns with the problem description."
+        }
+    ],
+    "FINAL_VERDICT": "The provided model is logically sound and adheres to the problem description. No critical issues were found during the verification process."
 }

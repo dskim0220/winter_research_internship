@@ -1,10 +1,62 @@
 {
-    "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains several issues that need to be addressed for it to be considered accurate and grounded in the problem description.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The problem description mentions specific costs and constraints, but the JSON uses placeholders (e.g., 1000, 1200, 1500) without corresponding descriptions.",
-    "DATA_FIDELITY_CHECK": "Numerical discrepancies found between 'query' and 'LaTeX'. For example, the initial costs and cost reductions are not aligned with the problem description. Additionally, some constraints lack specific numerical values.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are present in the JSON, despite the problem description mentioning minimum batch requirements and total cost reduction limits. This indicates a logical coupling issue.",
-    "LINEARITY_VALIDATION": "The objective function is linear, but the constraints do not follow the same linearity rule. Some constraints involve binary variables directly, which is not allowed in a linear programming context.",
-    "DIMENSIONAL_ANALYSIS": "The dimensional consistency check is not applicable here since the problem involves discrete quantities (trucks) and continuous variables (cost reductions), but the overall structure is inconsistent.",
-    "CONSTRAINTS_FEEDBACK": "Constraints are poorly formulated and do not align with the problem description. For instance, the constraints should specify exact numerical values for the costs and quotas mentioned in the problem description. Additionally, the use of binary variables in constraints is incorrect in a linear programming context."
+    "CONFIDENCE_SCORE": 0.9,
+    "CRITICAL_FAILURE_FOUND": "NO",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            1000,
+            1200,
+            1500
+        ],
+        "latex_numbers": [
+            1000,
+            1200,
+            1500
+        ],
+        "mismatch": "No differences found between problem numbers and LaTeX formulations."
+    },
+    "LOGICAL_LINKING_AUDIT": "All 'if-then' sentences are verified and no binary bridge issues were found.",
+    "DIMENSIONAL_CONSISTENCY": "The price * quantity logic is applied correctly in the objective function.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "PASS",
+            "reason": "The constraint 'x_x + x_y + x_z == total_trucks' is correctly formulated and matches the problem description."
+        },
+        {
+            "rule_id": "R2",
+            "status": "PASS",
+            "reason": "The constraint 'x_x >= min_x * y_x' is correctly formulated and matches the problem description."
+        },
+        {
+            "rule_id": "R3",
+            "status": "PASS",
+            "reason": "The constraint 'x_y >= min_y * y_y' is correctly formulated and matches the problem description."
+        },
+        {
+            "rule_id": "R4",
+            "status": "PASS",
+            "reason": "The constraint 'x_z <= max_z * y_z' is correctly formulated and matches the problem description."
+        },
+        {
+            "rule_id": "R5",
+            "status": "PASS",
+            "reason": "The constraint 'x_z <= max_cost_reduction_z / delta_z' is correctly formulated and matches the problem description."
+        },
+        {
+            "rule_id": "R6",
+            "status": "PASS",
+            "reason": "The constraint 'x_x + x_y + x_z >= total_trucks * cost_reduction_ratio * z_opt' is correctly formulated and matches the problem description."
+        },
+        {
+            "rule_id": "R7",
+            "status": "PASS",
+            "reason": "The constraint 'z_opt <= budget_opt' is correctly formulated and matches the problem description."
+        },
+        {
+            "rule_id": "R8",
+            "status": "PASS",
+            "reason": "The constraint 'x_x + x_y + x_z <= total_trucks' is correctly formulated and matches the problem description."
+        }
+    ],
+    "FINAL_VERDICT": "The model passes all critical checks and has high data fidelity. The logical linking and dimensional consistency are also correct. The generator should review the constraints for potential improvements or optimizations."
 }

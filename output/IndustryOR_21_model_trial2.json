@@ -1,63 +1,118 @@
-{article}
-\usepackage{amsmath}
-
-\begin{document}
-
-\section*{Mathematical Model}
-
-\subsection*{Sets}
-\[
-I = \{A, B, C\}, \quad J = \{1, 2, \ldots, 7\}
-\]
-
-\subsection*{Variables}
-\[
-\begin{aligned}
-&x_{ij} \in \{0, 1\}, && \text{for } i \in I, j \in J \\
-&y_{ij} \in \{0, 1\}, && \text{for } i \in I, j \in J \\
-&z_{ij} \in \{0, 1\}, && \text{for } i \in I, j \in J
-\end{aligned}
-\]
-
-\subsection*{Parameters}
-\[
-\begin{aligned}
-&P_A = 120, && \text{(cost of ordering each table from Supplier A)} \\
-&P_B = 110, && \text{(cost of ordering each table from Supplier B)} \\
-&P_C = 100, && \text{(cost of ordering each table from Supplier C)} \\
-&T_A = 20, && \text{(number of tables per order from Supplier A)} \\
-&T_B = 15, && \text{(number of tables per order from Supplier B)} \\
-&T_C = 15, && \text{(number of tables per order from Supplier C)} \\
-&m_A = 150, && \text{(minimum number of tables to order from Supplier A)} \\
-&m_{total} = 7, && \text{(minimum number of orders from Supplier A, B, or C)} \\
-&m_A = 60, && \text{(maximum number of tables from Supplier A)} \\
-&m_B = 30, && \text{(minimum number of tables to order from Supplier B if Supplier A is ordered)} \\
-&m_C = 1, && \text{(minimum number of tables to order from Supplier C if Supplier B is ordered)} \\
-&m_{AB} = 25, && \text{(minimum sum of tables from Supplier A and B)} \\
-&m_{BC} = 30, && \text{(minimum sum of tables from Supplier B and C)} \\
-&T_{total} = 600, && \text{(maximum total number of tables)}
-\end{aligned}
-\]
-
-\subsection*{Objective Function}
-\[
-\min \sum_{i \in I} \sum_{j \in J} P_i \cdot x_{ij}
-\]
-
-\subsection*{Constraints}
-\begin{align*}
-\sum_{j \in J} x_{A1,j} &\geq m_A \\
-\sum_{j \in J} x_{B1,j} &\geq m_B \\
-\sum_{j \in J} x_{C1,j} &\geq m_C \\
-\sum_{j \in J} x_{A1,j} + \sum_{j \in J} x_{B1,j} &\geq m_{AB} \\
-\sum_{j \in J} x_{B1,j} + \sum_{j \in J} x_{C1,j} &\geq m_{BC} \\
-\sum_{j \in J} x_{A1,j} + \sum_{j \in J} x_{B1,j} + \sum_{j \in J} x_{C1,j} &\leq T_{total} \\
-\sum_{j \in J} x_{A1,j} &\leq m_A \\
-\sum_{j \in J} x_{B1,j} &\geq m_B \\
-\sum_{j \in J} x_{C1,j} &\geq m_C \\
-\sum_{j \in J} x_{A1,j} + \sum_{j \in J} x_{B1,j} &\geq m_{AB} \\
-\sum_{j \in J} x_{B1,j} + \sum_{j \in J} x_{C1,j} &\geq m_{BC} \\
-\sum_{j \in J} x_{A1,j} + \sum_{j \in J} x_{B1,j} + \sum_{j \in J} x_{C1,j} &\leq T_{total} \\
-\sum_{j \in J} x_{A1,j} &\leq m_A \\
-\sum_{j \in J} x_{B1,j} &\geq m_B \\
-\sum_{j \in J}
+{
+    "SETS": {
+        "query": "indices definition",
+        "LaTeX": "\\text{let } I = \\{A, B, C\\}"
+    },
+    "VARIABLES": [
+        {
+            "name": "orders_A",
+            "type": "Integer",
+            "LaTeX": "x_A \\in \\mathbb{Z}",
+            "description": "Number of orders from Supplier A"
+        },
+        {
+            "name": "orders_B",
+            "type": "Integer",
+            "LaTeX": "x_B \\in \\mathbb{Z}",
+            "description": "Number of orders from Supplier B"
+        },
+        {
+            "name": "orders_C",
+            "type": "Integer",
+            "LaTeX": "x_C \\in \\mathbb{Z}",
+            "description": "Number of orders from Supplier C"
+        }
+    ],
+    "PARAMETERS": [
+        {
+            "name": "cost_A",
+            "LaTeX": "P_A = 120",
+            "description": "Cost of ordering each dining table from Supplier A"
+        },
+        {
+            "name": "cost_B",
+            "LaTeX": "P_B = 110",
+            "description": "Cost of ordering each dining table from Supplier B"
+        },
+        {
+            "name": "cost_C",
+            "LaTeX": "P_C = 100",
+            "description": "Cost of ordering each dining table from Supplier C"
+        },
+        {
+            "name": "quantity_A_per_order",
+            "LaTeX": "Q_A = 20",
+            "description": "Quantity of tables per order from Supplier A"
+        },
+        {
+            "name": "quantity_B_per_order",
+            "LaTeX": "Q_B = 15",
+            "description": "Quantity of tables per order from Suppliers B and C"
+        },
+        {
+            "name": "quantity_C_per_order",
+            "LaTeX": "Q_C = 15",
+            "description": "Quantity of tables per order from Suppliers B and C"
+        },
+        {
+            "name": "min_tables",
+            "LaTeX": "T_{\text{min}} = 150",
+            "description": "Minimum number of tables to order"
+        },
+        {
+            "name": "max_tables",
+            "LaTeX": "T_{\text{max}} = 600",
+            "description": "Maximum number of tables to order"
+        },
+        {
+            "name": "min_orders_A_or_B",
+            "LaTeX": "O_{\text{min}} = 7",
+            "description": "Minimum number of orders from Supplier A or B or C"
+        },
+        {
+            "name": "max_tables_A",
+            "LaTeX": "T_A \le 60",
+            "description": "Maximum tables supplied from Supplier A"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "goal",
+        "LaTeX": "\\min \\sum_{i \\in I} P_i \\cdot x_i"
+    },
+    "CONSTRAINTS": [
+        {
+            "rule_id": 1,
+            "name": "orders_A_non_negative",
+            "query": "x_A >= 0",
+            "LaTeX": "x_A \\ge 0"
+        },
+        {
+            "rule_id": 2,
+            "name": "orders_B_non_negative",
+            "query": "x_B >= 0",
+            "LaTeX": "x_B \\ge 0"
+        },
+        {
+            "rule_id": 3,
+            "name": "orders_C_non_negative",
+            "query": "x_C >= 0",
+            "LaTeX": "x_C \\ge 0"
+        },
+        {
+            "rule_id": 4,
+            "name": "sum_orders_A_and_B_at_least_25",
+            "query": "sum(x_A, x_B) >= 25",
+            "LaTeX": "x_A + x_B \\ge 25"
+        },
+        {
+            "rule_id": 5,
+            "name": "sum_orders_B_and_C_at_least_30",
+            "query": "sum(x_B, x_C) >= 30",
+            "LaTeX": "x_B + x_C \\ge 30"
+        },
+        {
+            "rule_id": 6,
+            "name": "orders_A_and_B_at_least_30",
+            "query": "x_A + x_B >= 30",
+            "LaTeX": "x_A + x_B \\ge 30"
+        }

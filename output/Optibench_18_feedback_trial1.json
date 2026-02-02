@@ -1,10 +1,37 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains numerous issues including incorrect variable types, logical errors, and missing constraints. The 'query' fields do not match the problem description, and the 'LaTeX' formulations are inconsistent with the problem requirements.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields contain placeholders and do not reflect the actual problem description. For example, 'Minimum Batch', 'Total Production Limit (Tons)', and 'Activation Time' are not addressed in the problem description.",
-    "DATA_FIDELITY_CHECK": "Numerous numeric values in the 'query' fields are placeholders (e.g., 170000) and do not correspond to actual problem requirements. Some constraints are missing or incorrectly formulated.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are correctly identified or implemented based on the problem description. The logic for ensuring at least one production line is fully staffed is not properly captured.",
-    "LINEARITY_VALIDATION": "The formulation does not adhere to linear programming standards due to the presence of binary variables and non-linear relationships.",
-    "DIMENSIONAL_ANALYSIS": "Unit inconsistencies exist, particularly in the conversion of production quantities and worker hours into meaningful dimensions.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are poorly defined and do not align with the problem description. For instance, the requirement to ensure at least one production line is fully staffed is not correctly represented, and the total production limit is not specified in terms of units (tons, kg, etc.)."
+    "OVERALL_FEEDBACK": "The model lacks essential details such as the productivity rates for each device on each production line, which are crucial for formulating the correct constraints and objective function. Additionally, there are logical errors in the constraints regarding the maximum workers per line and the specific maximum staffing constraint for production line 3.",
+    "QUERY_GROUNDING_AUDIT": [
+        "Production line 1's productivity rates for tablets and laptops, production line 2's productivity rates for tablets and laptops, production line 3's productivity rates for tablets and laptops, and production line 4's productivity rates for tablets and laptops are not provided in the original problem description."
+    ],
+    "DATA_FIDELITY_CHECK": [
+        "Missing productivity rates for each device on each production line prevent exact numerical values from being mapped 1:1."
+    ],
+    "LOGICAL_COUPLING_CHECK": [
+        "The constraint 'The production lines can only be operated or shut down at the same time' is redundant given the binary variables \\(y_1, y_2, y_3, y_4\\). The constraint 'The combined number of workers on all other lines must not exceed 30 when one production line is fully staffed' is also redundant due to the binary nature of \\(y_i\\)."
+    ],
+    "LINEARITY_VALIDATION": [
+        "Non-linear terms exist in the objective function and constraints due to the multiplication of continuous variables with binary variables, violating the MILP linearity requirement."
+    ],
+    "DIMENSIONAL_ANALYSIS": [
+        "Unit inconsistencies are present in the constraints involving the number of workers and the number of hours produced, as the units do not align with the productivity rates provided."
+    ],
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": 1,
+            "feedback": "The constraint 'The production lines can only be operated or shut down at the same time' is redundant and should be removed. The binary variables \\(y_1, y_2, y_3, y_4\\) already enforce this condition."
+        },
+        {
+            "rule_id": 2,
+            "feedback": "The constraint 'The combined number of workers on all other lines must not exceed 30 when one production line is fully staffed' is redundant and should be removed. The binary variables \\(y_i\\) already enforce this condition."
+        },
+        {
+            "rule_id": 3,
+            "feedback": "The constraint 'At least one production line is fully staffed (20 workers)' is redundant and should be removed. The binary variables \\(y_i\\) already enforce this condition."
+        },
+        {
+            "rule_id": 4,
+            "feedback": "The constraint 'Specific maximum staffing constraint of 10 workers applies specifically to production line 3' is redundant and should be removed. The binary variable \\(y_3\\) already enforces this condition."
+        }
+    ]
 }

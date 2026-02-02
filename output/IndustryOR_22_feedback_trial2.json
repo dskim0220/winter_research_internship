@@ -1,10 +1,29 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON lacks critical details and logical connections required for a proper mathematical optimization model. Additionally, the JSON structure does not align with the problem description and queries.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The problem description specifies specific values for demand, price, cost, quotas, and activation costs, but these are not reflected in the 'query' fields.",
-    "DATA_FIDELITY_CHECK": "Numerical values in the 'query' fields are placeholders (e.g., 170000, 5300, etc.) and do not correspond to the actual values in the problem description. This results in zero-filling.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are included to link the binary decision variables with the continuous production quantities and fixed costs.",
-    "LINEARITY_VALIDATION": "The objective function does not follow the standard linear form due to the presence of binary variables and the lack of explicit linear terms for production quantities.",
-    "DIMENSIONAL_ANALYSIS": "The problem description uses tons as the unit of measurement, but the JSON does not convert this into 100 kg units as required. This inconsistency affects dimensional analysis.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly formulated to reflect the problem description. For example, the total production limit is given in tons but the variables are defined in 100 kg units. Additionally, the activation time constraint is not properly translated into a binary decision variable context."
+    "OVERALL_FEEDBACK": "The provided JSON formulation contains several issues that need to be addressed to ensure mathematical integrity and logical correctness.",
+    "QUERY_GROUNDING_AUDIT": [
+        "The problem description mentions 'Minimum production batch' but the JSON formulation does not include this information.",
+        "The problem description specifies 'Total production of A1, A2, A3 does not exceed 1,210 tons', which is not reflected in the JSON parameters.",
+        "The problem description includes 'If the company decides to produce A1, then it must activate production the production lines at least 57 minutes to produce A1', which is not included in the JSON formulation."
+    ],
+    "DATA_FIDELITY_CHECK": [
+        "The production quotas in the problem description (500, 450, 550) do not match the corresponding values in the JSON parameters (20, 20, 16).",
+        "The selling prices in the problem description (124, 109, 115) do not match the corresponding values in the JSON parameters (124, 109, 115).",
+        "The production costs in the problem description (73.30, 52.90, 65.40) do not match the corresponding values in the JSON parameters (73.30, 52.90, 65.40).",
+        "The activation costs in the problem description (170000, 150000, 100000) do not match the corresponding values in the JSON parameters (170000, 150000, 100000)."
+    ],
+    "LOGICAL_COUPLING_CHECK": [
+        "The Big-M linking for the production batch constraint is not correctly formulated in the JSON. The constraint should be something like \\( x_i \\ge B_i \\cdot y_i \\) and \\( x_i \\le (B_i + M \\cdot (1-y_i)) \\) where \\( M \\) is a large constant.",
+        "The relationship between the decision variable \\( y_{A1} \\) and the production quantity \\( x_{A1} \\) is not clearly defined in the JSON. It should be linked through the Big-M formulation."
+    ],
+    "LINEARITY_VALIDATION": [
+        "The objective function \\( \\text{Profit} = (\\text{Revenue} - \\text{Variable Cost}) - \\text{Fixed Cost} \\) is linear, but the constraints need to be checked for linearity. For example, the production constraints \\( x_{A1} \\le 500 \\cdot y_{A1} \\), \\( x_{A2} \\le 450 \\cdot y_{A2} \\), and \\( x_{A3} \\le 550 \\cdot y_{A3} \\) are linear, but the activation cost constraints need to be checked."
+    ],
+    "DIMENSIONAL_ANALYSIS": [
+        "The unit conversion factor \\( P = 100 \\) is consistent with the problem description. However, the total production limit \\( T = 1210 \\) is in tons, which needs to be converted to 100kg units (1 ton = 1000 kg)."
+    ],
+    "CONSTRAINTS_FEEDBACK": [
+        "The constraints for production quantities \\( x_{A1} \\le 500 \\cdot y_{A1} \\), \\( x_{A2} \\le 450 \\cdot y_{A2} \\), and \\( x_{A3} \\le 550 \\cdot y_{A3} \\) are correct. However, the activation cost constraints need to be formulated using Big-M method.",
+        "The objective function \\( \\text{Profit} = (S_{A1} \\cdot x_{A1} + S_{A2} \\cdot x_{A2} + S_{A3} \\cdot x_{A3} - C_{A1} \\cdot x_{A1} - C_{A2} \\cdot x_{A2} - C_{A3} \\cdot x_{A3} - F_{A1} \\cdot y_{A1} - F_{A2} \\cdot y_{A2} - F_{A3} \\cdot y_{A3}) \\) is correct."
+    ]
 }

@@ -1,111 +1,109 @@
 {
     "SETS": {
         "query": "indices definition",
-        "LaTeX": "\\text{Let } i \\in \\{1, 2, 3, 4\\} \\text{ represent production lines; } j \\in \\{1, 2, 3\\} \\text{ represent devices (smartphones, tablets, laptops).}"
+        "LaTeX": "\\text{Let } i \\in \\{1, 2, 3, 4\\} \\text{ represent the production lines, and } j \\in \\{1, 2, 3, 4\\} \\text{ represent the devices (smartphones, tablets, laptops).}"
     },
     "VARIABLES": [
         {
             "name": "y_1",
             "type": "Binary",
             "LaTeX": "y_1 \\in \\{0, 1\\}",
-            "description": "Production line 1 is active"
+            "description": "Production line 1 is operational"
         },
         {
             "name": "y_2",
             "type": "Binary",
             "LaTeX": "y_2 \\in \\{0, 1\\}",
-            "description": "Production line 2 is active"
+            "description": "Production line 2 is operational"
         },
         {
             "name": "y_3",
             "type": "Binary",
             "LaTeX": "y_3 \\in \\{0, 1\\}",
-            "description": "Production line 3 is active"
+            "description": "Production line 3 is operational"
         },
         {
             "name": "y_4",
             "type": "Binary",
             "LaTeX": "y_4 \\in \\{0, 1\\}",
-            "description": "Production line 4 is active"
+            "description": "Production line 4 is operational"
         },
         {
-            "name": "x_{1j}",
-            "type": "Integer",
-            "LaTeX": "x_{1j} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of device $j$ produced by production line 1"
+            "name": "x_1",
+            "type": "Continuous",
+            "LaTeX": "x_1 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 1 is operational"
         },
         {
-            "name": "x_{2j}",
-            "type": "Integer",
-            "LaTeX": "x_{2j} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of device $j$ produced by production line 2"
+            "name": "x_2",
+            "type": "Continuous",
+            "LaTeX": "x_2 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 2 is operational"
         },
         {
-            "name": "x_{3j}",
-            "type": "Integer",
-            "LaTeX": "x_{3j} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of device $j$ produced by production line 3"
+            "name": "x_3",
+            "type": "Continuous",
+            "LaTeX": "x_3 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 3 is operational"
         },
         {
-            "name": "x_{4j}",
-            "type": "Integer",
-            "LaTeX": "x_{4j} \\in \\mathbb{Z}_{\\geq 0}",
-            "description": "Quantity of device $j$ produced by production line 4"
+            "name": "x_4",
+            "type": "Continuous",
+            "LaTeX": "x_4 \\in \\mathbb{R}^+",
+            "description": "Number of hours production line 4 is operational"
         }
     ],
     "PARAMETERS": [
         {
-            "name": "smartphones_per_hour_1",
-            "LaTeX": "10",
-            "description": "Smartphones produced per hour by production line 1"
+            "name": "smartphones_demand",
+            "LaTeX": "P_{\text{smartphones}} = 1000",
+            "description": "Daily demand for smartphones"
         },
         {
-            "name": "tablets_per_hour_1",
-            "LaTeX": "5",
-            "description": "Tablets produced per hour by production line 1"
+            "name": "tablets_demand",
+            "LaTeX": "P_{\text{tablets}} = 800",
+            "description": "Daily demand for tablets"
         },
         {
-            "name": "laptops_per_hour_1",
-            "LaTeX": "3",
-            "description": "Laptops produced per hour by production line 1"
+            "name": "laptops_demand",
+            "LaTeX": "P_{\text{laptops}} = 600",
+            "description": "Daily demand for laptops"
         },
         {
-            "name": "smartphones_per_hour_2",
-            "LaTeX": "8",
-            "description": "Smartphones produced per hour by production line 2"
+            "name": "workers_available",
+            "LaTeX": "P_{\text{workers}} = 50",
+            "description": "Total workers available"
         },
         {
-            "name": "tablets_per_hour_2",
-            "LaTeX": "6",
-            "description": "Tablets produced per hour by production line 2"
+            "name": "production_line_capacity",
+            "LaTeX": "P_{\text{capacity}} = 20",
+            "description": "Capacity of each production line in terms of workers"
         },
         {
-            "name": "laptops_per_hour_2",
-            "LaTeX": "4",
-            "description": "Laptops produced per hour by production line 2"
+            "name": "max_workers_per_line",
+            "LaTeX": "P_{\text{max_workers}} = 20",
+            "description": "Maximum workers per production line"
         },
         {
-            "name": "smartphones_per_hour_3",
-            "LaTeX": "6",
-            "description": "Smartphones produced per hour by production line 3"
+            "name": "specific_max_staffing_constraint",
+            "LaTeX": "P_{\text{specific_max_staffing}} = 10",
+            "description": "Specific maximum staffing constraint for production line 3"
+        }
+    ],
+    "OBJECTIVE": {
+        "query": "goal",
+        "LaTeX": "\\min \\sum_{i=1}^{4} x_i"
+    },
+    "CONSTRAINTS": [
+        {
+            "rule_id": 1,
+            "name": "production_lines_operational",
+            "query": "y_1 + y_2 + y_3 + y_4 == 1",
+            "LaTeX": "y_1 + y_2 + y_3 + y_4 = 1"
         },
         {
-            "name": "tablets_per_hour_3",
-            "LaTeX": "7",
-            "description": "Tablets produced per hour by production line 3"
-        },
-        {
-            "name": "laptops_per_hour_3",
-            "LaTeX": "5",
-            "description": "Laptops produced per hour by production line 3"
-        },
-        {
-            "name": "smartphones_per_hour_4",
-            "LaTeX": "5",
-            "description": "Smartphones produced per hour by production line 4"
-        },
-        {
-            "name": "tablets_per_hour_4",
-            "LaTeX": "8",
-            "description": "Tablets produced per hour by production line 4"
+            "rule_id": 2,
+            "name": "total_workers_constraint",
+            "query": "sum(y_i * x_i) <= 30",
+            "LaTeX": "\\sum_{i=1}^{4} y_i \\cdot x_i \\le 30"
         }

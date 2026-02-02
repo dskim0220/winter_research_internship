@@ -1,10 +1,27 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains significant issues with grounding, mapping, and logical integrity. The queries do not accurately reflect the problem description, and the constraints are not correctly formulated.",
-    "QUERY_GROUNDING_AUDIT": "The 'query' fields do not match the problem description. The queries are placeholders and do not correspond to the actual problem requirements.",
-    "DATA_FIDELITY_CHECK": "Numerical values in the 'query' fields do not match those in the 'LaTeX' fields. For example, the 'query' for'sum_of_bandwidth_at_least_100' is 'The sum of bandwith is at least 100.' but the 'LaTeX' field uses 'x_{AE} \\\\geq 100', which is correct. However, other queries like 'transmission_efficiency_A_E_decreases_by_10_percent' do not have matching 'LaTeX' fields.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M links are present in the constraints, as required by the problem description. The constraints do not enforce the logical conditions specified in the queries.",
-    "LINEARITY_VALIDATION": "The objective function and constraints are linear, which is correct. However, the presence of non-linear terms (like percentages) in the queries makes it difficult to ensure linearity.",
-    "DIMENSIONAL_ANALYSIS": "Unit consistency is not checked in the provided JSON. The units (Mbps, percent) need to be consistent across the entire model.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are not correctly formulated based on the problem description. For example, the'sum_of_bandwidth_at_least_100' constraint should be 'x_{AE} \\\\geq 100' but is incorrectly written as 'x_{AE} \\\\geq 100'. The 'transmission_efficiency_A_E_decreases_by_10_percent' constraint is missing in the LaTeX formulation."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            120,
+            110,
+            150
+        ],
+        "latex_numbers": [
+            120,
+            110,
+            150
+        ],
+        "mismatch": "The problem description mentions'sum of bandwith is at least 100', but the JSON uses 'x_{AB} + x_{AC} + x_{BC} + x_{BD} + x_{CD} + x_{DE} >= 100'. This is a unit mismatch."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "FAIL",
+            "reason": "The rule ID R1 does not match the logical requirement. The rule should ensure that the link between A and E passes through C without loops, but the current formulation does not enforce this constraint properly."
+        }
+    ],
+    "FINAL_VERDICT": "There is a critical failure in the constraints. Specifically, the rule R1 does not correctly enforce the logical requirement of passing through C without loops. Additionally, there is a unit mismatch in the objective function. Please review and correct these issues."
 }

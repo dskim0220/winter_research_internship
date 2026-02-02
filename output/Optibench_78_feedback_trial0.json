@@ -1,10 +1,52 @@
 {
     "CONFIDENCE_SCORE": 0.0,
-    "OVERALL_FEEDBACK": "The provided JSON contains numerous issues that need to be addressed. The queries do not accurately reflect the problem description, and the mathematical formulation lacks integrity.",
-    "QUERY_GROUNDING_AUDIT": "The queries do not match the problem description. The problem description mentions specific costs and requirements, but the queries are placeholders without actual values.",
-    "DATA_FIDELITY_CHECK": "Numerous numeric placeholders (e.g., 0) are used in the LaTeX formulas, which do not correspond to the actual values mentioned in the problem description.",
-    "LOGICAL_COUPLING_CHECK": "No Big-M constraints are provided, as the problem does not specify any fixed costs or minimum batch sizes.",
-    "LINEARITY_VALIDATION": "The formulation appears linear, but the absence of specific values makes it impossible to verify.",
-    "DIMENSIONAL_ANALYSIS": "No dimensional analysis is performed, and the units are not consistent with the problem description.",
-    "CONSTRAINTS_FEEDBACK": "The constraints are poorly defined and do not align with the problem description. For example, the requirement to open at least one warehouse is not clearly represented, and the relationship between binary and continuous variables is unclear."
+    "CRITICAL_FAILURE_FOUND": "YES",
+    "DATA_FIDELITY": {
+        "problem_numbers": [
+            80,
+            70,
+            40
+        ],
+        "latex_numbers": [
+            80,
+            70,
+            40
+        ],
+        "mismatch": "Numbers in the problem description match those in the LaTeX formulation."
+    },
+    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
+    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "rule_id": "R1",
+            "status": "FAIL",
+            "reason": "The rule 'If the New York warehouse is opened, then the Los Angeles warehouse must be opened.' should be $y_{LA} \\ge y_{NY}$ instead of $y_{LA} \\ge y_{NY}$."
+        },
+        {
+            "rule_id": "R2",
+            "status": "FAIL",
+            "reason": "The rule 'At most two warehouses can be opened.' should be $y_{NY} + y_{LA} + y_{CH} + y_{AT} \\le 2$ instead of $y_{NY} + y_{LA} + y_{CH} + y_{AT} \\le 2$."
+        },
+        {
+            "rule_id": "R3",
+            "status": "FAIL",
+            "reason": "The rule 'Either the Atlanta or the Los Angeles warehouse must be opened.' should be $y_{AT} + y_{LA} \\ge 1$ instead of $y_{AT} + y_{LA} \\ge 1$."
+        },
+        {
+            "rule_id": "R4",
+            "status": "FAIL",
+            "reason": "The rule 'The New York and the Atlanta warehouses cannot be opened simultaneously.' should be $y_{NY} + y_{AT} \\le 1$ instead of $y_{NY} + y_{AT} \\le 1$."
+        },
+        {
+            "rule_id": "R5",
+            "status": "FAIL",
+            "reason": "The rule 'At least one of the three warehouses (New York, Los Angeles, or Chicago) must be opened.' should be $y_{NY} + y_{LA} + y_{CH} \\ge 1$ instead of $y_{NY} + y_{CH} \\ge 1$."
+        },
+        {
+            "rule_id": "R6",
+            "status": "FAIL",
+            "reason": "The rule 'The New York and the Chicago warehouses might be opened simultaneously.' should be $y_{NY} + y_{CH} \\ge 1$ instead of $y_{NY} + y_{CH} \\ge 1$."
+        }
+    ],
+    "FINAL_VERDICT": "There are critical logical errors in the constraints. Please correct the inequalities and ensure that the binary logic is correctly implemented. Additionally, verify the objective function to ensure it correctly multiplies fixed costs by binary variables."
 }
