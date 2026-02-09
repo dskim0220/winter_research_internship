@@ -2,11 +2,10 @@ import sys
 import os
 import json
 import re
-
 from experts.base_expert import BaseExpert
 
 from langchain_core.prompts import PromptTemplate
-from langchain_classic.chains.llm import LLMChain
+#from langchain_classic.chains.llm import LLMChain
 #from langchain_google_genai import ChatGoogleGenerativeAI
 
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))

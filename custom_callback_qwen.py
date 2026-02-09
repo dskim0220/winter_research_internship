@@ -121,10 +121,10 @@ def get_llm(model_name, temperature):
         return _shared_chat_model
     
     # 1) 토크나이저 및 모델 로드 (Transformers)
-    tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True,use_fast=False)
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16,
+        #torch_dtype=torch.float16,
         device_map="auto", # GPU 자동 할당
         low_cpu_mem_usage=True,
         local_files_only=True
