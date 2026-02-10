@@ -1,95 +1,257 @@
 {
-    "VARIABLES": [
-        { 
-          "name": "y_A", 
-          "type": "Binary", 
-          "LaTeX": "y_A \\in \\{0, 1\\}", 
-          "description": "Whether to choose Supplier A"
+    "Set": [],
+    "Parameter": [
+        {
+            "id": "cost_A",
+            "User Query": "Cost of ordering each dining table from Supplier A is $120.",
+            "Latex Model": "c_{A}",
+            "value": 120
         },
-        { 
-          "name": "y_B", 
-          "type": "Binary", 
-          "LaTeX": "y_B \\in \\{0, 1\\}", 
-          "description": "Whether to choose Supplier B"
+        {
+            "id": "cost_B",
+            "User Query": "Cost of ordering each dining table from Supplier B is $110.",
+            "Latex Model": "c_{B}",
+            "value": 110
         },
-        { 
-          "name": "y_C", 
-          "type": "Binary", 
-          "LaTeX": "y_C \\in \\{0, 1\\}", 
-          "description": "Whether to choose Supplier C"
+        {
+            "id": "cost_C",
+            "User Query": "Cost of ordering each dining table from Supplier C is $100.",
+            "Latex Model": "c_{C}",
+            "value": 100
         },
-        { 
-          "name": "x_A", 
-          "type": "Integer", 
-          "LaTeX": "x_A \\in \\mathbb{Z}^+", 
-          "description": "Number of orders from Supplier A"
+        {
+            "id": "units_A",
+            "User Query": "Each order from Supplier A will include 20 tables.",
+            "Latex Model": "u_{A}",
+            "value": 20
         },
-        { 
-          "name": "x_B", 
-          "type": "Integer", 
-          "LaTeX": "x_B \\in \\mathbb{Z}^+", 
-          "description": "Number of orders from Supplier B"
+        {
+            "id": "units_B",
+            "User Query": "Each order from Suppliers B and C will include 15 tables.",
+            "Latex Model": "u_{B}",
+            "value": 15
         },
-        { 
-          "name": "x_C", 
-          "type": "Integer", 
-          "LaTeX": "x_C \\in \\mathbb{Z}^+", 
-          "description": "Number of orders from Supplier C"
+        {
+            "id": "units_C",
+            "User Query": "Each order from Suppliers B and C will include 15 tables.",
+            "Latex Model": "u_{C}",
+            "value": 15
         }
     ],
-    "OBJECTIVE": { 
-      "query": "The specific part of extracted_queries used for objective",
-      "goal": "MIN", 
-      "LaTeX": "\min Z = 120x_Ap_A + 110x_Bp_B + 100x_Cp_C"
-    },
-    "CONSTRAINTS": [
+    "Decision Variables": [
         {
-          "rule_id": "R1",
-          "query": "y_A + y_B + y_C >= 1",
-          "LaTeX": "y_A + y_B + y_C \\ge 1",
-          "description": "The restaurant must order at least 7 times from Supplier A or B or C."
+            "id": "x_A",
+            "User Query": "Number of orders from Supplier A.",
+            "Latex Model": "x_{A}",
+            "domain": "integer",
+            "lower_bound": 0
         },
         {
-          "rule_id": "R2",
-          "query": "x_A + x_B + x_C >= 150",
-          "LaTeX": "x_A + x_B + x_C \\ge 150",
-          "description": "The restaurant needs to order at least 150 tables."
+            "id": "x_B",
+            "User Query": "Number of orders from Supplier B.",
+            "Latex Model": "x_{B}",
+            "domain": "integer",
+            "lower_bound": 0
         },
         {
-          "rule_id": "R3",
-          "query": "x_A + x_B + x_C <= 600",
-          "LaTeX": "x_A + x_B + x_C \\le 600",
-          "description": "The restaurant needs to order no more than 600 tables."
+            "id": "x_C",
+            "User Query": "Number of orders from Supplier C.",
+            "Latex Model": "x_{C}",
+            "domain": "integer",
+            "lower_bound": 0
         },
         {
-          "rule_id": "R4",
-          "query": "x_A >= 30 * y_B",
-          "LaTeX": "x_A \\ge 30y_B",
-          "description": "If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B."
+            "id": "y_A",
+            "User Query": "Indicator variable for ordering from Supplier A.",
+            "Latex Model": "y_{A}",
+            "domain": "binary"
         },
         {
-          "rule_id": "R5",
-          "query": "x_B >= x_B + x_C",
-          "LaTeX": "x_B \\ge x_B + x_C",
-          "description": "If the restaurant decides to order tables from Supplier B, it must also order tables from Supplier C."
+            "id": "y_B",
+            "User Query": "Indicator variable for ordering from Supplier B.",
+            "Latex Model": "y_{B}",
+            "domain": "binary"
+        }
+    ],
+    "Objective function": [
+        {
+            "id": "OBJ",
+            "sense": "min",
+            "User Query": "Minimize the total cost of the order.",
+            "Latex Model": "\\min \\quad c_{A}x_{A}u_{A} + c_{B}x_{B}u_{B} + c_{C}x_{C}u_{C}"
+        }
+    ],
+    "Constraints": [
+        {
+            "id": "C1",
+            "type": "minimum_order",
+            "User Query": "The restaurant needs to order at least 150 tables.",
+            "Latex Model": "x_{A}u_{A} + x_{B}u_{B} + x_{C}u_{C} \\geq 150",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_A",
+                    "x_B",
+                    "x_C"
+                ],
+                "parameters": [
+                    "units_A",
+                    "units_B",
+                    "units_C"
+                ]
+            }
         },
         {
-          "rule_id": "R6",
-          "query": "x_A + x_B >= 25",
-          "LaTeX": "x_A + x_B \\ge 25",
-          "description": "If the restaurant decides to order tables from Supplier A, the sum of tables supplied from Suppler A and B is at least 25."
+            "id": "C2",
+            "type": "maximum_order",
+            "User Query": "The restaurant needs to order no more than 600 tables.",
+            "Latex Model": "x_{A}u_{A} + x_{B}u_{B} + x_{C}u_{C} \\leq 600",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_A",
+                    "x_B",
+                    "x_C"
+                ],
+                "parameters": [
+                    "units_A",
+                    "units_B",
+                    "units_C"
+                ]
+            }
         },
         {
-          "rule_id": "R7",
-          "query": "x_B + x_C >= 30",
-          "LaTeX": "x_B + x_C \\ge 30",
-          "description": "If the restaurant decides to order tables from Supplier B, the sum of tables supplied from Supplier B and C is at least 30."
+            "id": "C3",
+            "type": "conditional_ordering",
+            "User Query": "If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.",
+            "Latex Model": "x_{B}u_{B} \\geq 30y_{A}",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_B",
+                    "y_A"
+                ],
+                "parameters": [
+                    "units_B"
+                ]
+            }
         },
         {
-          "rule_id": "R8",
-          "query": "x_A <= 60",
-          "LaTeX": "x_A \\le 60",
-          "description": "The total tables supplied from Supplier A can not exceed 60."
+            "id": "C4",
+            "type": "conditional_ordering",
+            "User Query": "If the restaurant decides to order tables from Supplier B, it must also order tables from Supplier C.",
+            "Latex Model": "x_{C} \\geq y_{B}",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_C",
+                    "y_B"
+                ]
+            }
+        },
+        {
+            "id": "C5",
+            "type": "conditional_ordering",
+            "User Query": "The sum of tables supplied from Supplier A and B is at least 25 if the restaurant decides to order from Supplier A.",
+            "Latex Model": "x_{A}u_{A} + x_{B}u_{B} \\geq 25y_{A}",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_A",
+                    "x_B",
+                    "y_A"
+                ],
+                "parameters": [
+                    "units_A",
+                    "units_B"
+                ]
+            }
+        },
+        {
+            "id": "C6",
+            "type": "conditional_ordering",
+            "User Query": "The sum of tables supplied from Supplier B and C is at least 30 if the restaurant decides to order from Supplier B.",
+            "Latex Model": "x_{B}u_{B} + x_{C}u_{C} \\geq 30y_{B}",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_B",
+                    "x_C",
+                    "y_B"
+                ],
+                "parameters": [
+                    "units_B",
+                    "units_C"
+                ]
+            }
+        },
+        {
+            "id": "C7",
+            "type": "minimum_orders",
+            "User Query": "The restaurant must order tables at least 7 times from Supplier A or B or C.",
+            "Latex Model": "x_{A} + x_{B} + x_{C} \\geq 7",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_A",
+                    "x_B",
+                    "x_C"
+                ]
+            }
+        },
+        {
+            "id": "C8",
+            "type": "maximum_order_from_supplier_a",
+            "User Query": "Total tables supplied from Supplier A can not exceed 60.",
+            "Latex Model": "x_{A}u_{A} \\leq 60",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_A"
+                ],
+                "parameters": [
+                    "units_A"
+                ]
+            }
+        },
+        {
+            "id": "C9",
+            "type": "indicator_linking",
+            "User Query": "Link indicator variable y_A to x_A.",
+            "Latex Model": "y_{A} \\leq M(1 - (x_{A} = 0))",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_A",
+                    "y_A"
+                ],
+                "parameters": []
+            }
+        },
+        {
+            "id": "C10",
+            "type": "indicator_linking",
+            "User Query": "Link indicator variable y_B to x_B.",
+            "Latex Model": "y_{B} \\leq M(1 - (x_{B} = 0))",
+            "index": [],
+            "involves": {
+                "variables": [
+                    "x_B",
+                    "y_B"
+                ],
+                "parameters": []
+            }
+        },
+        {
+            "id": "C11",
+            "type": "big_m_value",
+            "User Query": "Define Big-M value.",
+            "Latex Model": "\\text{Let } M = 10000",
+            "index": [],
+            "involves": {
+                "variables": [],
+                "parameters": []
+            }
         }
     ]
 }

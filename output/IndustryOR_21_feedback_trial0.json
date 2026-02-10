@@ -5,58 +5,81 @@
         "problem_numbers": [
             120,
             110,
-            150
+            100,
+            20,
+            15,
+            150,
+            600,
+            30,
+            25,
+            7,
+            60
         ],
         "latex_numbers": [
             120,
             110,
-            150
+            100,
+            20,
+            15,
+            150,
+            600,
+            30,
+            25,
+            7,
+            60
         ],
-        "mismatch": ""
+        "mismatch": []
     },
-    "LOGICAL_LINKING_AUDIT": "Verify Big-M ($x \\le M \\cdot y$) and Binary logic ($y_B \\ge y_A$).",
-    "DIMENSIONAL_CONSISTENCY": "Check if (Price * Quantity) logic is applied correctly in Objective.",
+    "LOGICAL_LINKING_AUDIT": {
+        "C3": {
+            "status": "PASS",
+            "reason": "Correctly uses y_A to enforce x_Bu_B >= 30"
+        },
+        "C4": {
+            "status": "PASS",
+            "reason": "Correctly uses y_B to enforce x_C >= y_B"
+        },
+        "C5": {
+            "status": "PASS",
+            "reason": "Correctly uses y_A to enforce x_Au_A + x_Bu_B >= 25y_A"
+        },
+        "C6": {
+            "status": "PASS",
+            "reason": "Correctly uses y_B to enforce x_Bu_B + x_Cu_C >= 30y_B"
+        },
+        "C9": {
+            "status": "FAIL",
+            "reason": "Should be y_A <= M * (x_A > 0) instead of y_A <= M(1 - (x_A = 0))"
+        },
+        "C10": {
+            "status": "FAIL",
+            "reason": "Should be y_B <= M * (x_B > 0) instead of y_B <= M(1 - (x_B = 0))"
+        }
+    },
+    "DIMENSIONAL_CONSISTENCY": {
+        "OBJ": {
+            "status": "PASS",
+            "reason": "Correctly applies cost per unit times quantity in the objective function."
+        }
+    },
     "CONSTRAINTS_FEEDBACK": [
         {
             "rule_id": "R1",
             "status": "PASS",
-            "reason": "The rule ensures the restaurant orders at least 7 times from Supplier A or B or C."
+            "reason": "All numbers match between problem text and LaTeX."
         },
         {
             "rule_id": "R2",
             "status": "PASS",
-            "reason": "The rule ensures the restaurant orders at least 150 tables."
+            "reason": "No unit mismatch found; orders are correctly linked to tables."
         },
         {
             "rule_id": "R3",
-            "status": "PASS",
-            "reason": "The rule ensures the restaurant orders no more than 600 tables."
-        },
-        {
-            "rule_id": "R4",
-            "status": "PASS",
-            "reason": "The rule ensures that if Supplier A is chosen, Supplier B must also be chosen."
-        },
-        {
-            "rule_id": "R5",
-            "status": "PASS",
-            "reason": "The rule ensures that if Supplier B is chosen, Supplier C must also be chosen."
-        },
-        {
-            "rule_id": "R6",
-            "status": "PASS",
-            "reason": "The rule ensures that if Supplier A is chosen, the sum of tables from A and B is at least 25."
-        },
-        {
-            "rule_id": "R7",
-            "status": "PASS",
-            "reason": "The rule ensures that if Supplier B is chosen, the sum of tables from B and C is at least 30."
-        },
-        {
-            "rule_id": "R8",
-            "status": "PASS",
-            "reason": "The rule ensures that the total tables from Supplier A do not exceed 60."
+            "status": "FAIL",
+            "reason": "C9 and C10 need correction for binary linking logic."
         }
     ],
-    "FINAL_VERDICT": "All critical checks passed. The model appears to be logically consistent and dimensionally correct. However, further manual verification may be needed to ensure there are no hidden non-linearities or other potential issues."
+    "FINAL_VERDICT": {
+        "summary": "The model is mostly correct with a few critical issues in the binary linking constraints (C9, C10). These should be corrected to ensure proper logical linking between order quantities and indicator variables."
+    }
 }

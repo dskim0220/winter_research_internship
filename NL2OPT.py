@@ -3,6 +3,7 @@ import torch
 import requests
 import time
 import json
+import subprocess
 from awq import AutoAWQForCausalLM
 from transformers import AutoTokenizer
 
@@ -10,15 +11,31 @@ from experts.BasicModelInterpreter import BasicModelInterpreter
 from experts.ConstraintsInterpreter import ConstraintsInterpreter
 from experts.Evaluator import Evaluator
 from experts.Coder import Coder
-from E2E import save_output
 
 #설정부분
 model_name= "qwen2.5:32b"
 url = "http://localhost:11434/api/generate"
 data_set='newset'
-problem_name='Optibench_234'
+problem_name='IndustryOR_21'
 max_trial = 3
 threshold=0.8
+
+def save_output(content, filename, extension):
+    file_path = f"output/{filename}.{extension}"
+
+    with open(file_path,"w",encoding="utf-8") as f:
+        if extension == "json":
+            try:
+                data = json.loads(content)
+                json.dump(data,f,indent=4,ensure_ascii=False)
+            except:
+                f.write(content)
+        
+        else:
+            f.write(content)
+    
+    print(f"[*] {file_path} 저장 완료")
+    return file_path
 
 def nl2opt(problem,model_name,url):
     start_time = time.time()
@@ -38,7 +55,7 @@ def nl2opt(problem,model_name,url):
         
         model_file = save_output(whole_interpretation, f"{problem_name}_model_trial{i}","json")
 
-        raw_feedback = evaluator.evaluate(problem = problem, whole_interpretation=whole_interpretation)
+        raw_feedback = evaluator.evaluate(problem_description=problem, whole_interpretation=whole_interpretation)
         refined_feedback = evaluator._extract_json(raw_feedback).replace('\\','\\\\')
         feedback = refined_feedback
 
@@ -65,8 +82,36 @@ def nl2opt(problem,model_name,url):
     print(f"총 소요시간: {running_time:.2f}s")
     return
 
+def run_code(file_path):
+    print("코드 실행 중...")
+    try:
+        result = subprocess.run(['python', file_path], capture_output=True, text=True,encoding='utf-8',timeout=30)
+        if result.returncode == 0:
+            print("코드 실행 성공!")
+            return {
+            "success": True,
+            "log": result.stdout,
+            "error": None
+        }
+        else:
+            print("코드 실행 실패!")
+            return {
+            "success": False,
+            "log": result.stdout,
+            "error": result.stderr
+        }
+    except subprocess.TimeoutExpired:
+        # 시간 초과 발생 시 처리
+        return {
+            "success": False, 
+            "log": "", 
+            "error": "Execution timed out (Limit: 30s). The model might be too complex or in an infinite loop."
+        }
+
 if __name__ == '__main__':
     from utils import read_problem2
     # 풀 문제 설정
     problem = read_problem2(data_set, problem_name)
     nl2opt(problem, model_name, url)
+    execution_result = run_code(f"output/{problem_name}_gencode.py")
+    print(f"결과: {execution_result}")
