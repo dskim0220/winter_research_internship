@@ -12,48 +12,51 @@ class Coder():
     def __init__(self,model_name,url):
         self.url = url
         self.model_name = model_name
-        self.role_description = 'Your mission is to generate a Python script that is 100 percents executable without any external data dependencies.'
-        self.task = 'Translate the provided formulation into a standalone, executable Gurobi Python script.'
+        self.role_description = 'Your mission is to generate a Python script that separates mathematical logic from numerical data using external JSON input.'
+        self.task = 'Translate the provided symbolic formulation into a Gurobi Python script that loads instance data from a JSON file.'
         
         self.rules = """[STRICT RULES]
-1. LITERAL CODING: Do NOT use abstract loops or symbolic placeholders (e.g., `params["A1"]`). Hard-code every value.
-2. SOURCE MAPPING: 
-   - Logic: Use the 'LaTeX' field as the mathematical blueprint.
-   - Numbers: Use the 'query' field to extract exact numerical values (e.g., 170000, 124).
-3. DATA SECTION: Define all parameters as Python constants at the top of the script.
-4. UNIT SYNC: Perform necessary unit conversions (e.g., tons to kg) based on the 'query' context before defining constants.
-5. NO PARSING: The script must not contain any JSON loading or parsing logic. It must be 100 percents self-contained.
+1. SYMBOLIC CODING: Do NOT hard-code any numerical values (e.g., 120, 150) inside the model logic.
+2. DATA LOADING: Use `argparse` to receive a `--data` argument pointing to a JSON file path. Load this file using the `json` library.
+3. PARAMETER MAPPING: Map all LaTeX-defined parameters to their corresponding keys in the loaded JSON data.
+   - Example: If LaTeX uses 'cost_A', the code should use 'data["parameters"]["cost_A"]'.
+4. BIG-M HANDLING: Use the symbolic 'M' parameter from the JSON. Do not define it as a literal constant like 10000.
+5. STANDALONE LOGIC: The script should focus on the mathematical structure. Assume the JSON file contains all necessary keys as defined in the 'Parameter' section of the formulation.
 [Output Rules]
 1. Respond ONLY with the executable Python code block.
 2. No introductory or concluding text.
-3. Use double backslashes (\\\\) for any internal string-based LaTeX if necessary.
-4. Translate all mathematical logic from the JSON formulation precisely into Gurobi API.
+3. Ensure the script includes a section to print the 'Optimal Objective Value' and solution details for the Runner to capture.
 """
         
         self.output_format = """
 import gurobipy as gp
 from gurobipy import GRB
+import json
+import argparse
 
-# 1. Constants (Derived from 'query' values)
-# Define numerical values from the problem description here.
+# 1. Argument Parsing
+parser = argparse.ArgumentParser()
+parser.add_argument('--data', type=str, required=True, help='Path to instance_data.json')
+args = parser.parse_args()
 
-# 2. Model Initialization
+# 2. Data Loading
+with open(args.data, 'r', encoding='utf-8') as f:
+    inst_data = json.load(f)
+
+params = inst_data.get('parameters', {})
+sets = inst_data.get('sets', {})
+
+# 3. Model Initialization
 m = gp.Model("optimization_model")
 
-# 3. Sets & Indices
-# Define range or list for sets.
+# 4. Sets & Variables
+# Use sets['ID'] and map Decision Variables from JSON.
 
-# 4. Variables (Check 'type' in VARIABLES: Binary/Int/Cont)
-# Implement based on Decision Variables JSON.
+# 5. Objective & Constraints
+# Use params['ID'] for all coefficients. 
+# NO RAW NUMBERS should be used in m.setObjective() or m.addConstr().
 
-# 5. Objective (LaTeX structure + query numbers)
-# Implement using m.setObjective().
-
-# 6. Constraints (LaTeX structure + query numbers)
-# Implement using m.addConstr() or m.addConstrs().
-# Ensure Big-M values are large enough (e.g., 1e6) if logic requires.
-
-# 7. Optimization & Output
+# 6. Optimization & Output
 m.optimize()
 if m.status == GRB.OPTIMAL:
     print(f"Optimal Objective Value: {m.objVal}")

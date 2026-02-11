@@ -19,56 +19,67 @@ Your task is to exhaustively identify and refine all mathematical constraints.
 For each constraint, you must specify its 'type', the 'indices' it covers, and the 'variables' and 'parameters' it 'involves', as per the required JSON schema. 
 Ensure the logic is complete and ready for code implementation.
 """
-        self.rules = """[STRICT MODELING RULES]
-1. INDICATOR ALGEBRA: 
-   - If a rule says "If A then B", use: $y_B \ge y_A$ (Binary logic).
-   - If a rule says "If A, then $x \ge \text{{Value}}$", use: $x \ge \text{{Value}} \cdot y_A$ (Linking logic).
-2. INDEX CONSISTENCY: Use clear indices (e.g., $i \in {{A, B, C}}$). Ensure all summations $\sum$ have explicit ranges.
-3. DOMAIN DEFINITION: 
-   - Binary: $y \in {{0, 1}}$
-   - Integer: $x \in \mathbb{{Z}}^+$
-   - Continuous: $x \ge 0$
-4. BIG-M VALUE: If a maximum capacity is not given for Big-M, use $M = 10000$ and state it clearly.
-5. NO LOOSE ENDS: Every parameter from the input must appear in either the Objective or Constraints.
-[LOGICAL TEMPLATE]
-- Goal: "Minimize cost" -> $\min \sum (\text{{Cost}}_i \cdot x_i)$
-- Logic: "Selection forces minimum" -> $x_i \ge \text{{Min}}_i \cdot y_i$
-- Logic: "Mutual exclusivity" -> $\sum y_i \le 1$
+        self.rules = """[STRICT SYMBOLIC MODELING RULES]
+1. NO_HARDCODING: 
+   - Never use raw numbers (e.g., 150, 30, 0.1) in the "Latex Model". 
+   - Use the 'id' of the Parameter defined in the previous step.
+   - If a constant is missing an id, define a new Parameter id first.
+
+2. SYMBOLIC INDICATOR ALGEBRA: 
+   - "If A, then order at least Value": $x_A \ge \text{min\_qty\_A} \cdot y_A$ (Use parameter IDs, not numbers).
+   - "If A, then B": $y_B \ge y_A$.
+
+3. BIG-M HANDLING:
+   - Do not use 10000. Use a parameter id 'M' and ensure it is defined in the "Parameter" section.
+
+4. INDEX CONSISTENCY: 
+   - Use clear indices (e.g., $i \in I$). Ensure all summations $\sum$ have explicit ranges using set IDs.
+
+5. LINKING LOGIC:
+   - Always involve the 'id's of both the Decision Variables and Parameters in the "involves" field.
+
 [Output Rules]
 1. Response must be a single valid JSON object.
 2. For all LaTeX commands, use double backslashes (\\\\) to prevent JSON encoding errors.
-3. If basic_interpretation is provided, maintain its logic but refine/add the missing constraints details.
+3. Maintain the IDs (Sets, Parameters, Variables) from basic_interpretation.
 4. No additional text, explanations, or markdown blocks."""
         
         self.output_format = """
 {
   "Set": [
-    { "id": "I", "User Query": "Factories ...", "Latex Model": "I" }
+    { "id": "I", "User Query": "Suppliers A, B, C", "Latex Model": "I" }
   ],
   "Parameter": [
-    { "id": "c", "User Query": "Transportation ...", "Latex Model": "c_{ij}", "index": ["i", "j"] }
+    { "id": "min_demand", "User Query": "At least 150 units", "Latex Model": "D_{min}" }
   ],
   "Decision Variables": [
-    { 
-      "id": "x", 
-      "User Query": "Amount ...", 
-      "Latex Model": "x_{ij}", 
-      "index": ["i", "j"], 
-      "domain": "continuous", 
-      "lower_bound": 0 
-    }
+    { "id": "x", "index": ["i"], "domain": "integer", "Latex Model": "x_{i}" }
   ],
   "Objective function": [
-    { "id": "OBJ", "sense": "min", "User Query": "Minimize ...", "Latex Model": "\\\\min ..." }
+    { "id": "OBJ", "sense": "min", "Latex Model": "\\\\sum_{i \\\\in I} (cost_i \\\\cdot x_i)" }
   ],
   "Constraints": [
     { 
-      "id": "C_cap", 
-      "type": "capacity", 
-      "User Query": "...", 
-      "Latex Model": "...", 
-      "index": ["i"], 
-      "involves": { "variables": ["x"], "parameters": ["cap"] } 
+      "id": "C_demand", 
+      "type": "demand_satisfaction", 
+      "User Query": "The restaurant needs to order at least 150 tables.", 
+      "Latex Model": "\\\\sum_{i \\\\in I} (units_i \\\\cdot x_i) \\\\geq min_demand", 
+      "index": [], 
+      "involves": { 
+        "variables": ["x"], 
+        "parameters": ["units", "min_demand"] 
+      } 
+    },
+    {
+      "id": "C_linking",
+      "type": "indicator_linking",
+      "User Query": "If supplier i is used, y_i is 1.",
+      "Latex Model": "x_i \\\\leq M \\\\cdot y_i",
+      "index": ["i"],
+      "involves": {
+        "variables": ["x", "y"],
+        "parameters": ["M"]
+      }
     }
   ]
 }

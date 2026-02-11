@@ -40,7 +40,7 @@ def main():
     parser.add_argument('--algorithm', type=str, help='Algorithm name')
     parser.add_argument('--enable_reflection', action='store_true', help='Enable reflection option')
     parser.add_argument('--log_dir', type=str, default='log', help='The directory of log')
-    parser.add_argument('--model', type=str, default="Qwen/Qwen2.5-3B-Instruct", help='Base large language model')
+    parser.add_argument('--model', type=str, default="qwen2.5:32b", help='Base large language model')
     parser.add_argument('--max_collaborate_nums', type=int, default=5, help='Number of max collaborations')
     parser.add_argument('--max_trials', type=int, default=1, help='Maximum number of forward-backward trials')
     args = parser.parse_args()

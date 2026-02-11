@@ -11,6 +11,7 @@ from experts.BasicModelInterpreter import BasicModelInterpreter
 from experts.ConstraintsInterpreter import ConstraintsInterpreter
 from experts.Evaluator import Evaluator
 from experts.Coder import Coder
+from experts.InstanceDataSetGenerator import InstanceDataSetGenerator
 
 #설정부분
 model_name= "qwen2.5:32b"
@@ -38,7 +39,7 @@ def save_output(content, filename, extension):
     return file_path
 
 def nl2opt(problem,model_name,url):
-    start_time = time.time()
+    #start_time = time.time()
 
     feedback = ""
     best_formulation = ""
@@ -48,6 +49,7 @@ def nl2opt(problem,model_name,url):
     constraints_interpreter = ConstraintsInterpreter(model_name=model_name,url=url)
     evaluator = Evaluator(model_name=model_name,url=url,threshold=threshold)
     coder = Coder(model_name=model_name,url=url)
+    instance_generator = InstanceDataSetGenerator(model_name=model_name,url=url)
     
     for i in range(max_trial):
         basic_interpretation = basic_interpreter.interpret(problem_description=problem,feedback=feedback)
@@ -75,17 +77,21 @@ def nl2opt(problem,model_name,url):
     if best_formulation:
         code = coder.generate(formulation=best_formulation)
         code_file = save_output(code,f"{problem_name}_gencode","py")
-    
-    print(f"모델링 및 코드 생성 완료! confidence:{best_confidence_score}")
-    end_time = time.time()
-    running_time = end_time - start_time
+        print(f"모델링 및 코드 생성 완료! confidence:{best_confidence_score}")
+        
+        instances = instance_generator.extract_instances(problem=problem,coder_output=code)
+        instance_file = save_output(instances,f"{problem_name}_instances","json")
+        print("인스턴스 데이터셋 생성 완료!")
+
+    #end_time = time.time()
+    #running_time = end_time - start_time
     print(f"총 소요시간: {running_time:.2f}s")
     return
 
-def run_code(file_path):
+def run_code(code_path, data_path):
     print("코드 실행 중...")
     try:
-        result = subprocess.run(['python', file_path], capture_output=True, text=True,encoding='utf-8',timeout=30)
+        result = subprocess.run(["python", code_path, "--data", data_path], capture_output=True, text=True,encoding='utf-8',timeout=30)
         if result.returncode == 0:
             print("코드 실행 성공!")
             return {
@@ -111,7 +117,11 @@ def run_code(file_path):
 if __name__ == '__main__':
     from utils import read_problem2
     # 풀 문제 설정
+    start_time = time.time()
     problem = read_problem2(data_set, problem_name)
     nl2opt(problem, model_name, url)
-    execution_result = run_code(f"output/{problem_name}_gencode.py")
+    execution_result = run_code(f"output/{problem_name}_gencode.py",f"output/{problem_name}_instances.json")
     print(f"결과: {execution_result}")
+    end_time = time.time()
+    running_time = end_time - start_time
+    print(f"총 소요시간: {running_time:.2f}s")

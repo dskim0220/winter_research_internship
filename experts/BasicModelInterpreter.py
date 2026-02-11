@@ -13,33 +13,30 @@ class BasicModelInterpreter():
         self.url = url
         self.model_name = model_name
         self.role_description = 'Your role is to perform a "Full-Sentence-Extraction" to ensure no information loss for mathematical modeling.'
+        
         self.task = """1. Identify all entities (Suppliers, Nodes, Products).
-2. Determine if a decision is a 'How much' (Integer/Continuous) OR 'Whether to' (Binary).
-3. Identify "Conditional Logic": Does selecting A force a limit on B? (If-Then).
-4. Identify "Unit Consistency": Ensure you don't add 'Orders' to 'Tables'."""
-        self.rules = """[STRICT EXTRACTION RULES]
-1. VARIABLE_MAPPING: 
-   - If a cost is per "order", and an order has "20 tables", define TWO parameters: 'cost_per_order' and 'units_per_order'.
-2. LOGIC_MAPPING (Big-M):
-   - For "If A then B" constraints, explicitly flag them as "CONDITIONAL_LOGIC".
-3. NUMERIC_PRECISION:
-   - Extract 'at least', 'no more than', 'exactly' as >=, <=, ==.
-4. TYPE_ASSIGNMENT:
-   - Countable units (people, orders, tables) = INTEGER.
-   - Flow/Money/Time = CONTINUOUS.
-   - Selection/On-Off = BINARY.
-[LOGIC EXAMPLE]
-1. Conditional Selection (If A, then B): 
-   - Rule: "If Supplier A is chosen, Supplier B must also be chosen."
-   - Logic: y_B >= y_A  (Binary variables)
+2. [CRITICAL] Parameterize All Constants: Convert every specific number (e.g., $120, 30 units) into a Parameter ID (e.g., cost_A, min_requirement).
+3. Determine decision domains (Integer/Continuous/Binary).
+4. Identify "Conditional Logic" using Symbolic IDs only.
+5. Identify "Unit Consistency": Ensure you don't add 'Orders' to 'Tables'."""
+        
+        self.rules = """[STRICT SYMBOLIC MODELING RULES]
+1. NO_HARDCODING:
+   - Never use raw numbers (e.g., 120, 0.05, 1000) directly in the "Latex Model".
+   - Every number in the 'User Query' must first be defined in the "Parameter" section with a unique 'id'.
+   - The "Latex Model" must ONLY use these 'id's.
 
-2. Minimum Requirement on Selection:
-   - Rule: "If Supplier A is chosen, order at least 30 units."
-   - Logic: x_A >= 30 * y_A (where x is quantity, y is binary)
+2. PARAMETER_MAPPING:
+   - Example: "Cost is $120" -> Create Parameter { "id": "cost_A", "Latex Model": "c_A" }.
+   - Sucessful Latex: "c_A * x_A", NOT "120 * x_A".
 
-3. Linking Selection to Quantity (Big-M):
-   - Rule: "If we order from A, total units cannot exceed 100."
-   - Logic: x_A <= 100 * y_A
+3. LOGIC_MAPPING (Big-M):
+   - Use 'M' as a symbolic parameter for linking constraints. Define 'M' in the Parameter section if needed.
+
+[LOGIC EXAMPLE (SYMBOLIC)]
+- Rule: "If Supplier A is chosen, order at least 30 units."
+- Correct Parameter: { "id": "min_qty_A", "Latex Model": "Q_{min,A}" }
+- Correct Logic: x_A >= Q_{min,A} * y_A  (Symbolic IDs Only)
 [Output Rules]
 1. Response must be a single valid JSON object.
 2. No conversational text or markdown code blocks.
@@ -48,26 +45,48 @@ class BasicModelInterpreter():
         self.output_format = """
 {
   "Set": [
-    { "id": "I", "User Query": "Factories ...", "Latex Model": "I" }
+    { 
+      "id": "I", 
+      "User Query": "The set of suppliers A, B, and C.", 
+      "Latex Model": "I" 
+    }
   ],
   "Parameter": [
-    { "id": "c", "User Query": "Transportation ...", "Latex Model": "c_{ij}", "index": ["i", "j"] }
+    { 
+      "id": "cost_A", 
+      "User Query": "Cost of ordering from Supplier A is $120.", 
+      "Latex Model": "c_{A}",
+      "description": "Unit cost from supplier A" 
+    }
   ],
   "Decision Variables": [
     { 
-      "id": "x", 
-      "User Query": "Amount ...", 
-      "Latex Model": "x_{ij}", 
-      "index": ["i", "j"], 
-      "domain": "continuous", 
+      "id": "x_A", 
+      "User Query": "Number of orders from Supplier A.", 
+      "Latex Model": "x_{A}", 
+      "index": [], 
+      "domain": "integer", 
       "lower_bound": 0 
     }
   ],
   "Objective function": [
-    { "id": "OBJ", "sense": "min", "User Query": "Minimize ...", "Latex Model": "\\\\min ..." }
+    { 
+      "id": "OBJ", 
+      "sense": "min", 
+      "User Query": "Minimize the total cost.", 
+      "Latex Model": "\\\\min \\\\quad cost_A \\\\cdot x_A + cost_B \\\\cdot x_B" 
+    }
   ],
   "Constraints": [
-    { "id": "C1", "User Query": "Description ...", "Latex Model": "..." }
+    { 
+      "id": "C1", 
+      "User Query": "Must order at least 150 tables.", 
+      "Latex Model": "units_A \\\\cdot x_A + units_B \\\\cdot x_B \\\\geq min_total",
+      "involves": {
+        "variables": ["x_A", "x_B"],
+        "parameters": ["units_A", "units_B", "min_total"]
+      }
+    }
   ]
 }
 """
