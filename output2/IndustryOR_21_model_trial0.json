@@ -1,0 +1,221 @@
+{
+  "Set": [
+    { 
+      "id": "I", 
+      "User Query": "The set of suppliers A, B, and C.", 
+      "Latex Model": "I" 
+    }
+  ],
+  "Parameter": [
+    { 
+      "id": "cost_A", 
+      "User Query": "Cost of ordering from Supplier A is $120.", 
+      "Latex Model": "c_{A}",
+      "description": "Unit cost from supplier A"
+    },
+    {
+      "id": "cost_B",
+      "User Query": "Cost of ordering from Supplier B is $110.",
+      "Latex Model": "c_{B}",
+      "description": "Unit cost from supplier B"
+    },
+    {
+      "id": "cost_C",
+      "User Query": "Cost of ordering from Supplier C is $100.",
+      "Latex Model": "c_{C}",
+      "description": "Unit cost from supplier C"
+    },
+    {
+      "id": "units_A",
+      "User Query": "Each order from Supplier A will include 20 tables.",
+      "Latex Model": "u_{A}",
+      "description": "Number of units per order from supplier A"
+    },
+    {
+      "id": "units_B",
+      "User Query": "Each order from Suppliers B and C will include 15 tables.",
+      "Latex Model": "u_{B}",
+      "description": "Number of units per order from suppliers B and C"
+    },
+    {
+      "id": "min_total",
+      "User Query": "The restaurant needs to order at least 150 tables.",
+      "Latex Model": "T_{min}",
+      "description": "Minimum total number of tables required"
+    },
+    {
+      "id": "max_total",
+      "User Query": "The restaurant needs to order no more than 600 tables.",
+      "Latex Model": "T_{max}",
+      "description": "Maximum total number of tables allowed"
+    },
+    {
+      "id": "min_qty_B_if_A",
+      "User Query": "If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.",
+      "Latex Model": "Q_{B|A}",
+      "description": "Minimum quantity of supplier B if supplier A is chosen"
+    },
+    {
+      "id": "min_sum_AB",
+      "User Query": "If the restaurant decides to order tables from Supplier A, the sum of tables supplied from Supplier A and B is at least 25.",
+      "Latex Model": "S_{AB}",
+      "description": "Minimum sum of supplier A and B if supplier A is chosen"
+    },
+    {
+      "id": "min_sum_BC",
+      "User Query": "If the restaurant decides to order tables from Supplier B, the sum of tables supplied from Supplier B and C is at least 30.",
+      "Latex Model": "S_{BC}",
+      "description": "Minimum sum of supplier B and C if supplier B is chosen"
+    },
+    {
+      "id": "min_orders",
+      "User Query": "The restaurant must order tables at least 7 times from Supplier A or B or C.",
+      "Latex Model": "O_{min}",
+      "description": "Minimum number of orders required"
+    },
+    {
+      "id": "max_units_A",
+      "User Query": "The total tables supplied from Supplier A can not exceed 60.",
+      "Latex Model": "T_{A,max}",
+      "description": "Maximum units from supplier A allowed"
+    },
+    {
+      "id": "M",
+      "User Query": "Big-M constant for indicator constraints.",
+      "Latex Model": "M",
+      "description": "Big-M value used in indicator constraints."
+    }
+  ],
+  "Decision Variables": [
+    { 
+      "id": "x_A", 
+      "User Query": "Number of orders from Supplier A.", 
+      "Latex Model": "x_{A}", 
+      "index": [], 
+      "domain": "integer", 
+      "lower_bound": 0 
+    },
+    {
+      "id": "x_B",
+      "User Query": "Number of orders from Supplier B.",
+      "Latex Model": "x_{B}",
+      "index": [],
+      "domain": "integer",
+      "lower_bound": 0
+    },
+    {
+      "id": "x_C",
+      "User Query": "Number of orders from Supplier C.",
+      "Latex Model": "x_{C}",
+      "index": [],
+      "domain": "integer",
+      "lower_bound": 0
+    },
+    {
+      "id": "y_A",
+      "User Query": "Indicator variable for ordering from Supplier A.",
+      "Latex Model": "y_{A}",
+      "index": [],
+      "domain": "binary"
+    },
+    {
+      "id": "y_B",
+      "User Query": "Indicator variable for ordering from Supplier B.",
+      "Latex Model": "y_{B}",
+      "index": [],
+      "domain": "binary"
+    },
+    {
+      "id": "y_C",
+      "User Query": "Indicator variable for ordering from Supplier C.",
+      "Latex Model": "y_{C}",
+      "index": [],
+      "domain": "binary"
+    }
+  ],
+  "Objective function": [
+    { 
+      "id": "OBJ", 
+      "sense": "min", 
+      "User Query": "Minimize the total cost.", 
+      "Latex Model": "\\min \\quad c_{A} \\cdot x_{A} + c_{B} \\cdot x_{B} + c_{C} \\cdot x_{C}" 
+    }
+  ],
+  "Constraints": [
+    { 
+      "id": "C1", 
+      "type": "demand_satisfaction",
+      "User Query": "Must order at least 150 tables.", 
+      "Latex Model": "u_{A} \\cdot x_{A} + u_{B} \\cdot (x_{B} + x_{C}) \\geq T_{min}",
+      "index": [],
+      "involves": {
+        "variables": ["x_A", "x_B", "x_C"],
+        "parameters": ["units_A", "units_B", "min_total"]
+      }
+    },
+    { 
+      "id": "C2",
+      "type": "demand_satisfaction",
+      "User Query": "The restaurant needs to order no more than 600 tables.",
+      "Latex Model": "u_{A} \\cdot x_{A} + u_{B} \\cdot (x_{B} + x_{C}) \\leq T_{max}",
+      "index": [],
+      "involves": {
+        "variables": ["x_A", "x_B", "x_C"],
+        "parameters": ["units_A", "units_B", "max_total"]
+      }
+    },
+    { 
+      "id": "C3",
+      "type": "indicator_linking",
+      "User Query": "If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.",
+      "Latex Model": "u_{B} \\cdot x_{B} \\geq Q_{B|A}",
+      "index": [],
+      "involves": {
+        "variables": ["x_B"],
+        "parameters": ["units_B", "min_qty_B_if_A"]
+      }
+    },
+    { 
+      "id": "C4",
+      "type": "indicator_linking",
+      "User Query": "If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.",
+      "Latex Model": "x_{A} \\leq M \\cdot y_{A}",
+      "index": [],
+      "involves": {
+        "variables": ["x_A", "y_A"],
+        "parameters": ["M"]
+      }
+    },
+    { 
+      "id": "C5",
+      "type": "indicator_linking",
+      "User Query": "If the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.",
+      "Latex Model": "x_{B} \\geq Q_{B|A}/u_{B} \\cdot y_{A}",
+      "index": [],
+      "involves": {
+        "variables": ["x_B", "y_A"],
+        "parameters": ["units_B", "min_qty_B_if_A"]
+      }
+    },
+    { 
+      "id": "C6",
+      "type": "indicator_linking",
+      "User Query": "If the restaurant decides to order tables from Supplier B, it must also order tables from Supplier C.",
+      "Latex Model": "x_{B} \\leq M \\cdot y_{BC}",
+      "index": [],
+      "involves": {
+        "variables": ["x_B", "y_BC"],
+        "parameters": ["M"]
+      }
+    },
+    { 
+      "id": "C7",
+      "type": "indicator_linking",
+      "User Query": "If the restaurant decides to order tables from Supplier B, it must also order tables from Supplier C.",
+      "Latex Model": "x_{C} \\geq y_{BC}",
+      "index": [],
+      "involves": {
+        "variables": ["x_C", "y_BC"],
+        "parameters": []
+      }
+    },

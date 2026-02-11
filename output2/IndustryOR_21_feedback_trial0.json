@@ -1,0 +1,55 @@
+{
+    "CONFIDENCE_SCORE": 0.75,
+    "CRITICAL_FAILURE_FOUND": "NO",
+    "HARDCODING_CHECK": {
+        "found_raw_numbers_in_latex": [],
+        "status": "PASS"
+    },
+    "SYMBOLIC_FIDELITY": {
+        "missing_parameters": [
+            "min_qty_B_if_A",
+            "min_sum_AB",
+            "min_sum_BC"
+        ],
+        "unused_parameters": []
+    },
+    "LOGICAL_LINKING_AUDIT": "The Big-M and Binary logic use consistent symbolic IDs, but there are some missing constraints that need to be addressed.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "id": "C1",
+            "status": "PASS",
+            "reason": "Correctly uses parameters 'units_A', 'units_B', and 'min_total' in the demand satisfaction constraint."
+        },
+        {
+            "id": "C2",
+            "status": "PASS",
+            "reason": "Correctly uses parameters 'units_A', 'units_B', and 'max_total' in the demand satisfaction constraint."
+        },
+        {
+            "id": "C3",
+            "status": "FAIL",
+            "reason": "The constraint does not fully capture the condition that if Supplier A is chosen, at least 30 tables from Supplier B must be ordered. It should include a binary variable to link this condition."
+        },
+        {
+            "id": "C4",
+            "status": "PASS",
+            "reason": "Correctly uses 'M' and 'y_A' in the indicator linking constraint."
+        },
+        {
+            "id": "C5",
+            "status": "FAIL",
+            "reason": "The constraint does not fully capture the condition that if Supplier A is chosen, at least 30 tables from Supplier B must be ordered. It should include a binary variable to link this condition and use 'min_qty_B_if_A' parameter."
+        },
+        {
+            "id": "C6",
+            "status": "PASS",
+            "reason": "Correctly uses 'M' and 'y_BC' in the indicator linking constraint."
+        },
+        {
+            "id": "C7",
+            "status": "FAIL",
+            "reason": "The constraint does not fully capture the condition that if Supplier B is chosen, at least one table from Supplier C must be ordered. It should include a binary variable to link this condition and use 'min_sum_BC' parameter."
+        }
+    ],
+    "FINAL_VERDICT": "There are several constraints (C3, C5, C7) that need to be revised to fully capture the conditional logic using symbolic IDs for parameters such as 'min_qty_B_if_A', 'min_sum_AB', and 'min_sum_BC'. Additionally, ensure all conditions involving binary variables are correctly linked with Big-M constants."
+}

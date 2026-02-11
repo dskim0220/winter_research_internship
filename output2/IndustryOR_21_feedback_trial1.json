@@ -1,0 +1,43 @@
+{
+    "CONFIDENCE_SCORE": 0.8,
+    "CRITICAL_FAILURE_FOUND": "NO",
+    "HARDCODING_CHECK": {
+        "found_raw_numbers_in_latex": [],
+        "status": "PASS"
+    },
+    "SYMBOLIC_FIDELITY": {
+        "missing_parameters": [],
+        "unused_parameters": [
+            "M"
+        ]
+    },
+    "LOGICAL_LINKING_AUDIT": "The logical linking constraints use symbolic IDs correctly, but the Big-M constant 'M' is defined in parameters but not used in any constraint.",
+    "CONSTRAINTS_FEEDBACK": [
+        {
+            "id": "C1",
+            "status": "PASS",
+            "reason": "Correctly uses symbolic IDs for units and minimum tables required."
+        },
+        {
+            "id": "C2",
+            "status": "PASS",
+            "reason": "Correctly uses symbolic IDs for units and maximum tables allowed."
+        },
+        {
+            "id": "C3",
+            "status": "PASS",
+            "reason": "Uses symbolic IDs correctly to link orders from Supplier A with minimum order quantity from Supplier B."
+        },
+        {
+            "id": "C4",
+            "status": "PASS",
+            "reason": "Correctly uses symbolic IDs for linking the sum of tables supplied by Suppliers A and B if ordering from Supplier A."
+        },
+        {
+            "id": "C5",
+            "status": "PASS",
+            "reason": "Uses symbolic IDs correctly to link orders from Supplier B with minimum order quantity from Supplier C."
+        }
+    ],
+    "FINAL_VERDICT": "The formulation is mostly correct, but the Big-M constant 'M' should be used in constraints where binary variables are linked to continuous or integer variables. Additionally, ensure that all defined parameters are utilized within the model for completeness and correctness."
+}

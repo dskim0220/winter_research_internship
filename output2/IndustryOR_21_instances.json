@@ -1,0 +1,24 @@
+{
+    "parameters": {
+        "cost_A": 120,
+        "cost_B": 110,
+        "cost_C": 100,
+        "units_A": 20,
+        "units_B": 15,
+        "units_C": 15,
+        "min_total": 150,
+        "max_total": 600,
+        "min_qty_B_if_A": 30,
+        "min_sum_AB": 25,
+        "min_sum_BC": 30,
+        "min_orders": 7,
+        "max_units_A": 60
+    },
+    "sets": {
+        "I": [
+            "A",
+            "B",
+            "C"
+        ]
+    }
+}

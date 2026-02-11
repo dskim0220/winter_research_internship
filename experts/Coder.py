@@ -23,9 +23,10 @@ class Coder():
 4. BIG-M HANDLING: Use the symbolic 'M' parameter from the JSON. Do not define it as a literal constant like 10000.
 5. STANDALONE LOGIC: The script should focus on the mathematical structure. Assume the JSON file contains all necessary keys as defined in the 'Parameter' section of the formulation.
 [Output Rules]
-1. Respond ONLY with the executable Python code block.
-2. No introductory or concluding text.
-3. Ensure the script includes a section to print the 'Optimal Objective Value' and solution details for the Runner to capture.
+1. Respond ONLY with the raw Python code.
+2. DO NOT use markdown code blocks (e.g., do not wrap with ```python or ```).
+3. DO NOT include any introductory, explanatory, or concluding text. 
+4. The response must start immediately with 'import gurobipy' and end with the last line of code.
 """
         
         self.output_format = """

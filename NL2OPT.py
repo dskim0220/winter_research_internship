@@ -22,7 +22,7 @@ max_trial = 3
 threshold=0.8
 
 def save_output(content, filename, extension):
-    file_path = f"output/{filename}.{extension}"
+    file_path = f"output2/{filename}.{extension}"
 
     with open(file_path,"w",encoding="utf-8") as f:
         if extension == "json":
@@ -85,7 +85,7 @@ def nl2opt(problem,model_name,url):
 
     #end_time = time.time()
     #running_time = end_time - start_time
-    print(f"총 소요시간: {running_time:.2f}s")
+    #print(f"총 소요시간: {running_time:.2f}s")
     return
 
 def run_code(code_path, data_path):
