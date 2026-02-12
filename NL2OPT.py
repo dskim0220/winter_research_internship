@@ -3,6 +3,7 @@ import torch
 import requests
 import time
 import json
+import re
 import subprocess
 from awq import AutoAWQForCausalLM
 from transformers import AutoTokenizer
@@ -114,6 +115,27 @@ def run_code(code_path, data_path):
             "error": "Execution timed out (Limit: 30s). The model might be too complex or in an infinite loop."
         }
 
+def parse_execution_log(log_text):
+    result = {
+        "objective": None,
+        "solutions": {}
+    }
+    objective_pattern = r"Optimal Objective Value:\s+([\d\.]+)"
+    objective_match = re.search(objective_pattern, log_text)
+    if objective_match:
+        result["objective"] = float(objective_match.group(1))
+        
+        relevant_part = log_text[objective_match.end():].strip()
+        
+        solution_pattern = r"(\w+):\s+([\d\.]+)"
+        sol_matches = re.findall(solution_pattern, relevant_part)
+        
+        for var, val in sol_matches:
+            result["solutions"][var] = float(val)
+    
+    return result
+    
+
 if __name__ == '__main__':
     from utils import read_problem2
     # 풀 문제 설정
@@ -121,7 +143,8 @@ if __name__ == '__main__':
     problem = read_problem2(data_set, problem_name)
     nl2opt(problem, model_name, url)
     execution_result = run_code(f"output/{problem_name}_gencode.py",f"output/{problem_name}_instances.json")
-    print(f"결과: {execution_result}")
+    parsed_result = parse_execution_log(execution_result["log"])
+    print(f"실행 결과: {parsed_result}")
     end_time = time.time()
     running_time = end_time - start_time
     print(f"총 소요시간: {running_time:.2f}s")
