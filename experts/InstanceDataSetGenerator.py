@@ -42,7 +42,7 @@ class InstanceDataSetGenerator():
 """
         
     
-    def extract_instances(self, problem, coder_output):
+    def extract_instances_first(self, problem, coder_output):
         full_prompt = f"""[Role] {self.role_description}
 [Original Problem] {problem}
 [Coder Output] {coder_output}
@@ -68,5 +68,43 @@ class InstanceDataSetGenerator():
         
         except Exception as e:
             return f"model generation 실패: {e}"
+    
+    
+    def extract_instances_second(self,problem,code_path):
+        coder_output = ""
+        try:
+            with open(code_path,'r',encoding='utf-8') as f:
+                coder_output = f.read()
+            
+        except FileNotFoundError:
+            print("코드 파일을 찾을 수 없습니다. 인스턴스 추출 실패.")
+            return
         
+        print("파일 읽기 성공! 인스턴스 추출중....")
+        
+        full_prompt = f"""[Role] {self.role_description}
+[Original Problem] {problem}
+[Coder Output] {coder_output}
+[Task] {self.task}
+[Rules] {self.rules}
+[Format] {self.output_format}"""
+        
+        payload = {
+            "model": self.model_name,
+            "prompt": full_prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0.1,
+                "num_predict": 2048   
+            }
+        }
+        print("instance 추출중...")
+        try:
+            response = requests.post(self.url, json=payload)
+            response.raise_for_status()
+            
+            return response.json().get('response', '').strip()       
+        
+        except Exception as e:
+            return f"model generation 실패: {e}"
         

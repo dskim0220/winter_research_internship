@@ -80,7 +80,7 @@ def nl2opt(problem,model_name,url):
         code_file = save_output(code,f"{problem_name}_gencode","py")
         print(f"모델링 및 코드 생성 완료! confidence:{best_confidence_score}")
         
-        instances = instance_generator.extract_instances(problem=problem,coder_output=code)
+        instances = instance_generator.extract_instances_first(problem=problem,coder_output=code)
         instance_file = save_output(instances,f"{problem_name}_instances","json")
         print("인스턴스 데이터셋 생성 완료!")
 
